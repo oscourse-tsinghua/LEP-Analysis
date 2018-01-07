@@ -174,7 +174,7 @@ Perf-record:记录一段时间内系统/进程的性能时间
 
 #### （1）环形，以cpu stat为例
 
-![img](file:///C:\Users\LiXia\AppData\Local\Temp\ksohtml\wpsE00F.tmp.jpg)
+![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/CPUstat.png)
 
 LEPV接收LEPD的数据：{'result': 'Linux 4.4.0-62-generic (iZbp12cjbccf171b7m1srxZ) \t12/31/17 \t_x86_64_\t(2 CPU)\n\n22:36:51     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle\n22:36:52     all   72.00    0.00   27.00    0.00    0.00    0.00    0.00    0.00    0.00    1.00\n22:36:52       0   86.87    0.00   12.12    0.00    0.00    0.00    0.00    0.00    0.00    1.01\n22:36:52       1   58.59    0.00   41.41    0.00    0.00    0.00    0.00    0.00    0.00    0.00\n\nAverage:     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle\nAverage:     all   72.00    0.00   27.00    0.00    0.00    0.00    0.00    0.00    0.00    1.00\nAverage:       0   86.87    0.00   12.12    0.00    0.00    0.00    0.00    0.00    0.00    1.01\nAverage:       1   58.59    0.00   41.41    0.00    0.00    0.00    0.00    0.00    0.00    0.00\n'}
 
