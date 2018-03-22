@@ -24,11 +24,11 @@ git clone https://github.com/linuxep/lepd.git
 
 若ubuntu中未安装git,执行安装后，再次执行该命令即可；
 
-![gitinstall](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\gitinstall.png)
+![gitinstall](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/gitinstall.png)
 
 安装Git
 
-![lepddownload](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\lepddownload.png)
+![lepddownload](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/lepddownload.png)
 
 下载lepd
 
@@ -42,7 +42,7 @@ make
 
 若出现如下错误
 
-![lepd编译错误](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\lepd编译错误.png)
+![lepd编译错误](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/lepd%E7%BC%96%E8%AF%91%E9%94%99%E8%AF%AF.png)
 
 须安装一些软件，已使该命令得以运行 
 
@@ -66,7 +66,7 @@ sudo ./lepd --debug
 echo '{"method":"ListAllMethod"}' | nc 127.0.0.1 12307
 ```
 
-![test](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\test.png)
+![test](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/test.png)
 
 ### 下载、运行LEPV
 
@@ -112,7 +112,7 @@ sudo ln -s /usr/bin/python3.5 /usr/bin/python
 git clone https://github.com/linuxep/lepv.git 
 ```
 
-![lepvdownload](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\lepvdownload.png)
+![lepvdownload](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/lepvdownload.png)
 
 #### 配置参数
 
@@ -145,33 +145,33 @@ python run.py
 
 若出现如下错误，PYTHONPATH环境变量丢失。
 
-![pythonerror](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\pythonerror.png)
+![pythonerror](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/pythonerror.png)
 
 添加环境变量，重新执行
 
-![python](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\python.png)
+![python](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/python.png)
 
 #### 开启浏览器
 
 推荐使用chrome浏览器，访问127.0.0.1:8889，并在下图所示位置输入被监测机器的IP地址，如监测本机可输入127.0.0.1，并点击开始按钮。
 
-![view前](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\view前.png)
+![view前](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/view前.png)
 
 运行效果如图所示
 
-![view后](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\view后.png)
+![view后](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/view后.png)
 
 #### 常见错误
 
 当点击开始按钮运行时，出现如下图所示的错误，须确认输入的监测机器的IP地址是否正确或监测机器上LEPD是否处于工作状态。
 
-![error](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\error.png)
+![error](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/error.png)
 
 ## LEPD分析
 
 LEP采用客户端/服务器的模型，其中，LEPD（server daemon of lep）就是服务器端，也就是运行需要剖析数据的机器上；LEPV为客户端，负责显示从服务器即LEPD中获取的数据。同时，LEPD与LEPV之间相互通信是JSON-RPC（JSON为消息格式的远程过程调用框架），它是基于tcp传输协议，实现依赖libev和cJson库。
 
-![JSONRPC](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\JSONRPC.png)
+![JSONRPC](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/JSONRPC.png)
 
 通过阅读server.c中的main()函数，
 
@@ -219,7 +219,7 @@ LEP采用客户端/服务器的模型，其中，LEPD（server daemon of lep）�
 
 socket 通信模式图
 
-![socket](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\socket.png)
+![socket](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/socket.png)
 
 LEPD为TCP服务器端，LEPV为TCP客户端。
 
@@ -270,7 +270,7 @@ LEPD为TCP服务器端，LEPV为TCP客户端。
 
 LEPV使用了flask框架。flask框架是常见的web框架，下面是flask的目录结构：
 
-![flask目录](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\flask目录.png)
+![flask目录](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/flask目录.png)
 
 其中，
 
@@ -292,7 +292,7 @@ LEPV使用了flask框架。flask框架是常见的web框架，下面是flask的�
 - requirements.txt：列出了所有依赖包以及版本号，方面在其他位置生成相同的虚拟环境以及依赖；
 
 
-- uwsgi.ini：作为web服务器与web应用程序之间的一种低级别的接口，应为flask自带的；![wsgi (2)](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\wsgi (2).png)
+- uwsgi.ini：作为web服务器与web应用程序之间的一种低级别的接口，应为flask自带的；![wsgi (2)](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/wsgi (2).png)
 
 结合本程序， 
 (1)Application即需要运行的run，也就是实例化的app 。 
@@ -367,7 +367,7 @@ wsgi_app()完成整个处理过程，response()将处理结果返回给WSGI Serv
 
 对数据的分析主要是modules，首先不得不提的是Blueprint(蓝本)，蓝本通过把实现不同功能的module分开,从而把一个大的application分割成各自实现不同功能的module。本程序中，有多个蓝本（cpuAPI、ioAPI、memoryAPI、perfAPI、utilAPI）,现以cpuAPI为例。下面是其目录结构：
 
-![modules](C:\Users\lxia\Downloads\lep相关\相关图片\LEP分析文档\modules.png)
+![modules](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/modules.png)
 
 其中，lepd：为LEPD的客户端，主要负责与LEPD server进行通信，从而获取数据；
 
