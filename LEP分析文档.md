@@ -409,7 +409,7 @@ socket.io是LEPV分析部分与LEPV展现部分通信的方式，基本过程是
 var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
 ```
 
-cpuAvgloadChart()不仅继承lepvChart.js，lepvChart()中有socketIO.emit()向服务器发送请求；同时自己有初始化图表，更新数据的函数。
+cpuAvgloadChart()与其他绘制图表的函数一样，继承自lepvChart.js，因此requestData中有socketIO.emit()向服务器发送请求，setupSocketIO中socketIO.on()获取服务器返回的数据，并将此数据以参数形式传递给更新图表的函数updateChartData()；同时根据自身展示需求重写了有初始化图表initializeChart()，更新图表updateChartData()等函数。
 
 ## 参考
 
