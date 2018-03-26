@@ -409,7 +409,37 @@ socket.io是LEPV分析部分与LEPV展现部分通信的方式，基本过程是
 var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
 ```
 
-cpuAvgloadChart()与其他绘制图表的函数一样，继承自lepvChart.js，因此requestData中有socketIO.emit()向服务器发送请求，setupSocketIO中socketIO.on()获取服务器返回的数据，并将此数据以参数形式传递给更新图表的函数updateChartData()；同时根据自身展示需求重写了有初始化图表initializeChart()，更新图表updateChartData()等函数。
+cpuAvgloadChart()与其他绘制图表的函数一样，继承自lepvChart.js，因此requestData中有socketIO.emit()向服务器发送请求，
+```javascript
+this.socketIO.emit(this.socket_message_key + ".req",
+                            {
+                                'server': this.serverToWatch,
+                                'interval': this.refreshInterval,
+                                "request_id": this.socket_request_id,
+                                "request_time": (new Date()).getTime(),
+                            }
+    );
+```
+setupSocketIO中socketIO.on()获取服务器返回的数据，并将此数据以参数形式传递给更新图表的函数updateChartData()；
+```javascript
+this.socketIO.on(thisChart.socket_message_key + ".res", function(response) {
+
+        // console.log("  <- " + thisChart.socket_message_key + ".res(" + response['response_id'] + ")");
+
+        if ("request_time" in response) {
+            var requestTime = response['request_time'];
+
+            var responseTime = (new Date()).getTime();
+
+            var requestDuration = responseTime - requestTime;
+            console.log("  <- " + thisChart.socket_message_key + ".res(" + response['response_id'] + ") in " + requestDuration + " milliseconds");
+
+        }
+
+        thisChart.updateChartData(response);
+    });
+```
+同时根据自身展示需求重写了有初始化图表initializeChart()，更新图表updateChartData()等函数。
 
 ## 参考
 
