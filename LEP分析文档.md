@@ -440,6 +440,17 @@ this.socketIO.on(thisChart.socket_message_key + ".res", function(response) {
     });
 ```
 同时根据自身展示需求重写了有初始化图表initializeChart()，更新图表updateChartData()等函数。
+## 数据流
+![dataflow](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/dataflow.png)
+- LEPDServer：
+通过read_proc方式直接读取/proc/loadavg，格式为2.58 2.25 2.13 4/110 19674
+- LEPDClient:
+getResponse()通过sendRequest()得到，格式为{'result':'2.58 2.25 2.13 4/110 19674\n'
+- LEPV分析：
+CPUProfile.py中get_average_load()将数据进行处理，格式为{'data': {'last1': 2.58, 'last5': 2.25, 'last15': 2.13}}
+sockets.py中get_avg_load()传递该数据给前端
+- LEPV展示：
+lepvChart.js中setupSocketIO()负责监听上传的数据，用responseData作为参数传递updateChartData(),从而更新图表；同时requestData(),继续向后端发送请求；
 
 ## 参考
 
