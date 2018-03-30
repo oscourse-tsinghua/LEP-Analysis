@@ -448,7 +448,18 @@ this.socketIO.on(thisChart.socket_message_key + ".res", function(response) {
 getResponse()通过sendRequest()得到，格式为{'result':'2.58 2.25 2.13 4/110 19674\n'
 - LEPV分析：
 CPUProfile.py中get_average_load()将数据进行处理，格式为{'data': {'last1': 2.58, 'last5': 2.25, 'last15': 2.13}}
-sockets.py中get_avg_load()传递该数据给前端
+sockets.py中get_avg_load()作为Timer()的参数不断的得到CPUProdiler.py的数据，同时background_timer_stuff()通过socketio向前端发送数据，并不断调用Timer(),如此进行数据的中转
+``` python
+cpu_avg_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_average_load])
+```
+``` python
+def background_timer_stuff(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
+    Timer(interval, background_timer_stuff, [
+              socketio, interval, socket_res_message_key, profiler_method]).start()
+
+```
 - LEPV展示：
 lepvChart.js中setupSocketIO()负责监听上传的数据，用responseData作为参数传递updateChartData(),从而更新图表；同时requestData(),继续向后端发送请求；
 
