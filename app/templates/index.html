@@ -75,6 +75,9 @@
             <li>
               <a href="#container-div-cpu-avgload">Average Load</a>
             </li>
+              <li>
+              <a href="#container-div-cpu-mysql">mysql</a>
+            </li>
             <li>
               <a href="#container-div-cpu-top-table">TOP</a>
             </li>
@@ -146,7 +149,8 @@
         <li class="nav-item">
           <form class="form-inline my-2 my-lg-0 mr-lg-2">
             <div class="input-group">
-              <input id='txt_server_to_watch' class="form-control" type="text" placeholder="www.rmlink.cn" value="www.rmlink.cn">
+              <!--<input id='txt_server_to_watch' class="form-control" type="text" placeholder="www.rmlink.cn" value="www.rmlink.cn">-->
+              <input id='txt_server_to_watch' class="form-control" type="text" placeholder="127.0.0.1" value="127.0.0.1">
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="startWatching()">
                   <i class="fa fa-play"></i>
@@ -349,6 +353,19 @@
       </div>
 
       <div class="col-md-12">
+        <div id="container-div-cpu-mysql" class="card mb-3">
+          <div class="card-header">
+              <i class="icon-cpu-processor"></i>
+
+              <span class="spanTitle">mysql</span>
+
+          </div>
+          <div class="card-body"><div class="chart-panel"></div></div>
+          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
           <div id="container-div-cpu-top-table" class="card mb-3">
             <div class="card-header">
                 {% if config == 'debug' %}
@@ -487,6 +504,8 @@
           </div>
       </div>
 
+
+
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
@@ -544,6 +563,7 @@
 
     <script src="/static/js/charts/cpu/cpuGauguChart.js"></script>
     <script src="/static/js/charts/cpu/cpuAvgloadChart.js"></script>
+      <script src="/static/js/charts/cpu/mysqlDataChart.js"></script>
 
     <script src="/static/js/charts/cpu/cpuIrqChart.js"></script>
     <script src="/static/js/charts/cpu/cpuSoftIrqChart.js"></script>
@@ -665,9 +685,8 @@
           var cputaskletIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-taskletIrq", socket, serverToWatch, 'TASKLET');
           var cpuhrtimerIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-hrtimerIrq", socket, serverToWatch, 'HRTIMER');
 
-
           var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
-
+          var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);
           var cpuTopTable = new CpuTopTable("container-div-cpu-top-table", socket, serverToWatch);
 
           <!--var memoryChart = new MemoryChart('container-div-memory-chart', socket, serverToWatch);-->

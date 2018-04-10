@@ -20,11 +20,14 @@ def process_socket_request(request, socket_req_message_key, profiler_method):
 
     print('<- ' + socket_res_message_key + ': ' +
           server + " | (" + str(data['response_id']) + ')')
+
     emit(socket_res_message_key,  data)
 
 
 def background_timer_stuff(socketio, interval, socket_res_message_key, profiler_method):
     data = profiler_method()
+#    print('socket-1-'+str(data))
     socketio.emit(socket_res_message_key, data)
+#    print('socket-2-'+str(socket_res_message_key)+str(data))
     Timer(interval, background_timer_stuff, [
               socketio, interval, socket_res_message_key, profiler_method]).start()

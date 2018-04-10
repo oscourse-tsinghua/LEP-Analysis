@@ -136,6 +136,7 @@ class LepDClient:
     def getResponse(self, methodName):
         if (self.config != 'unittest'):
             response = self.sendRequest(methodName)
+
         else:
             response = self.getUnitTestResponse(methodName)
             

@@ -3,6 +3,7 @@
 __author__    = "Copyright (c) 2016, Mac Xu <shinyxxn@hotmail.com>"
 __copyright__ = "Licensed under GPLv2 or later."
 
+import MySQLdb
 import pprint
 import re
 from decimal import Decimal
@@ -469,7 +470,10 @@ class CPUProfiler:
 
 
     def get_average_load(self, response_lines = None):
-
+        # f = open('/home/lxia/wh.txt', 'a')
+        # f.write("2")
+        # f.close()
+##        print("CPUProfiler-----1-----"+ str(response_lines))
         lepd_command = 'GetProcLoadavg'
         if not response_lines:
             response_lines = self.client.getResponse(lepd_command)
@@ -495,7 +499,33 @@ class CPUProfiler:
         }
 
         response_data['data'] = result_data
-        
+#        print("CPUProfile-1-"+str(response_data))
+        return response_data
+
+    def get_mysql_data(self, response_lines=None):
+        # 打开数据库连接
+        db = MySQLdb.connect("192.168.2.81", "root", "596100", "zabbix")
+        # 使用cursor()方法获取操作游标
+        cursor = db.cursor()
+
+        # SQL 插入语句
+        sql = "SELECT clock,value FROM history where itemid=25462 order by clock DESC limit 100"
+        try:
+            # 执行sql语句
+            cursor.execute(sql)
+            ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
+            # 提交到数据库执行
+            db.commit()
+        except:
+            # 发生错误时回滚
+            db.rollback()
+
+        # 关闭数据库连接
+        db.close()
+
+        response_data = {}
+        response_data['data'] = ones
+        print("mysql-1-" + str(response_data))
         return response_data
 
     def getTopOutput(self, responseLines = None):

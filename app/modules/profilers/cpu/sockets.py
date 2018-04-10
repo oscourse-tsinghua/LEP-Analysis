@@ -41,7 +41,9 @@ def get_cpu_status(request):
     if cpu_status_timer is None:
         cpu_status_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.status.res", CPUProfiler(server).get_status])
         cpu_status_timer.start()
+
     emit("cpu.status.res", CPUProfiler(server).get_status())
+
 
 cpu_avg_timer = None
 @cpu_blueprint.on('cpu.avgload.req')
@@ -49,11 +51,30 @@ def get_avg_load(request):
     server = request['server']
     interval = request['interval']
     socketio = cpu_blueprint.get_io()
+    print('2'+str(socketio))
     global cpu_avg_timer
     if cpu_avg_timer is None:
+#       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
         cpu_avg_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_average_load])
         cpu_avg_timer.start()
+#    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
     emit("cpu.avgload.res", CPUProfiler(server).get_average_load())
+
+
+cpu_mysql_timer = None
+@cpu_blueprint.on('cpu.mysql.req')
+def get_ms_data(request):
+    server = request['server']
+    interval = request['interval']
+    socketio = cpu_blueprint.get_io()
+    print('2'+str(socketio))
+    global cpu_mysql_timer
+    if cpu_mysql_timer is None:
+#       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
+        cpu_mysql_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.mysql.res", CPUProfiler(server).get_mysql_data])
+        cpu_mysql_timer.start()
+#    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
+    emit("cpu.mysql.res", CPUProfiler(server).get_mysql_data())
 
 cpu_top_timer = None
 @cpu_blueprint.on('cpu.top.req')

@@ -26,4 +26,5 @@ class SocketIOBlueprint:
         return io
 
     def get_io(self):
+
         return self.io
