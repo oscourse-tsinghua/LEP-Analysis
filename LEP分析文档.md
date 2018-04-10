@@ -461,8 +461,7 @@ def background_timer_stuff(socketio, interval, socket_res_message_key, profiler_
 
 ```
 - LEPV展示：
-lepvChart.js中若各类型图表第一次调用setupSocketIO()时，通过requestData(),向后端发送一次请求，从而与后端建立连接；之后socketIO.on()负责监听上传的数据，用responseData作为参数传递updateChartData(),从而更新图表；
-总之，首先由lepv展示部分发送数据请求，其次，lepv中sockets.py监听到请求后，不断得到lepv分析的数据，最后，lepv展示部分监听到数据，从而更新图表。
+lepvChart.js中setupSocketIO()负责监听上传的数据，用responseData作为参数传递updateChartData(),从而更新图表；同时requestData(),继续向后端发送请求；
 
 ## 参考
 
