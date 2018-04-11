@@ -2,22 +2,45 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7dd3b4d-e0a6-46c9-87dc-fe09e8dc2a89" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change beforePath="$PROJECT_DIR$/README.md" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/modules/lepd/LepDClient.py" afterPath="$PROJECT_DIR$/app/modules/lepd/LepDClient.py" />
-      <change beforePath="$PROJECT_DIR$/app/modules/profilers/cpu/CPUProfiler.py" afterPath="$PROJECT_DIR$/app/modules/profilers/cpu/CPUProfiler.py" />
-      <change beforePath="$PROJECT_DIR$/app/modules/profilers/cpu/sockets.py" afterPath="$PROJECT_DIR$/app/modules/profilers/cpu/sockets.py" />
-      <change beforePath="$PROJECT_DIR$/app/modules/profilers/cpu/views.py" afterPath="$PROJECT_DIR$/app/modules/profilers/cpu/views.py" />
-      <change beforePath="$PROJECT_DIR$/app/modules/utils/socketIOBlueprint.py" afterPath="$PROJECT_DIR$/app/modules/utils/socketIOBlueprint.py" />
-      <change beforePath="$PROJECT_DIR$/app/modules/utils/soketProcessor.py" afterPath="$PROJECT_DIR$/app/modules/utils/soketProcessor.py" />
-      <change beforePath="$PROJECT_DIR$/app/templates/index.html" afterPath="$PROJECT_DIR$/app/templates/index.html" />
-      <change beforePath="$PROJECT_DIR$/buildImage.sh" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/docker/Dockerfile" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/docker/run.sh" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/nginx/default" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/publishImage.sh" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/restart.sh" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/runContainer.sh" afterPath="" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/lepv.iml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/R_User_Library.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/AverageLoad.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/CPUTOP.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/CPUstat.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/FlameGraph.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/LEP信息源及展现形式.md" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/LEP分析文档.md" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/LICENSE" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app/modules/lepd/.LepDClient.py.swp" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/app/static/js/charts/cpu/mysqlDataChart.js" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/Fork前.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/Fork后.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/JSONRPC.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/LEP架构.PNG" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/dataflow.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/demo" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/error.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/flask目录.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/gitinstall.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/lepddownload.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/lepd编译错误.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/lepvdownload.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/modules.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/python.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/pythonerror.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/socket.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/test.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/view前.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/view后.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/wsgi (2).png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/image/wsgi.png" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/lepv/README.md" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,22 +67,12 @@
       <file leaf-file-name="CPUProfiler.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/modules/profilers/cpu/CPUProfiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="470" column="0" lean-forward="true" selection-start-line="470" selection-start-column="0" selection-end-line="470" selection-end-column="0" />
+            <state relative-caret-position="7362">
+              <caret line="469" column="0" lean-forward="false" selection-start-line="469" selection-start-column="0" selection-end-line="469" selection-end-column="0" />
               <folding>
-                <element signature="e#161#175#0" expanded="true" />
-                <element signature="e#1452#2079#0" expanded="false" />
-                <element signature="e#2133#2918#0" expanded="false" />
-                <element signature="e#2985#4123#0" expanded="false" />
-                <element signature="e#4188#4818#0" expanded="false" />
-                <element signature="e#4865#7330#0" expanded="false" />
-                <element signature="e#7367#7879#0" expanded="false" />
-                <element signature="e#7932#9597#0" expanded="false" />
-                <element signature="e#9654#11424#0" expanded="false" />
-                <element signature="e#11431#11471#0" expanded="false" />
-                <element signature="e#14516#15865#0" expanded="false" />
-                <element signature="e#18013#20107#0" expanded="false" />
-                <marker date="1523262533366" expanded="false" signature="15922:17201" ph="..." />
+                <element signature="e#17055#19149#0" expanded="false" />
+                <marker date="1523439324433" expanded="true" signature="161:168" ph="import ..." />
+                <marker date="1523439324433" expanded="true" signature="16965:16994" ph="..." />
               </folding>
             </state>
           </provider>
@@ -69,7 +82,7 @@
         <entry file="file://$PROJECT_DIR$/app/modules/profilers/cpu/sockets.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
-              <caret line="64" column="19" lean-forward="false" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="27" />
+              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -98,8 +111,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
-              <caret line="561" column="33" lean-forward="false" selection-start-line="561" selection-start-column="33" selection-end-line="561" selection-end-column="33" />
+            <state relative-caret-position="-179">
+              <caret line="542" column="33" lean-forward="false" selection-start-line="542" selection-start-column="33" selection-end-line="542" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -189,11 +202,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="65" />
-    <option name="y" value="42" />
-    <option name="width" value="1067" />
-    <option name="height" value="875" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="665" />
+    <option name="y" value="186" />
+    <option name="width" value="1217" />
+    <option name="height" value="903" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -389,10 +402,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1851" height="931" extended-state="6" />
+    <frame x="665" y="186" width="1217" height="903" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14870094" sideWeight="0.4924812" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22893617" sideWeight="0.4924812" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31895426" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="R Graphics" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -787,8 +800,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="561" column="33" lean-forward="false" selection-start-line="561" selection-start-column="33" selection-end-line="561" selection-end-column="33" />
+        <state relative-caret-position="-179">
+          <caret line="542" column="33" lean-forward="false" selection-start-line="542" selection-start-column="33" selection-end-line="542" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -796,7 +809,7 @@
     <entry file="file://$PROJECT_DIR$/app/modules/profilers/cpu/sockets.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
-          <caret line="64" column="19" lean-forward="false" selection-start-line="64" selection-start-column="19" selection-end-line="64" selection-end-column="27" />
+          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -835,22 +848,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/modules/profilers/cpu/CPUProfiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="470" column="0" lean-forward="true" selection-start-line="470" selection-start-column="0" selection-end-line="470" selection-end-column="0" />
+        <state relative-caret-position="7362">
+          <caret line="469" column="0" lean-forward="false" selection-start-line="469" selection-start-column="0" selection-end-line="469" selection-end-column="0" />
           <folding>
-            <element signature="e#161#175#0" expanded="true" />
-            <element signature="e#1452#2079#0" expanded="false" />
-            <element signature="e#2133#2918#0" expanded="false" />
-            <element signature="e#2985#4123#0" expanded="false" />
-            <element signature="e#4188#4818#0" expanded="false" />
-            <element signature="e#4865#7330#0" expanded="false" />
-            <element signature="e#7367#7879#0" expanded="false" />
-            <element signature="e#7932#9597#0" expanded="false" />
-            <element signature="e#9654#11424#0" expanded="false" />
-            <element signature="e#11431#11471#0" expanded="false" />
-            <element signature="e#14516#15865#0" expanded="false" />
-            <element signature="e#18013#20107#0" expanded="false" />
-            <marker date="1523262533366" expanded="false" signature="15922:17201" ph="..." />
+            <element signature="e#17055#19149#0" expanded="false" />
+            <marker date="1523439324433" expanded="true" signature="161:168" ph="import ..." />
+            <marker date="1523439324433" expanded="true" signature="16965:16994" ph="..." />
           </folding>
         </state>
       </provider>
