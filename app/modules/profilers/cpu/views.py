@@ -2,7 +2,7 @@
 """Module for CPU Profiler"""
 from flask import Blueprint, jsonify, request
 from app.modules.profilers.cpu.CPUProfiler import CPUProfiler
-
+import sys
 cpuAPI = Blueprint('cpuAPI', __name__, url_prefix='/api/cpu')
 
 # @socketio.on('client_connected')
@@ -87,4 +87,17 @@ def get_average_load(server):
     return jsonify(data)
 
 
+@cpuAPI.route('/mysql/<server>')
+def get_mysql_data(server):
+    # options = {
+    #     'is_debug': False,
+    # }
+    # if not request.args['debug']:
+    #     options['is_debug'] = request.args['debug']
 
+    profiler = CPUProfiler(server)
+    data = profiler.get_mysql_data()
+
+    if 'request_id' in request.args:
+        data['response_id'] = request.args['request_id']
+    return jsonify(data)
