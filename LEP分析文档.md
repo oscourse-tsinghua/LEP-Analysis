@@ -7,6 +7,7 @@ LEP的官网：http://www.linuxep.com/ LEP的代码仓库：http://github.com/li
 主要分为LEPD（LEP Daemon）和LEPV（LEP Viewer）两部分。其中，LEPD仅负责被监控设备的数据采集，力求对被监控设备的影响最小化；LEPV则负责数据的分析与展示，通过JSONRPC请求获取LEPD采集的原始数据，将该数据进行有针对性的进行加工后，发送给浏览器。浏览器以饼图、折线图、表格、火焰图等形式对数据进行直观展现。
 
 ![LEP架构](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/LEP%E6%9E%B6%E6%9E%84.PNG)
+![LEP structure](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/structure.jpg)
 
 同时，LEPD可以部署在ARM 32电脑板、ARM 64位Android手机和双核、四核X86等机器上，LEPV目前仅支持X86 64位机器。
 
