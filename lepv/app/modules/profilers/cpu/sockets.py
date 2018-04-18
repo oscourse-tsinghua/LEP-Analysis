@@ -1,6 +1,6 @@
 from app.modules.utils.socketIOBlueprint import SocketIOBlueprint
 from app.modules.profilers.cpu.CPUProfiler import CPUProfiler
-from app.modules.utils.soketProcessor import process_socket_request, background_timer_stuff
+from app.modules.utils.soketProcessor import process_socket_request, background_timer_stuff, background_timer_stuff1
 from flask_socketio import emit
 from threading import Timer
 
@@ -67,14 +67,35 @@ def get_ms_data(request):
     server = request['server']
     interval = request['interval']
     socketio = cpu_blueprint.get_io()
-    print('2'+str(socketio))
+#    print('2'+str(socketio))
     global cpu_mysql_timer
+    tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25462'}
     if cpu_mysql_timer is None:
 #       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
-        cpu_mysql_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.mysql.res", CPUProfiler(server).get_mysql_data])
+        cpu_mysql_timer = Timer(interval, background_timer_stuff1, [socketio, interval, "cpu.mysql.res", CPUProfiler(server).get_mysql_data, tableinfo])
         cpu_mysql_timer.start()
 #    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
-    emit("cpu.mysql.res", CPUProfiler(server).get_mysql_data())
+    #tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25462'}
+    # tablelist = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25462'}
+    emit("cpu.mysql.res", CPUProfiler(server).get_mysql_data(tableinfo))
+
+cpu_mysql_timer2 = None
+@cpu_blueprint.on('cpu.mysql2.req')
+def get_ms_data2(request):
+    server = request['server']
+    interval = request['interval']
+    socketio = cpu_blueprint.get_io()
+#    print('2'+str(socketio))
+    global cpu_mysql_timer2
+    tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25940'}
+    if cpu_mysql_timer2 is None:
+#       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
+        cpu_mysql_timer2 = Timer(interval, background_timer_stuff1, [socketio, interval, "cpu.mysql2.res", CPUProfiler(server).get_mysql_data, tableinfo])
+        cpu_mysql_timer2.start()
+#    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
+#     tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25940'}
+#     tablelist = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25940'}
+    emit("cpu.mysql2.res", CPUProfiler(server).get_mysql_data(tableinfo))
 
 cpu_top_timer = None
 @cpu_blueprint.on('cpu.top.req')

@@ -78,6 +78,10 @@
               <li>
               <a href="#container-div-cpu-mysql">mysql</a>
             </li>
+              </li>
+              <li>
+              <a href="#container-div-cpu-mysql2">mysql2</a>
+            </li>
             <li>
               <a href="#container-div-cpu-top-table">TOP</a>
             </li>
@@ -365,6 +369,19 @@
         </div>
       </div>
 
+        <div class="col-md-12">
+        <div id="container-div-cpu-mysql2" class="card mb-3">
+          <div class="card-header">
+              <i class="icon-cpu-processor"></i>
+
+              <span class="spanTitle">mysql2</span>
+
+          </div>
+          <div class="card-body"><div class="chart-panel"></div></div>
+          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+        </div>
+      </div>
+
       <div class="col-md-12">
           <div id="container-div-cpu-top-table" class="card mb-3">
             <div class="card-header">
@@ -564,6 +581,7 @@
     <script src="/static/js/charts/cpu/cpuGauguChart.js"></script>
     <script src="/static/js/charts/cpu/cpuAvgloadChart.js"></script>
       <script src="/static/js/charts/cpu/mysqlDataChart.js"></script>
+      <script src="/static/js/charts/cpu/mysqlData2Chart.js"></script>
 
     <script src="/static/js/charts/cpu/cpuIrqChart.js"></script>
     <script src="/static/js/charts/cpu/cpuSoftIrqChart.js"></script>
@@ -687,6 +705,7 @@
 
           var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
           var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);
+          var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);
           var cpuTopTable = new CpuTopTable("container-div-cpu-top-table", socket, serverToWatch);
 
           <!--var memoryChart = new MemoryChart('container-div-memory-chart', socket, serverToWatch);-->

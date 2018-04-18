@@ -31,3 +31,11 @@ def background_timer_stuff(socketio, interval, socket_res_message_key, profiler_
 #    print('socket-2-'+str(socket_res_message_key)+str(data))
     Timer(interval, background_timer_stuff, [
               socketio, interval, socket_res_message_key, profiler_method]).start()
+
+def background_timer_stuff1(socketio, interval, socket_res_message_key, profiler_method,args):
+    data = profiler_method(args)
+#    print('socket-1-'+str(data))
+    socketio.emit(socket_res_message_key, data)
+#    print('socket-2-'+str(socket_res_message_key)+str(data))
+    Timer(interval, background_timer_stuff1, [
+              socketio, interval, socket_res_message_key, profiler_method,args]).start()

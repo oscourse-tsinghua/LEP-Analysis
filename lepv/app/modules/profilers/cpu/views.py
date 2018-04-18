@@ -94,9 +94,25 @@ def get_mysql_data(server):
     # }
     # if not request.args['debug']:
     #     options['is_debug'] = request.args['debug']
-
+    tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25462'}
     profiler = CPUProfiler(server)
-    data = profiler.get_mysql_data()
+    data = profiler.get_mysql_data(tableinfo)
+
+    if 'request_id' in request.args:
+        data['response_id'] = request.args['request_id']
+    return jsonify(data)
+
+
+@cpuAPI.route('/mysql2/<server>')
+def get_mysql_data2(server):
+    # options = {
+    #     'is_debug': False,
+    # }
+    # if not request.args['debug']:
+    #     options['is_debug'] = request.args['debug']
+    tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25940'}
+    profiler = CPUProfiler(server)
+    data = profiler.get_mysql_data(tableinfo)
 
     if 'request_id' in request.args:
         data['response_id'] = request.args['request_id']

@@ -502,18 +502,22 @@ class CPUProfiler:
 #        print("CPUProfile-1-"+str(response_data))
         return response_data
 
-    def get_mysql_data(self, response_lines=None):
+
+    def get_mysql_data(self, tableinfo, response_lines=None):
         # 打开数据库连接
         db = MySQLdb.connect("192.168.2.81", "root", "596100", "zabbix")
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()
 
         # SQL 插入语句
-        sql = "SELECT clock,value FROM history where itemid=25462 order by clock DESC limit 100"
+        # sql = "SELECT clock,value FROM history where itemid=25462 order by clock DESC limit 100"
+        sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
+              " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
         try:
             # 执行sql语句
             cursor.execute(sql)
-            ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
+            # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
+            ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]
             # 提交到数据库执行
             db.commit()
         except:
@@ -525,8 +529,45 @@ class CPUProfiler:
 
         response_data = {}
         response_data['data'] = ones
-        print("mysql-1-" + str(response_data))
         return response_data
+
+    # def get_mysql_data2(self, tableinfo, response_lines=None):
+    #     # 打开数据库连接
+    #     db = MySQLdb.connect("192.168.2.81", "root", "596100", "zabbix")
+    #     # 使用cursor()方法获取操作游标
+    #     cursor = db.cursor()
+    #     itemid = 25940
+    #
+    #     # SQL 插入语句25940
+    #     # tablename = 'history'
+    #     # list1 = 'clock'
+    #     # list2 = 'value'
+    #     # list3 = '25940'
+    #     # tablelist ={'tablename': 'history','list1' : 'clock','list2' : 'value','list3': '25940'}
+    #     tablelist = tableinfo
+    #     #sql = "SELECT * FROM history where itemid=%s order by clock DESC limit 100"
+    #     #sql = "SELECT  clock,value FROM "+ tablename + " where itemid=%s order by clock DESC "
+    #     #sql = "SELECT " + list1 + "," + list2 + " FROM " + tablename + " where itemid= " + list3 +" order by " + list1 + " DESC "
+    #     sql = "SELECT " + tablelist['list1'] + "," + tablelist['list2'] + " FROM " + tablelist['tablename'] +\
+    #           " where itemid= " + tablelist['list3'] + " order by " + tablelist['list1'] + " DESC "
+    #     try:
+    #         # 执行sql语句
+    #         #cursor.execute(sql,(itemid,))
+    #         cursor.execute(sql)
+    #         #ones = [{'time': i[1], 'num': i[2]} for i in cursor.fetchall()]
+    #         ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]
+    #         # 提交到数据库执行
+    #         db.commit()
+    #     except:
+    #         # 发生错误时回滚
+    #         db.rollback()
+    #
+    #     # 关闭数据库连接
+    #     db.close()
+    #
+    #     response_data = {}
+    #     response_data['data'] = ones
+    #     return response_data
 
     def getTopOutput(self, responseLines = None):
 
