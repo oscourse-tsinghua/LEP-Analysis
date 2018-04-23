@@ -1,5 +1,100 @@
+20180423-可以选择所展示的数据
+
+修改思路：
+
+index.html主要可以分为两部分：导航和图表的呈现。在文本框中输入所监测的机器后点击开始按钮，页面中的图表会显示。在导航栏中添加复选框，由复选框的勾选状态确定相应图表是否展现。
+
+修改过程：
+
+1.在导航栏添加复选框；
+
+    <li>
+                  <input type="checkbox" name="check-box" target="container-div-cpu-stat-donut"  checked="checked"/><span><a href="#container-div-cpu-stat-donut">Stat: Overall</a></span>
+                </li>
+
+2.为复选框添加事件；
+
+    <script>
+        $(function(){
+          $("input").bind("click",function(){
+              if(this.checked){
+                    $("#"+$(this).attr("target")).show();
+              }else{
+                   $("#"+$(this).attr("target")).hide();
+                  }
+    
+              })
+        });
+
+3.对于导航栏一项对应多个条目的现象,外加<div>，做到勾选/取消复选框时多个图表的同时出现/消失；
+
+    <div class="col-md-12">
+                <div class="col" id="container-div-cpu-stat-softirq">
+          <!--cpu-stat-irq-->
+          <div class="col-md-12">
+              <div id="container-div-cpu-stat-irq" class="card mb-3">
+                  <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuIrqChartTitle }}</span></div>
+                  <div class="card-body"><div class="chart-panel"></div></div>
+                  <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+              </div>
+          </div>
+    
+    
+          <!--cpu-stat-nettxIrq-->
+          <div class="col-md-12">
+              <div id="container-div-cpu-stat-nettxIrq" class="card mb-3">
+                <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span></div>
+                <div class="card-body"><div class="chart-panel"></div></div>
+                <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+              </div>
+          </div>
+    
+          <!--cpu-stat-netrxIrq-->
+          <div class="col-md-12">
+              <div id="container-div-cpu-stat-netrxIrq" class="card mb-3">
+                <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span></div>
+                <div class="card-body"><div class="chart-panel"></div></div>
+                <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+              </div>
+          </div>
+    
+          <div class="col-md-12">
+              <div id="container-div-cpu-stat-taskletIrq" class="card mb-3">
+                <div class="card-header">
+                    <i class="icon-cpu-processor"></i>
+                    <span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span>
+                </div>
+                <div class="card-body"><div class="chart-panel"></div></div>
+                <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+              </div>
+          </div>
+    
+          <div class="col-md-12">
+              <div id="container-div-cpu-stat-hrtimerIrq" class="card mb-3">
+                <div class="card-header">
+                    <i class="icon-cpu-processor"></i>
+                    <span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span>
+                </div>
+                <div class="card-body"><div class="chart-panel"></div></div>
+                <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+              </div>
+          </div>
+              </div>
+            </div>
+
+
+
 20180418-将sql语句进行参数化
 
+修改思路：
+所谓参数化，就是将sql语句中除了sql关键字外的所有表名，表项等以变量的形式展现
+sql = "SELECT clock,value FROM history where itemid=25462 order by clock DESC"
+等价于
+tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25462'}
+sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
+              " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
+
+修改过程：
 1.CPUProfiler.py中，将sql语句参数化
 
     def get_mysql_data(self, tableinfo, response_lines=None):
@@ -88,6 +183,8 @@
 
 
 20180412-采集zabbix数据库中的数据，并进行展现
+
+修改过程：
 
 1.在CPUProfiler.py中添加连接数据库的代码，需要导入MySQLdb包
 

@@ -58,32 +58,31 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseCpuMenu">
             <li>
-              <a href="#container-div-cpu-stat-donut">Stat: Overall</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-stat-donut"  checked="checked"/><span><a href="#container-div-cpu-stat-donut">Stat: Overall</a></span>
             </li>
             <li>
-              <a href="#container-div-cpu-stat-idle">Stat: Idle</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-stat-idle" checked="checked" /><span><a href="#container-div-cpu-stat-idle">Stat: Idle</a></span>
             </li>
             <li>
-              <a href="#container-div-cpu-stat-user-group">Stat: User Group</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-stat-user-group" checked="checked"/><span><a href="#container-div-cpu-stat-user-group">Stat: User Group</a></span>
             </li>
             <li>
-              <a href="#container-div-cpu-stat-irqGroup">Stat: Irq Group</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-stat-irqGroup" checked="checked"/><span><a href="#container-div-cpu-stat-irqGroup">Stat: Irq Group</a></span>
             </li>
             <li>
-              <a href="#container-div-cpu-stat-irq">Stat: SoftIRQ</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-stat-softirq" checked="checked"/><span><a href="#container-div-cpu-stat-irq">Stat: SoftIRQ</a></span>
             </li>
             <li>
-              <a href="#container-div-cpu-avgload">Average Load</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-avgload" checked="checked"><span><a href="#container-div-cpu-avgload">Average Load</a></span>
             </li>
               <li>
-              <a href="#container-div-cpu-mysql">mysql</a>
+                  <input type="checkbox" name="check-box" target="container-div-cpu-mysql" checked="checked"/><span><a href="#container-div-cpu-mysql">mysql</a></span>
             </li>
-              </li>
               <li>
-              <a href="#container-div-cpu-mysql2">mysql2</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-mysql2" checked="checked" /><span><a href="#container-div-cpu-mysql2">mysql2</a></span>
             </li>
             <li>
-              <a href="#container-div-cpu-top-table">TOP</a>
+              <input type="checkbox" name="check-box" target="container-div-cpu-top-table" checked="checked" /><span><a href="#container-div-cpu-top-table">TOP</a></span>
             </li>
           </ul>
         </li>
@@ -97,13 +96,13 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponents">
             <li>
-              <a href="#container-div-memory-chart">Stat</a>
+              <input type="checkbox" name="check-box" target="container-div-memory-chart" checked="checked" /><span><a href="#container-div-memory-chart">Stat</a></span>
             </li>
             <li>
-              <a href="#container-memory-stat-table">Memory Consumption</a>
+              <input type="checkbox" name="check-box" target="container-memory-stat-table" checked="checked" /><span><a href="#container-memory-stat-table">Memory Consumption</a></span>
             </li>
             <li>
-                <a href="#container-div-memory-free-pss-stat">PSS Ratio</a>
+                <input type="checkbox" name="check-box" target="container-div-memory" checked="checked" /><span><a href="#container-div-memory-free-pss-stat">PSS Ratio</a></span>
             </li>
           </ul>
         </li>
@@ -116,10 +115,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseIOMenu">
               <li>
-                <a href="#container-div-IOCharts">Stat</a>
+                <input type="checkbox" name="check-box" target="container-div-IOCharts" checked="checked" /><span><a href="#container-div-IOCharts">Stat</a></span>
               </li>
               <li>
-                <a href="#container-io-top-table">Top</a>
+                <input type="checkbox" name="check-box" target="container-io-top-table" checked="checked" /><span><a href="#container-io-top-table">Top</a></span>
               </li>
           </ul>
         </li>
@@ -132,10 +131,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapsePerfMenu">
             <li>
-              <a href="#container-perf-cpu-table">Perf CPU</a>
+              <input type="checkbox" name="check-box" target="container-perf-cpu-table" checked="checked" /><span><a href="#container-perf-cpu-table">Perf CPU</a></span>
             </li>
               <li>
-              <a href="#container-perf-flame-graph">Flame Graph</a>
+              <input type="checkbox" name="check-box" target="container-perf-flame-graph" checked="checked" /><span><a href="#container-perf-flame-graph">Flame Graph</a></span>
             </li>
           </ul>
         </li>
@@ -289,6 +288,8 @@
       </div>
 
 
+        <div class="col-md-12">
+            <div class="col" id="container-div-cpu-stat-softirq">
       <!--cpu-stat-irq-->
       <div class="col-md-12">
           <div id="container-div-cpu-stat-irq" class="card mb-3">
@@ -338,8 +339,8 @@
             <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
           </div>
       </div>
-
-
+          </div>
+        </div>
 
       <div class="col-md-12">
         <div id="container-div-cpu-avgload" class="card mb-3">
@@ -426,7 +427,7 @@
       </div>
 
       <div class="col-md-12">
-          <div class="row">
+          <div class="row" id="container-div-memory">
 
               <div class="col-md-4">
             <div id="container-div-memory-free-pss-stat" class="card mb-3">
@@ -621,7 +622,18 @@
     });
 
     </script>
+    <script>
+    $(function(){
+      $("input").bind("click",function(){
+          if(this.checked){
+                $("#"+$(this).attr("target")).show();
+          }else{
+               $("#"+$(this).attr("target")).hide();
+              }
 
+          })
+    });
+</script>
      <script>
 
          var socket = null;
@@ -704,8 +716,8 @@
           var cpuhrtimerIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-hrtimerIrq", socket, serverToWatch, 'HRTIMER');
 
           var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
-          var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);
-          var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);
+          <!--var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);-->
+          <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);-->
           var cpuTopTable = new CpuTopTable("container-div-cpu-top-table", socket, serverToWatch);
 
           <!--var memoryChart = new MemoryChart('container-div-memory-chart', socket, serverToWatch);-->
