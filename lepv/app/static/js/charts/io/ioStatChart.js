@@ -83,11 +83,13 @@ IOStatChart.prototype.initializeChart = function() {
 };
 
 IOStatChart.prototype.updateChartData = function(response) {
-
+//    console.log("io-1-"+response)
     var data = response['data'];
     var diskDatas = data['disks'];
-    // console.log(diskDatas)
-    
+//    if (diskDatas == "hello"){
+//        console.log("io-1-"+diskDatas)}
+//    else{
+    console.log("io-1-");
     var thisChart = this;
     $.each(diskDatas, function( diskName, diskData ) {
         if ( !(diskName in thisChart.chartData)) {
@@ -122,6 +124,6 @@ IOStatChart.prototype.updateChartData = function(response) {
             value: ['']
         }
     });
-
+//    }
     // this.requestData();
 };

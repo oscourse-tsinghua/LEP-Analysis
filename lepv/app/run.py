@@ -10,7 +10,6 @@ app.json_encoder = MyJSONEncoder
 
 socketio = SocketIO(app, ping_timeout=3600)
 
-
 @socketio.on('lepd.ping')
 def ping_lepd_server(request):
 
@@ -22,7 +21,7 @@ def ping_lepd_server(request):
     ping_result = client.ping()
 
     if ping_result:
-        emit('lepd.ping.succeeded', {})
+        emit('lepd.ping.succeeded', {"server": server})
     else:
         emit('lepd.ping.failed', {})
 

@@ -95,9 +95,9 @@
             <span class="nav-link-text">Memory</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponents">
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-memory-chart" checked="checked" /><span><a href="#container-div-memory-chart">Stat</a></span>
-            </li>
+            <!--<li>-->
+              <!--<input type="checkbox" name="check-box" target="container-div-memory-chart" checked="checked" /><span><a href="#container-div-memory-chart">Stat</a></span>-->
+            <!--</li>-->
             <li>
               <input type="checkbox" name="check-box" target="container-memory-stat-table" checked="checked" /><span><a href="#container-memory-stat-table">Memory Consumption</a></span>
             </li>
@@ -251,7 +251,19 @@
       <!--cpu-stat-donut-->
       <div class="col-md-6">
         <div id="container-div-cpu-stat-donut" class="card mb-3">
-          <div class="card-header"><i class="icon-cpu-processor"></i> CPU Stat: Overall</div>
+          <div class="card-header"><i class="icon-cpu-processor"></i> CPU Stat: Overall
+          <select id="cpu-stat-donut-select">
+              <option value ="donut" selected>donut</option>
+              <option value ="pie">pie</option>
+              <option value="line">line</option>
+              <!--<option value="table">table</option>-->
+              <option value="bar">bar</option>
+              <option value="spline">spline</option>
+              <option value="area">area</option>
+              <option value="area-spline">area-spline</option>
+              <option value="scatter">scatter</option>
+
+          </select></div>
           <div class="card-body"><div class="chart-panel"></div></div>
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
         </div>
@@ -261,7 +273,19 @@
      <!--cpu-stat-idle-->
       <div class="col-md-12">
         <div id="container-div-cpu-stat-idle" class="card mb-3">
-          <div class="card-header"><i class="icon-cpu-processor"></i> CPU Stat: Idle</div>
+          <div class="card-header"><i class="icon-cpu-processor"></i> CPU Stat: Idle
+              <select id="cpu-stat-idle-select">
+              <option value ="donut" >donut</option>
+              <option value ="pie">pie</option>
+              <option value="line" selected>line</option>
+              <!--<option value="table">table</option>-->
+              <option value="bar">bar</option>
+              <option value="spline">spline</option>
+              <option value="area">area</option>
+              <option value="area-spline">area-spline</option>
+              <option value="scatter">scatter</option>
+
+              </select></div>
           <div class="card-body"><div class="chart-panel"></div></div>
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
         </div>
@@ -351,6 +375,7 @@
               {% else %}
               <span class="spanTitle" fullTitle="{{ languages.averageLoadChartTitleFull }}" shortTitle="{{ languages.averageLoadChartTitle }}">{{ languages.averageLoadChartTitle }}</span>
               {% endif %}
+              <input type="button" value="stop" id="btn" />
           </div>
           <div class="card-body"><div class="chart-panel"></div></div>
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
@@ -398,19 +423,19 @@
       </div>
 
 
-      <div class="col-md-12">
-          <div id="container-div-memory-chart" class="card mb-3">
-            <div class="card-header">
-                {% if config == 'debug' %}
-                <i class="icon-ram"></i> {{ languages.ramChartTitle }} -[GetProcMeminfo]
-                {% else %}
-                <i class="icon-ram"></i> {{ languages.ramChartTitle }}
-                {% endif %}
-            </div>
-            <div class="card-body"><div class="chart-panel"></div></div>
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
+      <!--<div class="col-md-12">-->
+          <!--<div id="container-div-memory-chart" class="card mb-3">-->
+            <!--<div class="card-header">-->
+                <!--{% if config == 'debug' %}-->
+                <!--<i class="icon-ram"></i> {{ languages.ramChartTitle }} -[GetProcMeminfo]-->
+                <!--{% else %}-->
+                <!--<i class="icon-ram"></i> {{ languages.ramChartTitle }}-->
+                <!--{% endif %}-->
+            <!--</div>-->
+            <!--<div class="card-body"><div class="chart-panel"></div></div>-->
+            <!--<div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
+          <!--</div>-->
+      <!--</div>-->
 
       <div class="col-md-12">
           <div id="container-memory-stat-table" class="card mb-3">
@@ -470,6 +495,7 @@
                   {% else %}
                   <i class="icon-syncalt"></i> {{ languages.ioChartTitle }}
                   {% endif %}
+                  <input type="button" value="stop" id="btn1" />
               </div>
               <div class="card-body"><div class="chart-panel"></div></div>
               <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
@@ -633,7 +659,7 @@
 
           })
     });
-</script>
+    </script>
      <script>
 
          var socket = null;
@@ -648,13 +674,13 @@
               trigger: 'focus'
             });
 
-
-
         });
     </script>
 
     <!--triggered when the user specifies the LEPD server and click the start button.-->
     <script>
+      flag = true;
+
       function startWatching() {
 
         var specifiedServer = $("#txt_server_to_watch").val();
@@ -668,10 +694,18 @@
         }
 
         serverToWatch = specifiedServer;
+        if (socket != null)
+        {
+            socket.close();
+        }
+        <!--if (flag == true){-->
+            <!--console.log("Connecting Socket IO by: " + 'http://' + document.domain + ':' + location.port);-->
+            <!--socket = io.connect('http://' + document.domain + ':' + location.port);-->
+            <!--flag = false;-->
+        <!--}-->
 
         console.log("Connecting Socket IO by: " + 'http://' + document.domain + ':' + location.port);
         socket = io.connect('http://' + document.domain + ':' + location.port);
-
         socket.on('connect', function() {
           console.log("socket connected");
           socketConnected = true;
@@ -682,8 +716,10 @@
           socketConnected = false;
         });
 
-        socket.on('lepd.ping.succeeded', function() {
-          console.log("LEPD server reached, ")
+        socket.on('lepd.ping.succeeded', function(response) {
+          server = response["server"]
+          console.log("LEPD server reached, " + server)
+
           serverToWatch = specifiedServer;
 
           initializeCharts();
@@ -704,6 +740,8 @@
     <script>
         function initializeCharts() {
 
+          <!--var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, "pie");-->
+          <!--var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, document.getElementById("cpu-stat-donut-select").value);-->
           var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch);
           var cpuStatIdleChart = new CpuStatIdleChart("container-div-cpu-stat-idle", socket, serverToWatch);
           var cpuStatUserGroupChart = new CpuStatUserGroupChart("container-div-cpu-stat-user-group", socket, serverToWatch);
@@ -716,8 +754,8 @@
           var cpuhrtimerIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-hrtimerIrq", socket, serverToWatch, 'HRTIMER');
 
           var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
-          <!--var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);-->
-          <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);-->
+          var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);
+          var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);
           var cpuTopTable = new CpuTopTable("container-div-cpu-top-table", socket, serverToWatch);
 
           <!--var memoryChart = new MemoryChart('container-div-memory-chart', socket, serverToWatch);-->
@@ -734,6 +772,32 @@
         }
     </script>
 
+    <script>
+    btn.onclick=function(){
+        if (this.value == "continue")
+        {
+            console.log("con");
+            new CpuAvgLoadChart.prototype.con();
+            <!--var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);-->
+        }
+        this.value = this.value=="stop" ? "continue" : "stop";
+    }
+    </script>
+    <script>
+    btn1.onclick=function(){
+        if (this.value == "stop")
+        {
+            console.log("con");
+            socket.emit('io.status' + ".req",
+                            {
+                                'server': $("#txt_server_to_watch").val(),
+                                'interval': -1
+                            }
+            );
+        }
+        this.value = this.value=="stop" ? "continue" : "stop";
+    }
+    </script>
   </div>
 </body>
 

@@ -25,17 +25,44 @@ def process_socket_request(request, socket_req_message_key, profiler_method):
 
 
 def background_timer_stuff(socketio, interval, socket_res_message_key, profiler_method):
+
     data = profiler_method()
-#    print('socket-1-'+str(data))
+    # Timer(interval, background_timer_stuff, [
+    #     socketio, interval, socket_res_message_key, profiler_method]).cancel()
+    # print(str(socket_res_message_key)+"111")
     socketio.emit(socket_res_message_key, data)
-#    print('socket-2-'+str(socket_res_message_key)+str(data))
+    # print("background_timer_stuff")
+    # print(str(socket_res_message_key) + "222")
     Timer(interval, background_timer_stuff, [
               socketio, interval, socket_res_message_key, profiler_method]).start()
+    # print(str(socket_res_message_key) + "333")
+    # Timer(interval, background_timer_stuff, [
+    #     socketio, interval, socket_res_message_key, profiler_method]).cancel()
+    # print(str(socket_res_message_key) + "444")
+
 
 def background_timer_stuff1(socketio, interval, socket_res_message_key, profiler_method,args):
     data = profiler_method(args)
-#    print('socket-1-'+str(data))
     socketio.emit(socket_res_message_key, data)
-#    print('socket-2-'+str(socket_res_message_key)+str(data))
     Timer(interval, background_timer_stuff1, [
               socketio, interval, socket_res_message_key, profiler_method,args]).start()
+
+def background_timer_stuff2(socketio, interval, socket_res_message_key, profiler_method,count):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
+    print("background_timer_stuff-"+str(count))
+    # count = count + 1
+    # if(count < 5):
+    if(count != -1):
+        Timer(interval, background_timer_stuff2, [
+            socketio, interval, socket_res_message_key, profiler_method, count]).start()
+    else:
+        print("cancel()")
+        # Timer(interval, background_timer_stuff1, [
+        #     socketio, interval, socket_res_message_key, profiler_method, count]).cancel()
+
+
+
+# def fun_timer():
+#     print("Hello Timer")
+#     Timer(5.5, fun_timer).start()

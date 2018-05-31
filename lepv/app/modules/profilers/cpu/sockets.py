@@ -51,12 +51,11 @@ def get_avg_load(request):
     server = request['server']
     interval = request['interval']
     socketio = cpu_blueprint.get_io()
-    print('2'+str(socketio))
-    global cpu_avg_timer
-    if cpu_avg_timer is None:
-#       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
-        cpu_avg_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_average_load])
-        cpu_avg_timer.start()
+#     global cpu_avg_timer
+#     if cpu_avg_timer is None:
+# #       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
+#         cpu_avg_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_average_load])
+#         cpu_avg_timer.start()
 #    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
     emit("cpu.avgload.res", CPUProfiler(server).get_average_load())
 
@@ -67,7 +66,6 @@ def get_ms_data(request):
     server = request['server']
     interval = request['interval']
     socketio = cpu_blueprint.get_io()
-#    print('2'+str(socketio))
     global cpu_mysql_timer
     tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25462'}
     if cpu_mysql_timer is None:
@@ -85,7 +83,6 @@ def get_ms_data2(request):
     server = request['server']
     interval = request['interval']
     socketio = cpu_blueprint.get_io()
-#    print('2'+str(socketio))
     global cpu_mysql_timer2
     tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25940'}
     if cpu_mysql_timer2 is None:

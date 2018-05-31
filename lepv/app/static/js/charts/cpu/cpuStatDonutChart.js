@@ -88,7 +88,12 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
         }
     });
 
-    // this.requestData();
+//    this.requestData();
+    var type = document.getElementById("cpu-stat-donut-select").value;
+//    console.log(type);
+    this.chart.transform(type);
+//    console.log(this.type);
+
 
 };
 

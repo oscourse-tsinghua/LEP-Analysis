@@ -21,10 +21,11 @@ class SocketIOBlueprint:
     def init_io(self, io):
         self.io = io
         for f in self._handlers:
+            # print("IOBlueprint"+str(f))
             f(io)
 
         return io
 
     def get_io(self):
-
+        # print("socketioblueprint"+str(self.io))
         return self.io

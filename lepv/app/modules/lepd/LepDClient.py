@@ -148,7 +148,7 @@ class LepDClient:
 
     def split_to_lines(self, longString):
         return re.split(r'\\n|\n', longString.strip())
-        
+
     def sendRequest(self, methodName):
         sock = None
 

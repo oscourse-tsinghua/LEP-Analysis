@@ -4,15 +4,15 @@
  */
 
 var CpuMySqlDataChart = function(rootDivName, socket, server) {
-    console.log('mysql----1---');
+//    console.log('mysql----1---');
     LepvChart.call(this, rootDivName, socket, server);
-    console.log('mysql----2---');
+//    console.log('mysql----2---');
     this.rootDivName = rootDivName;
     this.socket = socket;
     this.serverToWatch = server;
-    console.log('mysql----3---');
+//    console.log('mysql----3---');
     this.locateUIElements();
-    console.log('mysql----4---');
+//    console.log('mysql----4---');
     this.socket_message_key = 'cpu.mysql';
 
     this.chartTitle = "MySql Chart";
@@ -33,18 +33,18 @@ var CpuMySqlDataChart = function(rootDivName, socket, server) {
 
     this.defaultMaxValue = 1;
     this.maxValues = [1];
-    console.log('mysql----5---');
+//    console.log('mysql----5---');
     this.initializeChart();
-    console.log('mysql----6---');
+//    console.log('mysql----6---');
     this.setupSocketIO();
-    console.log('mysql----7---');
+//    console.log('mysql----7---');
 };
 
 CpuMySqlDataChart.prototype = Object.create(LepvChart.prototype);
 CpuMySqlDataChart.prototype.constructor = CpuMySqlDataChart;
 
 CpuMySqlDataChart.prototype.initializeChart = function() {
-    console.log('mysql----8---');
+//    console.log('mysql----8---');
     var thisChart = this;
 
     thisChart.chart = c3.generate({
@@ -103,14 +103,14 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
             }
         }
     });
-    console.log('mysql----9---');
+//    console.log('mysql----9---');
 
 };
 
 CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
-    console.log('mysql----10---');
+//    console.log('mysql----10---');
     data = responseData['data'];
-    console.log(data);
+//    console.log(data);
     if (data == null) {
         return
     }
@@ -151,8 +151,8 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
 //        this.chartData['last1'].push(data[i]['last5']);
 
     }
-    console.log(this.timeData);
-    console.log(this.chartData);
+//    console.log(this.timeData);
+//    console.log(this.chartData);
 //    console.log(data['last1']);
 //    this.chartData['last1'].push(data['last1']);
 //    this.chartData['last5'].push(data['last5']);
@@ -182,6 +182,6 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
             value: ['']
         }
     });
-    console.log('mysql----11---');
+//   console.log('mysql----11---');
     // this.requestData();
 };

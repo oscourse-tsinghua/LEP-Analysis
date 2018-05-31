@@ -470,9 +470,7 @@ class CPUProfiler:
 
 
     def get_average_load(self, response_lines = None):
-        # f = open('/home/lxia/wh.txt', 'a')
-        # f.write("2")
-        # f.close()
+
 ##        print("CPUProfiler-----1-----"+ str(response_lines))
         lepd_command = 'GetProcLoadavg'
         if not response_lines:
@@ -493,13 +491,14 @@ class CPUProfiler:
         # B is the total process count.
         # last number, like 24750 is the ID of the most recently running process.
         result_data = {
+            # 'server': self.server,
             'last1': self.client.toDecimal(response[0]),
             'last5': self.client.toDecimal(response[1]),
             'last15': self.client.toDecimal(response[2])
         }
 
         response_data['data'] = result_data
-#        print("CPUProfile-1-"+str(response_data))
+        # print("CPUProfile-1-"+str(response_data))
         return response_data
 
 
