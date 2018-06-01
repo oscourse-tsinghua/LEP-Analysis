@@ -53,16 +53,13 @@ def background_timer_stuff2(socketio, interval, socket_res_message_key, profiler
     print("background_timer_stuff-"+str(count))
     # count = count + 1
     # if(count < 5):
-    if(count != -1):
+    fp = open("temp.txt",'r')
+    count = fp.read()
+    fp.close()
+    if (count == "True"):
         Timer(interval, background_timer_stuff2, [
             socketio, interval, socket_res_message_key, profiler_method, count]).start()
-    else:
+    elif (count == "False"):
         print("cancel()")
         # Timer(interval, background_timer_stuff1, [
         #     socketio, interval, socket_res_message_key, profiler_method, count]).cancel()
-
-
-
-# def fun_timer():
-#     print("Hello Timer")
-#     Timer(5.5, fun_timer).start()

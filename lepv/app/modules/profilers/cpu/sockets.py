@@ -51,11 +51,11 @@ def get_avg_load(request):
     server = request['server']
     interval = request['interval']
     socketio = cpu_blueprint.get_io()
-#     global cpu_avg_timer
-#     if cpu_avg_timer is None:
-# #       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
-#         cpu_avg_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_average_load])
-#         cpu_avg_timer.start()
+    global cpu_avg_timer
+    if cpu_avg_timer is None:
+#       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
+        cpu_avg_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_average_load])
+        cpu_avg_timer.start()
 #    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
     emit("cpu.avgload.res", CPUProfiler(server).get_average_load())
 

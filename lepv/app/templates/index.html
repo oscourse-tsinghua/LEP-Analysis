@@ -754,8 +754,8 @@
           var cpuhrtimerIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-hrtimerIrq", socket, serverToWatch, 'HRTIMER');
 
           var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
-          var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);
-          var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);
+          <!--var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);-->
+          <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);-->
           var cpuTopTable = new CpuTopTable("container-div-cpu-top-table", socket, serverToWatch);
 
           <!--var memoryChart = new MemoryChart('container-div-memory-chart', socket, serverToWatch);-->
@@ -791,7 +791,18 @@
             socket.emit('io.status' + ".req",
                             {
                                 'server': $("#txt_server_to_watch").val(),
-                                'interval': -1
+                                'interval': 3,
+                                'flag': false,
+                            }
+            );
+        }else
+        {
+            console.log("con1");
+            socket.emit('io.status' + ".req",
+                            {
+                                'server': $("#txt_server_to_watch").val(),
+                                'interval': 3,
+                                'flag': true,
                             }
             );
         }

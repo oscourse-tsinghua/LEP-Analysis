@@ -133,28 +133,28 @@ CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
             value: ['']
         }
     });
-    if (document.getElementById("btn").value == "stop"){
-        this.requestData();
-    }else
-    {
-        console.log("111");
-
-    }
+//    if (document.getElementById("btn").value == "stop"){
+//        this.requestData();
+//    }else
+//    {
+//        console.log("111");
+//
+//    }
 //    console.log("avgload-1-");
 //    this.requestData();
 };
 
-CpuAvgLoadChart.prototype.con = function() {
-    console.log("avgload-2-");
-//    CpuAvgLoadChart.prototype.socket_message_key = 'cpu.avgload';
-//    CpuAvgLoadChart.prototype.refreshInterval = 3;
-//    CpuAvgLoadChart.prototype.isLeadingChart = true;
-//    CpuAvgLoadChart.prototype.requestData();
-    socket.emit('cpu.avgload' + ".req",
-                            {
-                                'server': $("#txt_server_to_watch").val(),
-                                'interval': 3
-                            }
-    );
-    console.log("avgload-3-");
-};
+//CpuAvgLoadChart.prototype.con = function() {
+//    console.log("avgload-2-");
+////    CpuAvgLoadChart.prototype.socket_message_key = 'cpu.avgload';
+////    CpuAvgLoadChart.prototype.refreshInterval = 3;
+////    CpuAvgLoadChart.prototype.isLeadingChart = true;
+////    CpuAvgLoadChart.prototype.requestData();
+//    socket.emit('cpu.avgload' + ".req",
+//                            {
+//                                'server': $("#txt_server_to_watch").val(),
+//                                'interval': 3
+//                            }
+//    );
+//    console.log("avgload-3-");
+//};
