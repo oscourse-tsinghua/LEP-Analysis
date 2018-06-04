@@ -1,6 +1,7 @@
 from app.modules.utils.socketIOBlueprint import SocketIOBlueprint
 from app.modules.profilers.io.IOProfiler import IOProfiler
 from app.modules.utils.soketProcessor import process_socket_request, background_timer_stuff,background_timer_stuff2
+from app.modules.utils.gol import set_value
 from threading import Timer
 from flask_socketio import emit
 import time
@@ -16,9 +17,10 @@ def get_io_status(request):
 
     global io_status_timer,count
     count = request["flag"]
-    fp = open('temp.txt','w+')
-    fp.write(str(count))
-    fp.close()
+    # fp = open('temp.txt','w+')
+    # fp.write(str(count))
+    # fp.close()
+    set_value("count",str(count))
     # if io_status_timer is None:
     io_status_timer = Timer(interval, background_timer_stuff2, [
                             socketio, interval, "io.status.res", IOProfiler(server).get_status,count])

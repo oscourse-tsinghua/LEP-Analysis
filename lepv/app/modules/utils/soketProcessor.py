@@ -1,5 +1,6 @@
 from flask_socketio import emit
 from threading import Timer
+from app.modules.utils.gol import get_value
 
 
 def process_socket_request(request, socket_req_message_key, profiler_method):
@@ -50,13 +51,16 @@ def background_timer_stuff1(socketio, interval, socket_res_message_key, profiler
 def background_timer_stuff2(socketio, interval, socket_res_message_key, profiler_method,count):
     data = profiler_method()
     socketio.emit(socket_res_message_key, data)
-    print("background_timer_stuff-"+str(count))
+
     # count = count + 1
     # if(count < 5):
-    fp = open("temp.txt",'r')
-    count = fp.read()
-    fp.close()
+    # fp = open("temp.txt",'r')
+    # count = fp.read()
+    # fp.close()
+    count = get_value("count")
+    print("background_timer_stuff-"+str(count))
     if (count == "True"):
+        print("socketProcesor------")
         Timer(interval, background_timer_stuff2, [
             socketio, interval, socket_res_message_key, profiler_method, count]).start()
     elif (count == "False"):

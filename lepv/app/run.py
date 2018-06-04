@@ -4,10 +4,12 @@ from app.modules.lepd.LepDClient import LepDClient
 
 from app.modules.utils.localization import Languages
 from app.modules.utils.simpleJson import MyJSONEncoder
+from app.modules.utils.gol import _init
 
 app = Flask(__name__)
 app.json_encoder = MyJSONEncoder
 
+_init()
 socketio = SocketIO(app, ping_timeout=3600)
 
 @socketio.on('lepd.ping')
