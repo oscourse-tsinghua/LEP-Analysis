@@ -83,7 +83,7 @@ IOStatChart.prototype.initializeChart = function() {
 };
 
 IOStatChart.prototype.updateChartData = function(response) {
-//    console.log("io-1-"+response)
+    console.log("io-1-"+response)
     var data = response['data'];
     var diskDatas = data['disks'];
 //    if (diskDatas == "hello"){

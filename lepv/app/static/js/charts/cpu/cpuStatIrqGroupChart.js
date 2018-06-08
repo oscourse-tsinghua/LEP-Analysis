@@ -11,9 +11,9 @@ var CpuIrqGroupChart = function(rootDivName, socket, server) {
   this.socket = socket;
   this.serverToWatch = server;
 
-  this.socket_message_key = 'cpu.stat';
-  this.isLeadingChart = false;
-
+  this.socket_message_key = 'cpu.statirqgroup';
+//  this.isLeadingChart = false;
+  this.refreshInterval = 3;
   this.chart = null;
  
   this.maxDataCount = 150;

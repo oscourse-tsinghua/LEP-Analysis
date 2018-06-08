@@ -15,15 +15,15 @@ var ProcrankFreeVsPieChart = function(rootDivName, socket, server) {
 
     this.locateUIElements();
 
-    this.socket_message_key = 'memory.procrank';
-    this.isLeadingChart = false;
+    this.socket_message_key = 'memory.procrankvs';
+//    this.isLeadingChart = false;
 
     this.socket_response = null;
     this.chart = null;
     this.chartData = {};
 
     this.maxDataCount = 150;
-
+    this.refreshInterval = 3;
     this.initializeChart();
     this.setupSocketIO();
 };
@@ -50,7 +50,7 @@ ProcrankFreeVsPieChart.prototype.initializeChart = function() {
 };
 
 ProcrankFreeVsPieChart.prototype.updateChartData = function(response) {
-    // console.log(response)
+    console.log(response)
     sumData = response['data']['sum']
     if (sumData == null) {
         return

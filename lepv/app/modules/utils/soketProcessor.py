@@ -47,8 +47,61 @@ def background_timer_stuff1(socketio, interval, socket_res_message_key, profiler
     socketio.emit(socket_res_message_key, data)
     Timer(interval, background_timer_stuff1, [
               socketio, interval, socket_res_message_key, profiler_method,args]).start()
+#memory
+def background_timer_stuff_memorystatus(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
 
-def background_timer_stuff2(socketio, interval, socket_res_message_key, profiler_method,count):
+    memory_status_count = get_value("memorystatus")
+    print("background_timer_stuff-"+str(memory_status_count))
+    if (memory_status_count == "True"):
+        print("socketProcesor------")
+        Timer(interval, background_timer_stuff_memorystatus, [
+            socketio, interval, socket_res_message_key, profiler_method]).start()
+    elif (memory_status_count == "False"):
+        print("cancel()")
+
+def background_timer_stuff_memoryprocrank(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
+
+    memory_procrank_count = get_value("memoryprocrank")
+    print("background_timer_stuff-"+str(memory_procrank_count))
+    if (memory_procrank_count == "True"):
+        print("socketProcesor------")
+        Timer(interval, background_timer_stuff_memoryprocrank, [
+            socketio, interval, socket_res_message_key, profiler_method]).start()
+    elif (memory_procrank_count == "False"):
+        print("cancel()")
+
+def background_timer_stuff_memoryprocrankvs(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
+
+    memory_procrankvs_count = get_value("memoryprocrankvs")
+    print("background_timer_stuff-" + str(memory_procrankvs_count))
+    if (memory_procrankvs_count == "True"):
+        print("socketProcesor------")
+        Timer(interval, background_timer_stuff_memoryprocrankvs, [
+            socketio, interval, socket_res_message_key, profiler_method]).start()
+    elif (memory_procrankvs_count == "False"):
+        print("cancel()")
+
+def background_timer_stuff_memoryprocrankpss(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
+
+    memory_procrankpss_count = get_value("memoryprocrankpss")
+    print("background_timer_stuff-" + str(memory_procrankpss_count))
+    if (memory_procrankpss_count == "True"):
+        print("socketProcesor------")
+        Timer(interval, background_timer_stuff_memoryprocrankpss, [
+            socketio, interval, socket_res_message_key, profiler_method]).start()
+    elif (memory_procrankpss_count == "False"):
+        print("cancel()")
+
+#io
+def background_timer_stuff_iostatus(socketio, interval, socket_res_message_key, profiler_method):
     data = profiler_method()
     socketio.emit(socket_res_message_key, data)
 
@@ -57,13 +110,24 @@ def background_timer_stuff2(socketio, interval, socket_res_message_key, profiler
     # fp = open("temp.txt",'r')
     # count = fp.read()
     # fp.close()
-    count = get_value("count")
-    print("background_timer_stuff-"+str(count))
-    if (count == "True"):
+    io_status_count = get_value("iostatus")
+    print("background_timer_stuff-"+str(io_status_count))
+    if (io_status_count == "True"):
         print("socketProcesor------")
-        Timer(interval, background_timer_stuff2, [
-            socketio, interval, socket_res_message_key, profiler_method, count]).start()
-    elif (count == "False"):
+        Timer(interval, background_timer_stuff_iostatus, [
+            socketio, interval, socket_res_message_key, profiler_method]).start()
+    elif (io_status_count == "False"):
         print("cancel()")
-        # Timer(interval, background_timer_stuff1, [
-        #     socketio, interval, socket_res_message_key, profiler_method, count]).cancel()
+
+def background_timer_stuff_iotop(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
+
+    io_top_count = get_value("iotop")
+    print("background_timer_stuff-"+str(io_top_count))
+    if (io_top_count == "True"):
+        print("socketProcesor------")
+        Timer(interval, background_timer_stuff_iotop, [
+            socketio, interval, socket_res_message_key, profiler_method]).start()
+    elif (io_top_count == "False"):
+        print("cancel()")

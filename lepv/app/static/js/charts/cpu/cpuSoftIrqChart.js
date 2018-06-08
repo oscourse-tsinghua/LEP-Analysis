@@ -15,9 +15,9 @@ var CpuSoftIrqChart = function(rootDivName, socket, server, typ) {
   this.chart = null;
   this.dataType = typ;
 
-  if ( typ != 'NET_TX' ) {
-      this.isLeadingChart = false;
-  }
+//  if ( typ != 'NET_TX' ) {
+//      this.isLeadingChart = false;
+//  }
 
   this.maxDataCount = 150;
   this.refreshInterval = 3;

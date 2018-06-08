@@ -6,17 +6,65 @@ from threading import Timer
 
 cpu_blueprint = SocketIOBlueprint('')
 
-cpu_stat_timer = None
-@cpu_blueprint.on('cpu.stat.req')
+cpu_statoverall_timer = None
+@cpu_blueprint.on('cpu.statoverall.req')
 def get_cpu_stat(request):
     server = request['server']
     interval = request['interval']
     socketio = cpu_blueprint.get_io()
-    global cpu_stat_timer
-    if cpu_stat_timer is None:
-        cpu_stat_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.stat.res", CPUProfiler(server).get_irq])
-        cpu_stat_timer.start()
-    emit("cpu.stat.res", CPUProfiler(server).get_irq())
+    global cpu_statoverall_timer
+    if cpu_statoverall_timer is None:
+        cpu_statoverall_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.statoverall.res", CPUProfiler(server).get_irq])
+        cpu_statoverall_timer.start()
+    emit("cpu.statoverall.res", CPUProfiler(server).get_irq())
+
+cpu_statidle_timer = None
+@cpu_blueprint.on('cpu.statidle.req')
+def get_cpu_stat(request):
+    server = request['server']
+    interval = request['interval']
+    socketio = cpu_blueprint.get_io()
+    global cpu_statidle_timer
+    if cpu_statidle_timer is None:
+        cpu_statidle_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.statidle.res", CPUProfiler(server).get_irq])
+        cpu_statidle_timer.start()
+    emit("cpu.statidle.res", CPUProfiler(server).get_irq())
+
+cpu_statusergroup_timer = None
+@cpu_blueprint.on('cpu.statusergroup.req')
+def get_cpu_stat(request):
+    server = request['server']
+    interval = request['interval']
+    socketio = cpu_blueprint.get_io()
+    global cpu_statusergroup_timer
+    if cpu_statusergroup_timer is None:
+        cpu_statusergroup_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.statusergroup.res", CPUProfiler(server).get_irq])
+        cpu_statusergroup_timer.start()
+    emit("cpu.statusergroup.res", CPUProfiler(server).get_irq())
+
+cpu_statirqgroup_timer = None
+@cpu_blueprint.on('cpu.statirqgroup.req')
+def get_cpu_stat(request):
+    server = request['server']
+    interval = request['interval']
+    socketio = cpu_blueprint.get_io()
+    global cpu_statirqgroup_timer
+    if cpu_statirqgroup_timer is None:
+        cpu_statirqgroup_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.statirqgroup.res", CPUProfiler(server).get_irq])
+        cpu_statirqgroup_timer.start()
+    emit("cpu.statirqgroup.res", CPUProfiler(server).get_irq())
+
+cpu_statirq_timer = None
+@cpu_blueprint.on('cpu.statirq.req')
+def get_cpu_stat(request):
+    server = request['server']
+    interval = request['interval']
+    socketio = cpu_blueprint.get_io()
+    global cpu_statirq_timer
+    if cpu_statirq_timer is None:
+        cpu_statirq_timer = Timer(interval, background_timer_stuff, [socketio, interval, "cpu.statirq.res", CPUProfiler(server).get_irq])
+        cpu_statirq_timer.start()
+    emit("cpu.statirq.res", CPUProfiler(server).get_irq())
 
 
 cpu_softirq_timer = None

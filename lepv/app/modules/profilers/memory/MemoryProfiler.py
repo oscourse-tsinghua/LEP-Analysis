@@ -24,7 +24,7 @@ class MemoryProfiler:
         return Decimal(int(strKbValue) / 1024).quantize(Decimal('0'))
 
     def getStatus(self, response_lines=None):
-
+        print("getStatus-1-")
         lepd_command = "GetProcMeminfo"
 
         print("     calling LEPD by: " + lepd_command)
@@ -153,7 +153,7 @@ class MemoryProfiler:
     def getProcrank(self):
 
         procrankData = {}
-
+        print("getProcrank-1-")
         resultLines = self.client.getResponse('GetCmdProcrank')
         if (len(resultLines) == 0):
             return {}
