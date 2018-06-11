@@ -169,14 +169,14 @@ def background_timer_stuff_cpumysql2(socketio, interval, socket_res_message_key,
         print("cancel()")
 
 
-def background_timer_stuff_cputop(socketio, interval, socket_res_message_key, profiler_method):
-    data = profiler_method()
+def background_timer_stuff_cputop(socketio, interval, socket_res_message_key, profiler_method, args):
+    data = profiler_method(args)
     socketio.emit(socket_res_message_key, data)
     cpu_top_count = get_value("cputop")
     print("background_timer_stuff-" + str(cpu_top_count))
     if (cpu_top_count == "True"):
         Timer(interval, background_timer_stuff_cputop, [
-            socketio, interval, socket_res_message_key, profiler_method]).start()
+            socketio, interval, socket_res_message_key, profiler_method, args]).start()
     elif (cpu_top_count == "False"):
         print("cancel()")
 #memory
