@@ -11,7 +11,7 @@ var CpuStatDonutChart = function(rootDivName, socket, server) {
   this.socket = socket;
   this.serverToWatch = server;
 
-  this.socket_message_key = 'cpu.stat';
+  this.socket_message_key = 'cpu.statoverall';
   this.refreshInterval = 3;
   
   this.socket_response = null;
@@ -64,7 +64,7 @@ CpuStatDonutChart.prototype.initializeChart = function() {
 
 
 CpuStatDonutChart.prototype.updateChartData = function(responseData) {
-
+    console.log("donutoverall");
     var overallData = responseData['data']['all'];
     if (overallData == null) {
         return
@@ -89,9 +89,9 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
     });
 
 //    this.requestData();
-    var type = document.getElementById("cpu-stat-donut-select").value;
+//    var type = document.getElementById("cpu-stat-donut-select").value;
 //    console.log(type);
-    this.chart.transform(type);
+//    this.chart.transform(type);
 //    console.log(this.type);
 
 

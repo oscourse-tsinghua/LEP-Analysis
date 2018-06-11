@@ -57,7 +57,7 @@ CpuTopTable.prototype.initializeChart = function(headerLine) {
 
 CpuTopTable.prototype.updateChartData = function(response) {
     data = response['data']
-    // console.log(data)
+    console.log(data)
     var thisChart = this;
     
     if (!this.table) {

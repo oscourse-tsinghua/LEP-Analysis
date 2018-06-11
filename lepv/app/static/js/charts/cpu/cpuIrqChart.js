@@ -11,11 +11,11 @@ var CpuIrqChart = function(rootDivName, socket, server) {
   this.socket = socket;
   this.serverToWatch = server;
 
-  this.socket_message_key = 'cpu.stat';
+  this.socket_message_key = 'cpu.statirq';
   this.chart = null;
 
-  this.isLeadingChart = false;
-
+//  this.isLeadingChart = false;
+  this.refreshInterval = 3;
   this.maxDataCount = 150;
   this.timeData = ['x'];
 

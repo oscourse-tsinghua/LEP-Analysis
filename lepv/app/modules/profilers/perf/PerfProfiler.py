@@ -18,7 +18,7 @@ class PerfProfiler:
         self.dataCount = 25
 
     def get_perf_cpu_clock(self, response_lines=None):
-
+        print("perf cpu clock-")
         lepd_command = 'GetCmdPerfCpuclock'
 
         if not response_lines:
@@ -77,7 +77,7 @@ class PerfProfiler:
         return response_data
 
     def get_cmd_perf_flame(self, response_lines=None):
-
+        print("perf flame")
         lepd_command = 'GetCmdPerfFlame'
 
         if not response_lines:

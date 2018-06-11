@@ -51,7 +51,7 @@ MemoryStatTable.prototype.initializeChart = function() {
 
 MemoryStatTable.prototype.updateChartData = function(response) {
     procranks = response['data']['procranks']
-    // console.log(data)
+    console.log(procranks)
     var thisChart = this;
 
     var index = 0;

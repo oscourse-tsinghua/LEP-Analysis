@@ -67,10 +67,10 @@
               <input type="checkbox" name="check-box" target="container-div-cpu-stat-user-group" checked="checked"/><span><a href="#container-div-cpu-stat-user-group">Stat: User Group</a></span>
             </li>
             <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-stat-irqGroup" checked="checked"/><span><a href="#container-div-cpu-stat-irqGroup">Stat: Irq Group</a></span>
+              <input type="checkbox" name="check-box" target="container-div-cpu-stat-irq1" checked="checked"/><span><a href="#container-div-cpu-stat-irqGroup">Stat: Irq Group</a></span>
             </li>
             <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-stat-softirq" checked="checked"/><span><a href="#container-div-cpu-stat-irq">Stat: SoftIRQ</a></span>
+              <input type="checkbox" name="check-box" target="container-div-cpu-stat-softirq" checked="checked"/><span><a href="#container-div-cpu-stat-nettxIrq">Stat: SoftIRQ</a></span>
             </li>
             <li>
               <input type="checkbox" name="check-box" target="container-div-cpu-avgload" checked="checked"><span><a href="#container-div-cpu-avgload">Average Load</a></span>
@@ -154,6 +154,48 @@
             <div class="input-group">
               <!--<input id='txt_server_to_watch' class="form-control" type="text" placeholder="www.rmlink.cn" value="www.rmlink.cn">-->
               <input id='txt_server_to_watch' class="form-control" type="text" placeholder="127.0.0.1" value="127.0.0.1">
+              <!--<select id="txt_info_to_watch">-->
+                  <!--<option value=" "> </option>-->
+                  <!--<option value="container-div-cpu-stat-donut"> CPU Stat: Overall </option>-->
+                  <!--<option value="container-div-cpu-stat-idle"> CPU Stat: Idle </option>-->
+                  <!--<option value="container-div-cpu-stat-user-group"> CPU Stat: User + System + Nice </option>-->
+                  <!--<option value="container-div-cpu-stat-irqGroup"> CPU Stat: IRQ + SoftIRQ </option>-->
+                  <!--<option value="container-div-cpu-stat-irq"> CPU Stat: IRQ </option>-->
+                  <!--<option value="container-div-cpu-stat-nettxIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
+                  <!--<option value="container-div-cpu-stat-netrxIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
+                  <!--<option value="container-div-cpu-stat-taskletIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
+                  <!--<option value="container-div-cpu-stat-hrtimerIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
+                  <!--<option value="container-div-cpu-avgload">Average Load</option>-->
+                  <!--<option value="container-div-cpu-mysql">MySql</option>-->
+                  <!--<option value="container-div-cpu-mysql2">MySql2</option>-->
+                  <!--<option value="container-div-cpu-top-table">CPU TOP</option>-->
+
+
+              <!--</select>-->
+              <select id="first" onChange="change()">
+                  <option selected="selected">CPU</option>
+                  <option>Memory</option>
+                  <option>IO</option>
+                  <option>Perf</option>
+              </select>
+
+              <select id="second">
+                  <option value="container-div-cpu-stat-donut" selected="selected"> CPU Stat: Overall </option>
+                  <option value="container-div-cpu-stat-idle"> CPU Stat: Idle </option>
+                  <option value="container-div-cpu-stat-user-group"> CPU Stat: User + System + Nice </option>
+                  <option value="container-div-cpu-stat-irqGroup"> CPU Stat: IRQ + SoftIRQ </option>
+                  <option value="container-div-cpu-stat-irq"> CPU Stat: IRQ </option>
+                  <option value="container-div-cpu-stat-nettxIrq"> CPU Stat: SoftIRQ-NET_TX </option>
+                  <option value="container-div-cpu-stat-netrxIrq"> CPU Stat: SoftIRQ-NET_RX </option>
+                  <option value="container-div-cpu-stat-taskletIrq"> CPU Stat: SoftIRQ-TASKLET </option>
+                  <option value="container-div-cpu-stat-hrtimerIrq"> CPU Stat: SoftIRQ-HRTIMER </option>
+                  <option value="container-div-cpu-avgload"> Average Load </option>
+                  <option value="container-div-cpu-mysql"> MySql </option>
+                  <option value="container-div-cpu-mysql2"> MySql2 </option>
+                  <option value="container-div-cpu-top-table"> CPU TOP </option>
+                  <!--<option>黄冈</option>-->
+                  <!--<option selected="selected">武汉</option>-->
+              </select>
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="startWatching()">
                   <i class="fa fa-play"></i>
@@ -245,8 +287,51 @@
           <!--</div>-->
         <!--</div>-->
       <!--</div>-->
+      <div class="col-md-12">
+        <div id="testdiv" class="card mb-3">
+          <div class="card-header"><i class="icon-cpu-processor"></i>
+              <!--<select id="cpu-stat-idle-select">-->
+              <!--<option value ="donut" >donut</option>-->
+              <!--<option value ="pie">pie</option>-->
+              <!--<option value="line" selected>line</option>-->
+              <!--&lt;!&ndash;<option value="table">table</option>&ndash;&gt;-->
+              <!--<option value="bar">bar</option>-->
+              <!--<option value="spline">spline</option>-->
+              <!--<option value="area">area</option>-->
+              <!--<option value="area-spline">area-spline</option>-->
+              <!--<option value="scatter">scatter</option>-->
 
+              <!--</select>-->
+          </div>
+          <div class="card-body"><div class="chart-panel"></div></div>
+            <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
 
+          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div id="testtable" class="card mb-3">
+          <div class="card-header"><i class="icon-cpu-processor"></i>
+              <!--<select id="cpu-stat-idle-select">-->
+              <!--<option value ="donut" >donut</option>-->
+              <!--<option value ="pie">pie</option>-->
+              <!--<option value="line" selected>line</option>-->
+              <!--&lt;!&ndash;<option value="table">table</option>&ndash;&gt;-->
+              <!--<option value="bar">bar</option>-->
+              <!--<option value="spline">spline</option>-->
+              <!--<option value="area">area</option>-->
+              <!--<option value="area-spline">area-spline</option>-->
+              <!--<option value="scatter">scatter</option>-->
+
+              <!--</select>-->
+          </div>
+          <!--<div class="card-body"><div class="chart-panel"></div></div>-->
+            <div class="card-body"><table class="display compact chart-panel" ></table></div>
+
+          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+        </div>
+      </div>
 
       <!--cpu-stat-donut-->
       <div class="col-md-6">
@@ -302,6 +387,8 @@
       </div>
 
 
+      <div class="col-md-12">
+      <div class="col" id="container-div-cpu-stat-irq1">
       <!--cpu-stat-irqGroup-->
       <div class="col-md-12">
         <div id="container-div-cpu-stat-irqGroup" class="card mb-3">
@@ -311,9 +398,6 @@
         </div>
       </div>
 
-
-        <div class="col-md-12">
-            <div class="col" id="container-div-cpu-stat-softirq">
       <!--cpu-stat-irq-->
       <div class="col-md-12">
           <div id="container-div-cpu-stat-irq" class="card mb-3">
@@ -322,8 +406,11 @@
               <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
           </div>
       </div>
+      </div>
+      </div>
 
-
+      <div class="col-md-12">
+      <div class="col" id="container-div-cpu-stat-softirq">
       <!--cpu-stat-nettxIrq-->
       <div class="col-md-12">
           <div id="container-div-cpu-stat-nettxIrq" class="card mb-3">
@@ -336,7 +423,7 @@
       <!--cpu-stat-netrxIrq-->
       <div class="col-md-12">
           <div id="container-div-cpu-stat-netrxIrq" class="card mb-3">
-            <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span></div>
+            <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuNetrxIrqChartTitle }}</span></div>
             <div class="card-body"><div class="chart-panel"></div></div>
             <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
           </div>
@@ -346,7 +433,7 @@
           <div id="container-div-cpu-stat-taskletIrq" class="card mb-3">
             <div class="card-header">
                 <i class="icon-cpu-processor"></i>
-                <span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span>
+                <span class="spanTitle">{{ languages.cpuTaskletIrqChartTitle }}</span>
             </div>
             <div class="card-body"><div class="chart-panel"></div></div>
             <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
@@ -357,14 +444,14 @@
           <div id="container-div-cpu-stat-hrtimerIrq" class="card mb-3">
             <div class="card-header">
                 <i class="icon-cpu-processor"></i>
-                <span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span>
+                <span class="spanTitle">{{ languages.cpuHrtimerIrqChartTitle }}</span>
             </div>
             <div class="card-body"><div class="chart-panel"></div></div>
             <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
           </div>
       </div>
-          </div>
-        </div>
+      </div>
+      </div>
 
       <div class="col-md-12">
         <div id="container-div-cpu-avgload" class="card mb-3">
@@ -665,6 +752,8 @@
          var socket = null;
          var socketConnected = false;
          var serverToWatch = null;
+         var InfoToWatch = null;
+         var InfoDetailToWacth = null;
 
          $( document ).ready(function() {
 
@@ -677,6 +766,50 @@
         });
     </script>
 
+    <script>
+    function change()
+    {
+       var x = document.getElementById("first");
+       var y = document.getElementById("second");
+       y.options.length = 0; // 清除second下拉框的所有内容
+       if(x.selectedIndex == 0)
+       {
+            y.options.add(new Option(" CPU Stat: Overall ", "0", false, true));
+            y.options.add(new Option(" CPU Stat: Idle ", "1"));
+            y.options.add(new Option(" CPU Stat: User + System + Nice ", "2"));
+            y.options.add(new Option(" CPU Stat: IRQ + SoftIRQ ", "3"));
+            y.options.add(new Option(" CPU Stat: IRQ ", "4"));
+            y.options.add(new Option(" CPU Stat: SoftIRQ-NET_TX ", "5"));
+            y.options.add(new Option(" CPU Stat: SoftIRQ-NET_RX ", "6"));
+            y.options.add(new Option(" CPU Stat: SoftIRQ-TASKLET ", "7"));
+            y.options.add(new Option(" CPU Stat: SoftIRQ-HRTIMER ", "8"));
+            y.options.add(new Option(" Average Load ", "9"));
+            y.options.add(new Option(" MySql ", "10"));
+            y.options.add(new Option(" MySql2 ", "11"));
+            y.options.add(new Option(" CPU TOP ", "12"));
+       }
+
+       if(x.selectedIndex == 1)
+       {
+            y.options.add(new Option(" Memory Stat ", "0", false, true));
+            y.options.add(new Option(" memoryPssAgainstTotal ", "1"));
+            y.options.add(new Option(" memoryPssDonut ", "2"));
+       }
+
+       if(x.selectedIndex == 2)
+       {
+            y.options.add(new Option(" IO Stat ", "0", false, true));
+            y.options.add(new Option(" IO Top ", "1"));
+       }
+
+       if(x.selectedIndex == 3)
+       {
+            y.options.add(new Option(" Perf Table ", "0", false, true));
+            y.options.add(new Option(" Perf Flame ", "1"));
+       }
+    }
+    </script>
+
     <!--triggered when the user specifies the LEPD server and click the start button.-->
     <script>
       flag = true;
@@ -684,37 +817,152 @@
       function startWatching() {
 
         var specifiedServer = $("#txt_server_to_watch").val();
+        var specifiedInfo = document.getElementById("first").selectedIndex;
+        var specifiedInfodetail = document.getElementById("second").selectedIndex;
 
         if ( !specifiedServer) {
           return;
         }
 
-        if (serverToWatch == specifiedServer) {
-          return;
-        }
+        <!--if (serverToWatch == specifiedServer) {-->
+          <!--return;-->
+        <!--}-->
 
         serverToWatch = specifiedServer;
         if (socket != null)
         {
-            socket.close();
+            console.log("con");
+            switch(InfoToWatch){
+            case 0:
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statoverall';
+                break;
+            case 1:
+                <!--var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statidle';
+                break;
+            case 2:
+                <!--var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statusergroup';
+                break;
+            case 3:
+                <!--var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statirqgroup';
+                break;
+            case 4:
+                <!--var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statirq';
+                break;
+            case 5:
+                <!--var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 6:
+                <!--var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+
+            case 7:
+                <!--var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 8:
+                <!--var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 9:
+                <!--var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.avgload';
+                break;
+            case 10:
+                <!--var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.mysql';
+                break;
+            case 11:
+                <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.mysql2';
+                break;
+            case 12:
+                <!--var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.top';
+                break;
+            }
+            break;
+            case 1:
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);-->
+                var socket_message_key = 'memory.procrank';
+                break;
+            case 1:
+                <!--var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);-->
+                var socket_message_key = 'memory.procrankvs';
+                break;
+            case 2:
+                <!--var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);-->
+                var socket_message_key = 'memory.procrankpss';
+                break;
+            }
+            break;
+            case 2:
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);-->
+                var socket_message_key = 'io.status';
+                break;
+            case 1:
+                <!--var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);-->
+                var socket_message_key = 'io.top';
+                break;
+            }
+            break;
+            case 3:
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);-->
+                var socket_message_key = 'perf.cpuclock';
+                break;
+            case 1:
+                <!--var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);-->
+                var socket_message_key = 'perf.flame';
+                break;
+            }
+            break;
+            }
+            console.log("1"+socket_message_key);
+            socket.emit(socket_message_key + ".req",
+                            {
+                                'server': $("#txt_server_to_watch").val(),
+                                'interval': 3,
+                                'flag': false,
+                            }
+            );
+            <!--socket.close();-->
         }
-        <!--if (flag == true){-->
-            <!--console.log("Connecting Socket IO by: " + 'http://' + document.domain + ':' + location.port);-->
-            <!--socket = io.connect('http://' + document.domain + ':' + location.port);-->
-            <!--flag = false;-->
-        <!--}-->
 
-        console.log("Connecting Socket IO by: " + 'http://' + document.domain + ':' + location.port);
-        socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('connect', function() {
-          console.log("socket connected");
-          socketConnected = true;
-        });
+        InfoToWatch = specifiedInfo;
+        InfoDetailToWacth = specifiedInfodetail;
 
-        socket.on('disconnect', function() {
-          console.log("socket disconnected");
-          socketConnected = false;
-        });
+        if (flag == true){
+            console.log("Connecting Socket IO by: " + 'http://' + document.domain + ':' + location.port);
+            socket = io.connect('http://' + document.domain + ':' + location.port);
+            flag = false;
+            socket.on('connect', function() {
+               console.log("socket connected");
+               socketConnected = true;
+            });
+
+            socket.on('disconnect', function() {
+              console.log("socket disconnected");
+              socketConnected = false;
+            });
+        }
+
+        <!--console.log("Connecting Socket IO by: " + 'http://' + document.domain + ':' + location.port);-->
+        <!--socket = io.connect('http://' + document.domain + ':' + location.port);-->
+
 
         socket.on('lepd.ping.succeeded', function(response) {
           server = response["server"]
@@ -740,35 +988,113 @@
     <script>
         function initializeCharts() {
 
-          <!--var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, "pie");-->
-          <!--var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, document.getElementById("cpu-stat-donut-select").value);-->
-          var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch);
-          var cpuStatIdleChart = new CpuStatIdleChart("container-div-cpu-stat-idle", socket, serverToWatch);
-          var cpuStatUserGroupChart = new CpuStatUserGroupChart("container-div-cpu-stat-user-group", socket, serverToWatch);
-          var cpuIrqGroupChart = new CpuIrqGroupChart("container-div-cpu-stat-irqGroup", socket, serverToWatch);
+          switch(document.getElementById("first").selectedIndex){
+          case 0:
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);
+                break;
+            case 1:
+                var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);
+                break;
+            case 2:
+                var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);
+                break;
+            case 3:
+                var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);
+                break;
+            case 4:
+                var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);
+                break;
+            case 5:
+                var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');
+                break;
+            case 6:
+                var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');
+                break;
+            case 7:
+                var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');
+                break;
+            case 8:
+                var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');
+                break;
+            case 9:
+                var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);
+                break;
+            case 10:
+                var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);
+                break;
+            case 11:
+                var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);
+                break;
+            case 12:
+                var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);
+                break;
+          }
+          break;
+          case 1:
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);
+                break;
+            case 1:
+                var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);
+                break;
+            case 2:
+                var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);
+                break;
+            }
+          break;
+          case 2:
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);
+                break;
+            case 1:
+                var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);
+                break;
+          }
+          break;
+          case 3:
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);
+                break;
+            case 1:
+                var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);
+                break;
+          }
+          break;
+          }
+          <!--&lt;!&ndash;var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, "pie");&ndash;&gt;-->
+          <!--&lt;!&ndash;var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, document.getElementById("cpu-stat-donut-select").value);&ndash;&gt;-->
+          <!--var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch);-->
+          <!--var cpuStatIdleChart = new CpuStatIdleChart("container-div-cpu-stat-idle", socket, serverToWatch);-->
+          <!--var cpuStatUserGroupChart = new CpuStatUserGroupChart("container-div-cpu-stat-user-group", socket, serverToWatch);-->
+          <!--var cpuIrqGroupChart = new CpuIrqGroupChart("container-div-cpu-stat-irqGroup", socket, serverToWatch);-->
 
-          var cpuIrqChart = new CpuIrqChart("container-div-cpu-stat-irq", socket, serverToWatch);
-          var cpuNettxIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-nettxIrq", socket, serverToWatch, 'NET_TX');
-          var cpuNetrxIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-netrxIrq", socket, serverToWatch, 'NET_RX');
-          var cputaskletIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-taskletIrq", socket, serverToWatch, 'TASKLET');
-          var cpuhrtimerIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-hrtimerIrq", socket, serverToWatch, 'HRTIMER');
+          <!--var cpuIrqChart = new CpuIrqChart("container-div-cpu-stat-irq", socket, serverToWatch);-->
+          <!--var cpuNettxIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-nettxIrq", socket, serverToWatch, 'NET_TX');-->
+          <!--var cpuNetrxIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-netrxIrq", socket, serverToWatch, 'NET_RX');-->
+          <!--var cputaskletIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-taskletIrq", socket, serverToWatch, 'TASKLET');-->
+          <!--var cpuhrtimerIrqChart = new CpuSoftIrqChart("container-div-cpu-stat-hrtimerIrq", socket, serverToWatch, 'HRTIMER');-->
 
-          var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);
+          <!--var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);-->
           <!--var cpuMysqlChart = new CpuMySqlDataChart("container-div-cpu-mysql", socket, serverToWatch);-->
           <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("container-div-cpu-mysql2", socket, serverToWatch);-->
-          var cpuTopTable = new CpuTopTable("container-div-cpu-top-table", socket, serverToWatch);
+          <!--var cpuTopTable = new CpuTopTable("container-div-cpu-top-table", socket, serverToWatch);-->
 
-          <!--var memoryChart = new MemoryChart('container-div-memory-chart', socket, serverToWatch);-->
+          <!--&lt;!&ndash;var memoryChart = new MemoryChart('container-div-memory-chart', socket, serverToWatch);&ndash;&gt;-->
 
-          var memoryStatTable = new MemoryStatTable('container-memory-stat-table', socket, serverToWatch);
-          var memoryFreePssStatChart = new ProcrankFreeVsPieChart('container-div-memory-free-pss-stat', socket, serverToWatch);
-          var memoryPssStatChart = new ProcrankPssPieChart('container-div-memory-pss-stat', socket, serverToWatch);
+          <!--var memoryStatTable = new MemoryStatTable('container-memory-stat-table', socket, serverToWatch);-->
+          <!--var memoryFreePssStatChart = new ProcrankFreeVsPieChart('container-div-memory-free-pss-stat', socket, serverToWatch);-->
+          <!--var memoryPssStatChart = new ProcrankPssPieChart('container-div-memory-pss-stat', socket, serverToWatch);-->
 
-          var ioStatChart = new IOStatChart('container-div-IOCharts', socket, serverToWatch);
-          var ioTopTable = new IoTopTable('container-io-top-table', socket, serverToWatch);
+          <!--var ioStatChart = new IOStatChart('container-div-IOCharts', socket, serverToWatch);-->
+          <!--var ioTopTable = new IoTopTable('container-io-top-table', socket, serverToWatch);-->
 
-          var perfCpuTable = new PerfCpuTable('container-perf-cpu-table', socket, serverToWatch);
-          var perfFlameGraph = new PerfFlameGraph('container-perf-flame-graph',socket, serverToWatch);
+          <!--var perfCpuTable = new PerfCpuTable('container-perf-cpu-table', socket, serverToWatch);-->
+          <!--var perfFlameGraph = new PerfFlameGraph('container-perf-flame-graph',socket, serverToWatch);-->
         }
     </script>
 

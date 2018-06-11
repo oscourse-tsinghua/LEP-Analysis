@@ -15,8 +15,8 @@ var ProcrankPssPieChart = function(rootDivName, socket, server) {
 
     this.locateUIElements();
 
-    this.socket_message_key = 'memory.procrank';
-    this.isLeadingChart = false;
+    this.socket_message_key = 'memory.procrankpss';
+//    this.isLeadingChart = false;
 
     this.socket_response = null;
     this.chart = null;
@@ -24,6 +24,7 @@ var ProcrankPssPieChart = function(rootDivName, socket, server) {
 
     this.maxDataCount = 18;
     this.pssBenchmark = 200;
+    this.refreshInterval = 3;
 
     this.initializeChart();
     this.setupSocketIO();
@@ -52,7 +53,7 @@ ProcrankPssPieChart.prototype.initializeChart = function() {
 
 ProcrankPssPieChart.prototype.updateChartData = function(response) {
     procranks = response['data']['procranks']
-    // console.log(data)
+    console.log(procranks)
     var thisChart = this;
     var index = 0;
     pssData = [];

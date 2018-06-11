@@ -65,7 +65,7 @@ class IOProfiler:
             'data': io_status,
             'rawResult': raw_results
         }
-        # print("IOP-1-"+str(response_data))
+        print("IO-status-")
         return response_data
     
     def get_capacity(self):
@@ -102,7 +102,7 @@ class IOProfiler:
 
 
     def get_io_top(self, ioTopLines = None):
-
+        print("IO-top-")
         if (ioTopLines == None):
             ioTopLines = self.client.getResponse('GetCmdIotop')
         

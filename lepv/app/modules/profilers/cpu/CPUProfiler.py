@@ -209,7 +209,7 @@ class CPUProfiler:
         return responseData
 
     def get_status(self):
-
+        print("CPUProfiler-3-")
         statData = self.get_irq()
         allIdleRatio = self.client.toDecimal(statData['data']['all']['idle'])
 
@@ -229,7 +229,7 @@ class CPUProfiler:
         return responseData
 
     def get_irq(self, response_lines=[]):
-
+        print("CPUProfiler-1-")
         lepd_command = 'GetCmdMpstat'
         if not response_lines:
             response_lines = self.client.getResponse(lepd_command)
@@ -282,7 +282,7 @@ class CPUProfiler:
         return irq_data
 
     def get_softirq(self, response_lines=[]):
-
+        print("CPUProfiler-2-")
         lepd_command = 'GetCmdMpstat-I'
         if not response_lines:
             response_lines = self.client.getResponse(lepd_command)
@@ -471,7 +471,7 @@ class CPUProfiler:
 
     def get_average_load(self, response_lines = None):
 
-##        print("CPUProfiler-----1-----"+ str(response_lines))
+        print("CPUProfiler-----4-----")
         lepd_command = 'GetProcLoadavg'
         if not response_lines:
             response_lines = self.client.getResponse(lepd_command)
@@ -503,6 +503,7 @@ class CPUProfiler:
 
 
     def get_mysql_data(self, tableinfo, response_lines=None):
+        print("CPUProfiler-5-")
         # 打开数据库连接
         db = MySQLdb.connect("192.168.2.81", "root", "596100", "zabbix")
         # 使用cursor()方法获取操作游标
@@ -569,7 +570,7 @@ class CPUProfiler:
     #     return response_data
 
     def getTopOutput(self, responseLines = None):
-
+        print("CPUProfiler-6-")
         lepd_command = 'GetCmdTop'
 
         if not responseLines:
