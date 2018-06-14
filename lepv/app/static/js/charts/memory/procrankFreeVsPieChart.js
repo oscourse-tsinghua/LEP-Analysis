@@ -68,4 +68,6 @@ ProcrankFreeVsPieChart.prototype.updateChartData = function(response) {
             value: ['']
         }
     });
+    var type = document.getElementById("select").value;
+    this.chart.transform(type);
 };

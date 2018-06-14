@@ -115,7 +115,7 @@ CpuStatIdleChart.prototype.updateChartData = function(response) {
         columns: columnDatas
     });
 //    this.requestData();
-    var type = document.getElementById("cpu-stat-idle-select").value;
+    var type = document.getElementById("select").value;
     this.chart.transform(type);
 
 };

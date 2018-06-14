@@ -184,4 +184,6 @@ CpuMySqlData2Chart.prototype.updateChartData = function(responseData) {
     });
 //    console.log('mysql----11---');
     // this.requestData();
+    var type = document.getElementById("select").value;
+    this.chart.transform(type);
 };

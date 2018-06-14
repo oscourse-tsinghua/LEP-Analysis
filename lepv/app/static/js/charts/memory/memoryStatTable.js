@@ -95,4 +95,6 @@ MemoryStatTable.prototype.updateChartData = function(response) {
     this.table.draw(true);
     
 //    this.requestData();
+var type = document.getElementById("select").value;
+    this.chart.transform(type);
 };

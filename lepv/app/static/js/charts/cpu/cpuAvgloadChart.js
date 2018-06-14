@@ -133,6 +133,9 @@ CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
             value: ['']
         }
     });
+
+    var type = document.getElementById("select").value;
+    this.chart.transform(type);
 //    if (document.getElementById("btn").value == "stop"){
 //        this.requestData();
 //    }else

@@ -93,7 +93,8 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
 //    console.log(type);
 //    this.chart.transform(type);
 //    console.log(this.type);
-
+    var type = document.getElementById("select").value;
+    this.chart.transform(type);
 
 };
 

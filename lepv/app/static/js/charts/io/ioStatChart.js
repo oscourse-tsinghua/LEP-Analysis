@@ -126,4 +126,6 @@ IOStatChart.prototype.updateChartData = function(response) {
     });
 //    }
     // this.requestData();
+    var type = document.getElementById("select").value;
+    this.chart.transform(type);
 };
