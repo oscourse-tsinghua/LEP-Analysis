@@ -47,7 +47,6 @@ LepvChart.prototype.locateUIElements = function() {
     }
 
     this.rootDiv = $("#" + this.rootDivName)[0];
-
     this.headerDiv = $("#" + this.rootDivName).find("div.card-header")[0];
 
     this.footerDiv = $("#" + this.rootDivName).find("div.card-footer")[0];

@@ -169,14 +169,14 @@ def background_timer_stuff_cpumysql2(socketio, interval, socket_res_message_key,
         print("cancel()")
 
 
-def background_timer_stuff_cputop(socketio, interval, socket_res_message_key, profiler_method, args):
-    data = profiler_method(args)
+def background_timer_stuff_cputop(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
     socketio.emit(socket_res_message_key, data)
     cpu_top_count = get_value("cputop")
     print("background_timer_stuff-" + str(cpu_top_count))
     if (cpu_top_count == "True"):
         Timer(interval, background_timer_stuff_cputop, [
-            socketio, interval, socket_res_message_key, profiler_method, args]).start()
+            socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (cpu_top_count == "False"):
         print("cancel()")
 #memory
@@ -245,6 +245,7 @@ def background_timer_stuff_iostatus(socketio, interval, socket_res_message_key, 
     io_status_count = get_value("iostatus")
     print("background_timer_stuff-"+str(io_status_count))
     if (io_status_count == "True"):
+        # socketio.sleep(5)
         print("socketProcesor------")
         Timer(interval, background_timer_stuff_iostatus, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
@@ -258,6 +259,7 @@ def background_timer_stuff_iotop(socketio, interval, socket_res_message_key, pro
     io_top_count = get_value("iotop")
     print("background_timer_stuff-"+str(io_top_count))
     if (io_top_count == "True"):
+        # socketio.sleep(5)
         print("socketProcesor------")
         Timer(interval, background_timer_stuff_iotop, [
             socketio, interval, socket_res_message_key, profiler_method]).start()

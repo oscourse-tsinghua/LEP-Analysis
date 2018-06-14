@@ -287,7 +287,34 @@
           <!--</div>-->
         <!--</div>-->
       <!--</div>-->
-      <div class="col-md-12">
+      <!--<div class="col-md-12">-->
+        <!--<div id="test" class="card mb-3">-->
+          <!--<div class="card-header"><i class="icon-cpu-processor"></i>-->
+              <!--&lt;!&ndash;&lt;!&ndash;<select id="cpu-stat-idle-select">&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value ="donut" >donut</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value ="pie">pie</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value="line" selected>line</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<option value="table">table</option>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value="bar">bar</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value="spline">spline</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value="area">area</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value="area-spline">area-spline</option>&ndash;&gt;&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<option value="scatter">scatter</option>&ndash;&gt;&ndash;&gt;-->
+
+              <!--&lt;!&ndash;&lt;!&ndash;</select>&ndash;&gt;&ndash;&gt;-->
+          <!--</div>-->
+          <!--&lt;!&ndash;<div class="card-body"><div class="chart-panel"></div></div>&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="card-body"><table class="display compact chart-panel" ></table></div>&ndash;&gt;-->
+          <!--<div class="card-body" id = "showbyone"></div>-->
+
+          <!--<div id = "card-footer" class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
+        <!--</div>-->
+
+      <!--</div>-->
+
+
+
+      <div class="col-md-12" >
         <div id="testdiv" class="card mb-3">
           <div class="card-header"><i class="icon-cpu-processor"></i>
               <!--<select id="cpu-stat-idle-select">-->
@@ -887,6 +914,9 @@
             case 12:
                 <!--var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.top';
+
+
+
                 break;
             }
             break;
@@ -987,47 +1017,117 @@
 
     <script>
         function initializeCharts() {
-
+          var div = document.getElementById("testdiv");
+          var div2 = document.getElementById("testtable");
           switch(document.getElementById("first").selectedIndex){
           case 0:
             switch(document.getElementById("second").selectedIndex){
             case 0:
+                <!--&lt;!&ndash;var div = document.getElementById("test");&ndash;&gt;-->
+                <!--var div2 = document.createElement("div");-->
+                <!--div2.setAttribute("class", "chart-panel");-->
+                <!--div2.setAttribute("id", "child");-->
+                <!--&lt;!&ndash;div2.innerHTML = "<div class = "chart-panel" id = "child"></div>";&ndash;&gt;-->
+                <!--&lt;!&ndash;document.getElementById("test").insertBefore(div2,document.getElementById("card-footer"));&ndash;&gt;-->
+                <!--document.getElementById("showbyone").appendChild(div2);-->
+                <!--var cpuStatDonutChart = new CpuStatDonutChart("test", socket, serverToWatch);-->
+                <!--var div = document.getElementById("testtable");-->
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);
+
                 break;
             case 1:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);
                 break;
             case 2:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);
                 break;
             case 3:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);
                 break;
             case 4:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);
                 break;
             case 5:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');
                 break;
             case 6:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');
                 break;
             case 7:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');
                 break;
             case 8:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');
                 break;
             case 9:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);
                 break;
             case 10:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);
                 break;
             case 11:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);
                 break;
             case 12:
+                <!--var div = document.getElementById("showbyone");-->
+                <!--&lt;!&ndash;var childDiv = document.getElementById("child");&ndash;&gt;-->
+                <!--&lt;!&ndash;console.log("childDiv"+childDiv);&ndash;&gt;-->
+                <!--&lt;!&ndash;childDiv.innerHTML = "";&ndash;&gt;-->
+                <!--&lt;!&ndash;if (div.childNodes != null)&ndash;&gt;-->
+                    <!--&lt;!&ndash;div.removeChild(div.childNodes);&ndash;&gt;-->
+                <!--&lt;!&ndash;var parent = childDiv.parentNode;&ndash;&gt;-->
+                <!--if (div.childNodes != null){-->
+                    <!--console.log("2222");-->
+                    <!--div.removeChild(div.childNodes);-->
+                <!--}-->
+                <!--&lt;!&ndash;var aux = childDiv.parentNode;&ndash;&gt;-->
+                <!--&lt;!&ndash;aux.removeChild(childDiv);&ndash;&gt;-->
+                <!--console.log("33333");-->
+                <!--var div2 = document.createElement("table");-->
+                <!--div2.setAttribute("class", "display compact chart-panel");-->
+                <!--document.getElementById("showbyone").appendChild(div2);-->
+                <!--var cpuTopTable = new CpuTopTable("test", socket, serverToWatch);-->
+                <!--var div = document.getElementById("testdiv");-->
+                div.style.display = "none";
+                <!--var div2 = document.getElementById("testtable");-->
+                if (div2.style.display = "none")
+                    div2.style.display = "block";
                 var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);
                 break;
           }
@@ -1035,12 +1135,21 @@
           case 1:
             switch(document.getElementById("second").selectedIndex){
             case 0:
+                div.style.display = "none";
+                if (div2.style.display = "none")
+                    div2.style.display = "block";
                 var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);
                 break;
             case 1:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);
                 break;
             case 2:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);
                 break;
             }
@@ -1048,9 +1157,15 @@
           case 2:
             switch(document.getElementById("second").selectedIndex){
             case 0:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);
                 break;
             case 1:
+                div.style.display = "none";
+                if (div2.style.display = "none")
+                    div2.style.display = "block";
                 var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);
                 break;
           }
@@ -1058,9 +1173,15 @@
           case 3:
             switch(document.getElementById("second").selectedIndex){
             case 0:
+                div.style.display = "none";
+                if (div2.style.display = "none")
+                    div2.style.display = "block";
                 var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);
                 break;
             case 1:
+                div2.style.display = "none";
+                if (div.style.display == "none")
+                    div.style.display = "block";
                 var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);
                 break;
           }
