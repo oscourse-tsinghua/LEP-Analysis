@@ -44,6 +44,9 @@ IOStatChart.prototype.initializeChart = function() {
             x: 'x',
             columns: [['x'], ['read'], ['write']]
         },
+        zoom: {
+            enabled: true
+        },
         legend: {
             show: true,
             position: 'bottom',

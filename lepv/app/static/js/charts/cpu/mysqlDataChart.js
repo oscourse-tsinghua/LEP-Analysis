@@ -66,6 +66,9 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
 //                ['Last 15 minute']]
 
         },
+        zoom: {
+            enabled: true
+        },
         legend: {
             show: true,
             position: 'bottom',

@@ -38,6 +38,9 @@ CpuIrqChart.prototype.initializeChart = function() {
             x: 'x',
             columns: [thisChart.timeData]
         },
+        zoom: {
+            enabled: true
+        },
         legend: {
             show: true,
             position: 'bottom',
