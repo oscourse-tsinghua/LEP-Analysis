@@ -59,7 +59,7 @@ PerfCpuTable.prototype.initializeChart = function() {
 PerfCpuTable.prototype.updateChartData = function(response) {
     // console.log(response)
     data = response['data']
-    // console.log(data)
+    console.log(data)
     var thisChart = this;
     
     this.table.rows().remove().draw( true );

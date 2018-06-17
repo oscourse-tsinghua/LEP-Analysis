@@ -37,7 +37,7 @@ IOStatChart.prototype = Object.create(LepvChart.prototype);
 IOStatChart.prototype.constructor = IOStatChart;
 
 IOStatChart.prototype.initializeChart = function() {
-    
+//    $('#testdiv').html('');
     this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {

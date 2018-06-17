@@ -100,7 +100,7 @@ CpuAvgLoadChart.prototype.initializeChart = function() {
 
 CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
     data = responseData['data'];
-
+    console.log(data);
     if (data == null) {
 //    if (data == null || data['server'] != $("#txt_server_to_watch").val()) {
         return

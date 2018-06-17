@@ -278,7 +278,7 @@ class CPUProfiler:
                 continue
 
             irq_data['data'][cpu_name] = irq_stat
-
+        print("overall"+str(irq_data))
         return irq_data
 
     def get_softirq(self, response_lines=[]):
@@ -337,7 +337,7 @@ class CPUProfiler:
                 continue
 
             softirq_data['data'][cpu_name] = softirq_stat
-
+        print("softirq"+str(softirq_data))
         return softirq_data
 
 
@@ -498,7 +498,7 @@ class CPUProfiler:
         }
 
         response_data['data'] = result_data
-        # print("CPUProfile-1-"+str(response_data))
+        print("CPUProfile-1-"+str(response_data))
         return response_data
 
 
@@ -626,7 +626,7 @@ class CPUProfiler:
             responseData['data']['os'] = 'linux'
         else:
             print("GetCmdTop command returned data from unrecognized system")
-        
+        print("top"+str(responseData))
         return responseData
 
 if( __name__ =='__main__' ):

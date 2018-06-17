@@ -64,7 +64,7 @@ ProcrankPssPieChart.prototype.updateChartData = function(response) {
                 return;
             }
             if (dataItem.pss > thisChart.pssBenchmark) {
-                pssData.push([dataItem.cmdline, dataItem.pss]);
+                pssData.push([dataItem.cmdline.slice(0,30), dataItem.pss]);//this slice maybe not reasonable
             }
             
             index = index + 1;

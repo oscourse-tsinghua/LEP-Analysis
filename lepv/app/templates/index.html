@@ -177,9 +177,11 @@
                   <option>Memory</option>
                   <option>IO</option>
                   <option>Perf</option>
+                  <!--<option selected="selected"> </option>-->
               </select>
 
-              <select id="second">
+              <select id="second" onchange="changetype()">
+                  <!--<option value="testinfo">  </option>-->
                   <option value="container-div-cpu-stat-donut" selected="selected"> CPU Stat: Overall </option>
                   <option value="container-div-cpu-stat-idle"> CPU Stat: Idle </option>
                   <option value="container-div-cpu-stat-user-group"> CPU Stat: User + System + Nice </option>
@@ -195,6 +197,18 @@
                   <option value="container-div-cpu-top-table"> CPU TOP </option>
                   <!--<option>黄冈</option>-->
                   <!--<option selected="selected">武汉</option>-->
+              </select>
+              <select id="type">
+              <!--<option value ="testtype">  </option>-->
+              <option value ="donut"> donut </option>
+              <option value ="pie"> pie </option>
+              <option value="line"> line </option>
+              <!--<option value="table"> table </option>-->
+              <option value="bar"> bar </option>
+              <option value="spline"> spline </option>
+              <option value="area"> area </option>
+              <option value="area-spline"> area-spline </option>
+              <option value="scatter"> scatter </option>
               </select>
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="startWatching()">
@@ -317,18 +331,18 @@
       <div class="col-md-12" >
         <div id="testdiv" class="card mb-3">
           <div class="card-header"><i class="icon-cpu-processor"></i>
-              <select id="select">
-              <option value ="donut" >donut</option>
-              <option value ="pie">pie</option>
-              <option value="line" selected>line</option>
-              <!--<option value="table">table</option>-->
-              <option value="bar">bar</option>
-              <option value="spline">spline</option>
-              <option value="area">area</option>
-              <option value="area-spline">area-spline</option>
-              <option value="scatter">scatter</option>
+              <!--<select id="select">-->
+              <!--<option value ="donut">donut</option>-->
+              <!--<option value ="pie">pie</option>-->
+              <!--<option value="line" selected >line</option>-->
+              <!--&lt;!&ndash;<option value="table">table</option>&ndash;&gt;-->
+              <!--<option value="bar">bar</option>-->
+              <!--<option value="spline">spline</option>-->
+              <!--<option value="area">area</option>-->
+              <!--<option value="area-spline">area-spline</option>-->
+              <!--<option value="scatter">scatter</option>-->
 
-              </select>
+              <!--</select>-->
           </div>
           <div class="card-body"><div class="chart-panel"></div></div>
             <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
@@ -798,9 +812,13 @@
     {
        var x = document.getElementById("first");
        var y = document.getElementById("second");
+       var z = document.getElementById("type");
        y.options.length = 0; // 清除second下拉框的所有内容
+       z.options.length = 0;
+
        if(x.selectedIndex == 0)
        {
+            changetype();
             y.options.add(new Option(" CPU Stat: Overall ", "0", false, true));
             y.options.add(new Option(" CPU Stat: Idle ", "1"));
             y.options.add(new Option(" CPU Stat: User + System + Nice ", "2"));
@@ -818,6 +836,7 @@
 
        if(x.selectedIndex == 1)
        {
+            changetype();
             y.options.add(new Option(" Memory Stat ", "0", false, true));
             y.options.add(new Option(" memoryPssAgainstTotal ", "1"));
             y.options.add(new Option(" memoryPssDonut ", "2"));
@@ -825,14 +844,97 @@
 
        if(x.selectedIndex == 2)
        {
+            changetype();
             y.options.add(new Option(" IO Stat ", "0", false, true));
             y.options.add(new Option(" IO Top ", "1"));
        }
 
        if(x.selectedIndex == 3)
        {
+            changetype();
             y.options.add(new Option(" Perf Table ", "0", false, true));
             y.options.add(new Option(" Perf Flame ", "1"));
+       }
+    }
+    </script>
+
+    <script>
+    function changetype()
+    {
+       var x = document.getElementById("first");
+       var y = document.getElementById("second");
+       var z = document.getElementById("type");
+       z.options.length = 0; // 清除type下拉框的所有内容
+
+       switch(x.selectedIndex)
+       {
+       case 0:
+           switch(y.selectedIndex)
+           {
+           case 12:
+               z.options.add(new Option(" table ", "0", false, true));
+           break;
+           <!--case 10:-->
+           <!--case 11:-->
+           <!--break;-->
+           default:
+               z.options.add(new Option(" donut ", "0", false, true));
+               z.options.add(new Option(" pie ", "1"));
+               z.options.add(new Option(" line ", "2",));
+               z.options.add(new Option(" bar ", "3"));
+               z.options.add(new Option(" spline ", "4"));
+               z.options.add(new Option(" area ", "5"));
+               z.options.add(new Option(" area-spline ", "6"));
+               z.options.add(new Option(" scatter ", "7"));
+
+           }
+       break;
+       case 1:
+           switch(y.selectedIndex)
+           {
+           case 1:
+           case 2:
+               z.options.add(new Option(" donut ", "0", false, true));
+               z.options.add(new Option(" pie ", "1"));
+               z.options.add(new Option(" line ", "2",));
+               z.options.add(new Option(" bar ", "3"));
+               z.options.add(new Option(" spline ", "4"));
+               z.options.add(new Option(" area ", "5"));
+               z.options.add(new Option(" area-spline ", "6"));
+               z.options.add(new Option(" scatter ", "7"));
+
+           break;
+           default:
+               z.options.add(new Option(" table ", "0", false, true));
+           }
+       break;
+       case 2:
+           switch(y.selectedIndex)
+           {
+           case 1:
+               z.options.add(new Option(" table ", "0", false, true));
+           break;
+           default:
+               z.options.add(new Option(" donut ", "0", false, true));
+               z.options.add(new Option(" pie ", "1"));
+               z.options.add(new Option(" line ", "2",));
+               z.options.add(new Option(" bar ", "3"));
+               z.options.add(new Option(" spline ", "4"));
+               z.options.add(new Option(" area ", "5"));
+               z.options.add(new Option(" area-spline ", "6"));
+               z.options.add(new Option(" scatter ", "7"));
+           }
+       break;
+       case 3:
+           switch(y.selectedIndex)
+           {
+           case 1:
+               z.options.add(new Option(" flame ", "0", false, true));
+           break;
+           default:
+               z.options.add(new Option(" table ", "0", false, true));
+           }
+       break;
        }
     }
     </script>
@@ -1019,6 +1121,10 @@
         function initializeCharts() {
           var div = document.getElementById("testdiv");
           var div2 = document.getElementById("testtable");
+          <!--var type = document.getElementById("type").selectedIndex;-->
+          <!--var type = document.getElementById("type").value;-->
+          <!--console.log("111"+type);-->
+
           switch(document.getElementById("first").selectedIndex){
           case 0:
             switch(document.getElementById("second").selectedIndex){

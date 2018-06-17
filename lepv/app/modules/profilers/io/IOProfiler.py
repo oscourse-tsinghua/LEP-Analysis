@@ -65,7 +65,7 @@ class IOProfiler:
             'data': io_status,
             'rawResult': raw_results
         }
-        print("IO-status-")
+        print("IO-status-"+str(response_data))
         return response_data
     
     def get_capacity(self):
@@ -170,7 +170,7 @@ class IOProfiler:
             # use an incremental int as key, so we keey the order of the items.
             ioTopResults['data'][orderIndex] = ioTopItem
             orderIndex += 1
-        
+        print("iotop"+str(ioTopResults))
         return ioTopResults
 
 if( __name__ =='__main__' ):

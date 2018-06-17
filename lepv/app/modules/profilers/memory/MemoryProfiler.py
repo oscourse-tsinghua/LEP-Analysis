@@ -211,7 +211,7 @@ class MemoryProfiler:
             pssTotalString = xssValues[-3]
             procrankData['data']['sum']['pssTotalUnit'] = pssTotalString[-1:]
             procrankData['data']['sum']['pssTotal'] = self.client.toDecimal(Decimal(Decimal(pssTotalString[:-1])))
-            
+        print("memoty-1-"+str(procrankData))
         return procrankData
 
 

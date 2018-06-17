@@ -22,7 +22,9 @@ class PerfProfiler:
         lepd_command = 'GetCmdPerfCpuclock'
 
         if not response_lines:
+            print("perf-3-"+str(response_lines))
             response_lines = self.client.getResponse(lepd_command)
+            print("perf-4-" + str(response_lines))
         elif isinstance(response_lines, str):
             response_lines = self.client.split_to_lines(response_lines)
 
@@ -33,9 +35,9 @@ class PerfProfiler:
         if self.config == 'debug':
             response_data['rawResult'] = response_lines[:]
             response_data['lepd_command'] = lepd_command
-
+        print("perf-2-" + str(response_data))
         column_header_line_prefix = '# Overhead'
-        
+
         try:
             while not response_lines[0].startswith(column_header_line_prefix):
                 response_lines.pop(0)
@@ -73,7 +75,7 @@ class PerfProfiler:
                 break
 
         response_data['data'] = result_list
-
+        print("perf-1-"+str(response_data))
         return response_data
 
     def get_cmd_perf_flame(self, response_lines=None):
@@ -91,7 +93,7 @@ class PerfProfiler:
         flame_data = self.flame_burner.burn(response_lines)
         flame_data_hierarchy = []
         # self.flame_burner.generate_json_hierarchy(flame_data, [], flame_data_hierarchy)
-
+        print("perf-2-"+str({'flame': flame_data, 'perf_script_output': response_lines, 'hierarchy': flame_data_hierarchy}))
         return {'flame': flame_data, 'perf_script_output': response_lines, 'hierarchy': flame_data_hierarchy}
 
 

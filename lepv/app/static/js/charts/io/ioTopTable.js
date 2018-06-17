@@ -75,8 +75,8 @@ IoTopTable.prototype.initializeChart = function() {
 };
 
 IoTopTable.prototype.updateChartData = function(response) {
-    data = response['data']
-    // console.log(data)
+    data = response['data'];
+    console.log(data);
     var thisChart = this;
     
     this.table.rows().remove().draw( true );
