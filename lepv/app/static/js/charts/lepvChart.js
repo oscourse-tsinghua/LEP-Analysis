@@ -2,6 +2,8 @@
  * Open source under the GPLv2 License or later.
  * Copyright (c) 2016, Mac Xu <shinyxxn@hotmail.com>.
  */
+var type_data_1 = ["line", "spline", "area", "area-spline", "scatter"];
+var type_data_2 = ["donut", "pie", "bar"];
 
 var LepvChart = function(rootDivName, socket, server) {
 
@@ -31,6 +33,8 @@ var LepvChart = function(rootDivName, socket, server) {
   // if this is a leading chart, it will send socket message to backend proactively
   // otherwise, it just listen to message, but not send.
   this.isLeadingChart = true;
+
+
 
 
 //  this.initializeChart();

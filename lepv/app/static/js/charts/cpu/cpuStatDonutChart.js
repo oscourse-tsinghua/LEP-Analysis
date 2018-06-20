@@ -43,7 +43,9 @@ CpuStatDonutChart.prototype.constructor = CpuStatDonutChart;
 
 CpuStatDonutChart.prototype.initializeChart = function() {
     var thisChart = this;
-    if (this.type == "line" || this.type == "spline" || this.type == "area" || this.type == "area-spline" || this.type == "scatter"){
+
+//    if (this.type == "line" || this.type == "spline" || this.type == "area" || this.type == "area-spline" || this.type == "scatter"){
+    if (type_data_1.indexOf(this.type) != -1){
         this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
@@ -69,14 +71,14 @@ CpuStatDonutChart.prototype.initializeChart = function() {
                 nice: "orange"
             }
         },
-        plotOptions: {
-            line: {
-                zoom: {
-                    enabled: true
-                }
-            }
-//            pie:
+
+        zoom: {
+            enabled: true,
+            rescale: true
         },
+//        subchart:{
+//            show: true,
+//        },
         axis: {
             x: {
                 type: 'timeseries',
@@ -115,7 +117,8 @@ CpuStatDonutChart.prototype.initializeChart = function() {
         }
         });
     }
-    else if(this.type == "donut" || this.type == "pie" || this.type == "bar" )
+//    else if(this.type == "donut" || this.type == "pie" || this.type == "bar" )
+    else if (type_data_2.indexOf(this.type) != -1)
     {
     this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
@@ -140,13 +143,15 @@ CpuStatDonutChart.prototype.initializeChart = function() {
                 nice: "orange"
             }
         },
-        plotOptions: {
-            donut: {
-                title: "CPU STAT"
-            }
-//            pie:
+//        plotOptions: {
+//            donut: {
+//                title: "CPU STAT"
+//            }
+////            pie:
+//        },
+        donut:{
+            title: "CPU STAT"
         },
-
         legend: {
             show: true,
             position: 'right'
