@@ -198,8 +198,8 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
     this.chartData['guestnice'].push(overallData['gnice']);
 
 
-    if (this.type == "line"  || this.type == "spline" || this.type == "area" || this.type == "area-spline" || this.type == "scatter"){
-
+//    if (this.type == "line"  || this.type == "spline" || this.type == "area" || this.type == "area-spline" || this.type == "scatter"){
+    if (type_data_1.indexOf(this.type) != -1){
 
         this.chart.load({
             columns: [this.timeData,
@@ -217,7 +217,9 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
                 value: ['']
             }
         });
-    }else if(this.type == "donut" || this.type == "pie" || this.type == "bar")
+    }
+//    else if(this.type == "donut" || this.type == "pie" || this.type == "bar")
+    else if (type_data_2.indexOf(this.type) != -1)
     {
         this.chart.load({
             columns: [
