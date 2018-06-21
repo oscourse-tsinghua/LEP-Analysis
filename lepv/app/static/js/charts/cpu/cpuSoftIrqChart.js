@@ -23,6 +23,8 @@ var CpuSoftIrqChart = function(rootDivName, socket, server, typ) {
   this.refreshInterval = 3;
   this.timeData = ['x'];
 
+  var type = document.getElementById("type").value;
+  this.type = type;
   this.initializeChart();
   this.setupSocketIO();
 
@@ -35,15 +37,17 @@ CpuSoftIrqChart.prototype.constructor = CpuSoftIrqChart;
 CpuSoftIrqChart.prototype.initializeChart = function() {
 
     var thisChart = this;
-
+    if (type_data_1.indexOf(this.type) != -1){
     this.chart = c3.generate({
         bindto: '#' + thisChart.mainDivName,
         data: {
             x: 'x',
-            columns: [thisChart.timeData]
+            columns: [thisChart.timeData],
+            type: this.type
         },
         zoom: {
-            enabled: true
+            enabled: true,
+            rescale: true
         },
         legend: {
             show: true,
@@ -83,6 +87,27 @@ CpuSoftIrqChart.prototype.initializeChart = function() {
             }
         }
     });
+    }
+    else if (type_data_2.indexOf(this.type) != -1)
+    {
+     this.chart = c3.generate({
+        bindto: '#' + this.mainDivName,
+        data: {
+            columns: [
+
+            ],
+            type : this.type
+        },
+
+        donut:{
+            title: "softirq"
+        },
+        legend: {
+            show: true,
+            position: 'right'
+        }
+    });
+    }
 };
 
 
@@ -98,6 +123,13 @@ CpuSoftIrqChart.prototype.updateChartData = function(response) {
         });
 
     }
+    var chartData_softirq = {};
+    $.each( data, function( coreName, statValue ) {
+         chartData_softirq['CPU-' + coreName] = ['CPU-' + coreName];
+    });
+    this.chartData_1 = chartData_softirq;
+    console.log(chartData_softirq);
+    console.log(this.chartData_1);
     if (this.timeData.length > this.maxDataCount) {
         this.timeData.splice(1, 1);
 
@@ -109,21 +141,34 @@ CpuSoftIrqChart.prototype.updateChartData = function(response) {
     this.timeData.push(new Date());
         
     $.each( data, function( coreName, statValue ) {
-        thisChart.chartData['CPU-' + coreName].push(statValue[thisChart.dataType]);        
+        thisChart.chartData['CPU-' + coreName].push(statValue[thisChart.dataType]);
+        thisChart.chartData_1['CPU-' + coreName].push(statValue[thisChart.dataType]);
     });
 
     var columnDatas = [];
+    var columnDatas_1 = [];
     columnDatas.push(this.timeData);
     $.each( data, function( coreName, statValue ) {
         columnDatas.push(thisChart.chartData['CPU-' + coreName]);
+        columnDatas_1.push(thisChart.chartData_1['CPU-' + coreName]);
     });
 
+    console.log(columnDatas);
+    console.log(columnDatas_1);
+    if (type_data_1.indexOf(this.type) != -1){
     this.chart.load({
         columns: columnDatas
     });
+    }
+    else if (type_data_2.indexOf(this.type) != -1)
+    {
+        this.chart.load({
+            columns: columnDatas_1
+        });
+    }
     // this.requestData();
-    var type = document.getElementById("select").value;
-    this.chart.transform(type);
+//    var type = document.getElementById("select").value;
+//    this.chart.transform(type);
 };
 
 

@@ -34,6 +34,8 @@ var CpuAvgLoadChart = function(rootDivName, socket, server) {
     this.defaultMaxValue = 1;
     this.maxValues = [1];
 
+    var type = document.getElementById("type").value;
+    this.type = type;
     this.initializeChart();
     this.setupSocketIO();
 };
@@ -44,7 +46,7 @@ CpuAvgLoadChart.prototype.constructor = CpuAvgLoadChart;
 CpuAvgLoadChart.prototype.initializeChart = function() {
 
     var thisChart = this;
-
+    if (type_data_1.indexOf(this.type) != -1){
     thisChart.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
@@ -52,11 +54,12 @@ CpuAvgLoadChart.prototype.initializeChart = function() {
             columns: [thisChart.timeData,
                 ['Last minute'],
                 ['Last 5 minute'],
-                ['Last 15 minute']]
-
+                ['Last 15 minute']],
+            type : this.type
         },
         zoom: {
-            enabled: true
+            enabled: true,
+            rescale: true
         },
         legend: {
             show: true,
@@ -95,7 +98,28 @@ CpuAvgLoadChart.prototype.initializeChart = function() {
             }
         }
     });
-
+    }
+    else if (type_data_2.indexOf(this.type) != -1)
+    {
+    this.chart = c3.generate({
+        bindto: '#' + this.mainDivName,
+        data: {
+            columns: [
+                ['Last minute', 0],
+                ['Last 5 minute', 0],
+                ['Last 15 minute', 0]
+            ],
+            type : this.type
+        },
+        donut:{
+            title: "avgload"
+        },
+        legend: {
+            show: true,
+            position: 'right'
+        }
+    });
+    }
 };
 
 CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
@@ -127,6 +151,7 @@ CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
     this.maxValues.push(Math.max.apply(Math,[data['last1'], data['last5'], data['last15'], this.cpuCoreCount]));
 
     this.chart.axis.max(Math.max.apply(Math, this.maxValues) + 0.1);
+    if (type_data_1.indexOf(this.type) != -1){
     this.chart.load({
         columns: [this.timeData,
             this.chartData['last1'],
@@ -136,9 +161,22 @@ CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
             value: ['']
         }
     });
+    }
+    else if (type_data_2.indexOf(this.type) != -1)
+    {
+    this.chart.load({
+        columns: [
+            ['Last minute', data['last1']],
+            ['Last 5 minute', data['last5']],
+            ['Last 15 minute', data['last15']]],
+        keys: {
+            value: ['']
+        }
+    });
+    }
 
-    var type = document.getElementById("select").value;
-    this.chart.transform(type);
+//    var type = document.getElementById("select").value;
+//    this.chart.transform(type);
 //    if (document.getElementById("btn").value == "stop"){
 //        this.requestData();
 //    }else
