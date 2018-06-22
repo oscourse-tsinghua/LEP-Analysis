@@ -28,6 +28,8 @@ var IOStatChart = function(rootDivName, socket, server) {
     this.refreshInterval = 3;
 
     // this.updateChartHeader();
+    var type = document.getElementById("type").value;
+    this.type = type;
     this.initializeChart();
 
     this.setupSocketIO();
@@ -38,14 +40,17 @@ IOStatChart.prototype.constructor = IOStatChart;
 
 IOStatChart.prototype.initializeChart = function() {
 //    $('#testdiv').html('');
+    if (type_data_1.indexOf(this.type) != -1){
     this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
             x: 'x',
-            columns: [['x'], ['read'], ['write']]
+            columns: [['x'], ['read'], ['write']],
+            type: this.type
         },
         zoom: {
-            enabled: true
+            enabled: true,
+            rescale: true
         },
         legend: {
             show: true,
@@ -83,6 +88,24 @@ IOStatChart.prototype.initializeChart = function() {
             }
         }
     });
+    }
+    else if (type_data_2.indexOf(this.type) != -1)
+   {
+   this.chart = c3.generate({
+        bindto: '#' + this.mainDivName,
+        data: {
+            columns: [],
+            type: this.type
+        },
+        donut: {
+            title: "iostat"
+        },
+        legend: {
+            show: true,
+            position: 'bottom'
+        }
+    });
+    }
 };
 
 IOStatChart.prototype.updateChartData = function(response) {
@@ -94,6 +117,8 @@ IOStatChart.prototype.updateChartData = function(response) {
 //    else{
     console.log("io-1-");
     var thisChart = this;
+
+    if (type_data_1.indexOf(this.type) != -1){
     $.each(diskDatas, function( diskName, diskData ) {
         if ( !(diskName in thisChart.chartData)) {
             thisChart.chartData[diskName] = {};
@@ -111,7 +136,6 @@ IOStatChart.prototype.updateChartData = function(response) {
 
         thisChart.chartData[diskName]['read'].push(diskData['rkbs']);
         thisChart.chartData[diskName]['write'].push(diskData['wkbs']);
-
     });
 
     thisChart.timeData.push(new Date());
@@ -120,6 +144,8 @@ IOStatChart.prototype.updateChartData = function(response) {
         columnDataToDisplay.push(diskData['read']);
         columnDataToDisplay.push(diskData['write']);
     });
+    console.log(columnDataToDisplay);
+
 
     this.chart.load({
         columns: columnDataToDisplay,
@@ -127,8 +153,49 @@ IOStatChart.prototype.updateChartData = function(response) {
             value: ['']
         }
     });
+    }
+    else if (type_data_2.indexOf(this.type) != -1)
+   {
+   $.each(diskDatas, function( diskName, diskData ) {
+        thisChart.chartData[diskName] = {};
+
+        thisChart.chartData[diskName]['read'] = [diskName + ' read'];
+        thisChart.chartData[diskName]['write'] = [diskName + ' write'];
+
+
+//        if (thisChart.chartData[diskName]['read'].length > thisChart.maxDataCount ) {
+//            thisChart.timeData.splice(1, 1);
+//
+//            thisChart.chartData[diskName]['read'].splice(1, 1);
+//            thisChart.chartData[diskName]['write'].splice(1, 1);
+//        }
+
+        thisChart.chartData[diskName]['read'].push(diskData['rkbs']);
+        thisChart.chartData[diskName]['write'].push(diskData['wkbs']);
+        console.log(thisChart.chartData[diskName]['read']);
+        console.log(thisChart.chartData[diskName]['write']);
+
+    });
+
+//    thisChart.timeData.push(new Date());
+//    var columnDataToDisplay = [thisChart.timeData];
+    var columnDataToDisplay = [];
+    $.each( thisChart.chartData, function( diskName, diskData ) {
+        columnDataToDisplay.push(diskData['read']);
+        columnDataToDisplay.push(diskData['write']);
+    });
+    console.log(columnDataToDisplay);
+
+
+    this.chart.load({
+        columns: columnDataToDisplay,
+        keys: {
+            value: ['']
+        }
+    });
+   }
 //    }
     // this.requestData();
-    var type = document.getElementById("select").value;
-    this.chart.transform(type);
+//    var type = document.getElementById("select").value;
+//    this.chart.transform(type);
 };
