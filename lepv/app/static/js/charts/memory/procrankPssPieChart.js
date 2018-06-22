@@ -26,6 +26,8 @@ var ProcrankPssPieChart = function(rootDivName, socket, server) {
     this.pssBenchmark = 200;
     this.refreshInterval = 3;
 
+    var type = document.getElementById("type").value;
+    this.type = type;
     this.initializeChart();
     this.setupSocketIO();
 };
@@ -34,12 +36,13 @@ ProcrankPssPieChart.prototype = Object.create(LepvChart.prototype);
 ProcrankPssPieChart.prototype.constructor = ProcrankPssPieChart;
 
 ProcrankPssPieChart.prototype.initializeChart = function() {
-    
+   if (type_data_2.indexOf(this.type) != -1)
+   {
    this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
             columns: this.chartData,
-            type : 'donut'
+            type : this.type
         },
         donut: {
             title: "PSS"
@@ -49,6 +52,7 @@ ProcrankPssPieChart.prototype.initializeChart = function() {
             position: 'right'
         }
     });
+    }
 };
 
 ProcrankPssPieChart.prototype.updateChartData = function(response) {
@@ -83,6 +87,6 @@ ProcrankPssPieChart.prototype.updateChartData = function(response) {
         }
     });
 
-    var type = document.getElementById("select").value;
-    this.chart.transform(type);
+//    var type = document.getElementById("select").value;
+//    this.chart.transform(type);
 };

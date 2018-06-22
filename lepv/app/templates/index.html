@@ -893,7 +893,6 @@
            switch(y.selectedIndex)
            {
            case 1:
-           case 2:
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" line ", "line"));
@@ -902,8 +901,12 @@
                z.options.add(new Option(" area ", "area"));
                z.options.add(new Option(" area-spline ", "area-spline"));
                z.options.add(new Option(" scatter ", "scatter"));
-
            break;
+           case 2:
+               z.options.add(new Option(" donut ", "donut", false, true));
+               z.options.add(new Option(" pie ", "pie"));
+               z.options.add(new Option(" bar ", "bar"));
+               break;
            default:
                z.options.add(new Option(" table ", "0", false, true));
            }
@@ -914,6 +917,7 @@
            case 1:
                z.options.add(new Option(" table ", "0", false, true));
            break;
+
            default:
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
