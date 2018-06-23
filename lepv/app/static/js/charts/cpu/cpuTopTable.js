@@ -30,8 +30,9 @@ CpuTopTable.prototype = Object.create(LepvChart.prototype);
 CpuTopTable.prototype.constructor = CpuTopTable;
 
 CpuTopTable.prototype.initializeChart = function(headerLine) {
-
-    var headerColumns = headerLine.split(/\s+/);
+      let table1 = $('#' + this.mainDivName)
+      console.log(table1)
+      var headerColumns = headerLine.split(/\s+/);
 
       var columns = [];
       headerColumns.forEach(function(value, index) {
@@ -41,7 +42,8 @@ CpuTopTable.prototype.initializeChart = function(headerLine) {
 
         columns.push(columnItem);
       });
-
+      console.log(this.mainDivName)
+      table = this.table
       this.table = $('#' + this.mainDivName).DataTable( {
         destroy: true,
         paging: false,
@@ -95,6 +97,6 @@ CpuTopTable.prototype.updateChartData = function(response) {
     }
     
     this.table.draw(true);
-    
+
     // this.requestData();
 };

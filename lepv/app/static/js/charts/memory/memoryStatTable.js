@@ -32,6 +32,10 @@ MemoryStatTable.prototype = Object.create(LepvChart.prototype);
 MemoryStatTable.prototype.constructor = MemoryStatTable;
 
 MemoryStatTable.prototype.initializeChart = function() {
+    console.log(this.mainDivName)
+    let table1 = $('#' + this.mainDivName)
+    console.log(table1)
+    table = this.table
     this.table = $('#' + this.mainDivName).DataTable( {
         destroy: true,
         paging: false,
@@ -95,6 +99,6 @@ MemoryStatTable.prototype.updateChartData = function(response) {
     this.table.draw(true);
     
 //    this.requestData();
-var type = document.getElementById("select").value;
-    this.chart.transform(type);
+//var type = document.getElementById("select").value;
+//    this.chart.transform(type);
 };

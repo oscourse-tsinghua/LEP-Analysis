@@ -29,8 +29,17 @@ PerfCpuTable.prototype = Object.create(LepvChart.prototype);
 PerfCpuTable.prototype.constructor = PerfCpuTable;
 
 PerfCpuTable.prototype.initializeChart = function() {
+    // Quickly and simply clear a table
+//    $('#' + this.mainDivName).dataTable().fnClearTable();
+//    $('#' + this.mainDivName).DataTable.Reset()
+    // Restore the table to it's original state in the DOM by removing all of DataTables enhancements, alterations to the DOM structure of the table and event listeners
+//    $('#' + this.mainDivName).dataTable().fnDestroy();
+    console.log('#' + this.mainDivName);
+    let table1 = $('#' + this.mainDivName);
+    console.log(table1);
+//    table = this.table;
     this.table = $('#' + this.mainDivName).DataTable( {
-        destroy: true,
+//        destroy: true,
         paging: false,
         info: false,
         searching: true,

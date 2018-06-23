@@ -4,7 +4,7 @@
  */
 var type_data_1 = ["line", "spline", "area", "area-spline", "scatter"];
 var type_data_2 = ["donut", "pie", "bar"];
-
+var table;
 var LepvChart = function(rootDivName, socket, server) {
 
   this.rootDivName = rootDivName;

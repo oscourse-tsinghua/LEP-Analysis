@@ -31,7 +31,12 @@ IoTopTable.prototype = Object.create(LepvChart.prototype);
 IoTopTable.prototype.constructor = IoTopTable;
 
 IoTopTable.prototype.initializeChart = function() {
+    console.log(this.mainDivName);
+    let table1 = $('#' + this.mainDivName)
+    console.log(table1)
+    table = this.table
     this.table = $('#' + this.mainDivName).DataTable( {
+//    this.table = $(X-div-cpu-top-table).DataTable( {
         destroy: true,
         paging: false,
         info: false,
