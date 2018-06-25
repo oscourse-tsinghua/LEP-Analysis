@@ -21,7 +21,7 @@ var PerfCpuTable = function(rootDivName, socket, server) {
     this.maxDataCount = 25;
     this.refreshInterval = 5;
 
-    this.initializeChart();
+//    this.initializeChart();
     this.setupSocketIO();
 };
 

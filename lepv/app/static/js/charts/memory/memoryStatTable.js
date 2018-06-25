@@ -24,7 +24,7 @@ var MemoryStatTable = function(rootDivName, socket, server) {
     this.pssBenchmark = 200;
 
     // this.updateChartHeader();
-    this.initializeChart();
+//    this.initializeChart();
     this.setupSocketIO();
 };
 
@@ -62,7 +62,7 @@ MemoryStatTable.prototype.updateChartData = function(response) {
     if (!this.table) {
 //        this.table.empty();
 //        this.table.destroy();
-        this.initializeChart(data['headerline']);
+        this.initializeChart();
         console.log("111");
     }
     else
@@ -71,7 +71,7 @@ MemoryStatTable.prototype.updateChartData = function(response) {
         this.table.clear();
         this.table.destroy();
         $('#' + this.mainDivName).empty();
-        this.initializeChart(data['headerline']);
+        this.initializeChart();
     }
     var index = 0;
     this.pssData = [];
