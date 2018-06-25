@@ -23,7 +23,7 @@ var IoTopTable = function(rootDivName, socket, server) {
     this.maxDataCount = 25;
     this.refreshInterval = 3;
 
-    this.initializeChart();
+//    this.initializeChart();
     this.setupSocketIO();
 };
 
@@ -83,7 +83,22 @@ IoTopTable.prototype.updateChartData = function(response) {
     data = response['data'];
     console.log(data);
     var thisChart = this;
-    
+
+     table = this.table
+    if (!this.table) {
+//        this.table.empty();
+//        this.table.destroy();
+        this.initializeChart();
+        console.log("111");
+    }
+    else
+    {
+        console.log("222");
+        this.table.clear();
+        this.table.destroy();
+        $('#' + this.mainDivName).empty();
+        this.initializeChart();
+    }
     this.table.rows().remove().draw( true );
     if (data != null) {
         $.each( data, function( itemIndex, ioppData ) {

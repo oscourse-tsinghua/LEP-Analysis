@@ -43,7 +43,7 @@ var LepvChart = function(rootDivName, socket, server) {
 };
 
 LepvChart.prototype.locateUIElements = function() {
-
+    console.log("kukukuku")
     var thisChart = this;
 
     if (this.rootDivName.startsWith('#')) {
@@ -60,7 +60,7 @@ LepvChart.prototype.locateUIElements = function() {
 
     var divChart = divCardBody.firstElementChild;
     this.mainDivName = 'X-' + this.rootDivName.replace("container-", "");
-    if (divChart.firstElementChild && divChart.children[1].id == "X-div-cpu-top-table")
+    if (divChart.firstElementChild && divChart.children[1] && divChart.children[1].id == "X-div-cpu-top-table")
     {
         divChart.id = "XX-test1"
     }

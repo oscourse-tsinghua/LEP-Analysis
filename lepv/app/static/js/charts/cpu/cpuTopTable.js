@@ -69,14 +69,15 @@ CpuTopTable.prototype.updateChartData = function(response) {
     if (!this.table) {
 //        this.table.empty();
 //        this.table.destroy();
-//        this.initializeChart(data['headerline']);
+        this.initializeChart(data['headerline']);
         console.log("111");
     }
     else
     {
         console.log("222");
-        this.table.empty();
+        this.table.clear();
         this.table.destroy();
+        $('#' + this.mainDivName).empty();
         this.initializeChart(data['headerline']);
     }
     

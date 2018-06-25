@@ -58,6 +58,21 @@ MemoryStatTable.prototype.updateChartData = function(response) {
     console.log(procranks)
     var thisChart = this;
 
+     table = this.table
+    if (!this.table) {
+//        this.table.empty();
+//        this.table.destroy();
+        this.initializeChart(data['headerline']);
+        console.log("111");
+    }
+    else
+    {
+        console.log("222");
+        this.table.clear();
+        this.table.destroy();
+        $('#' + this.mainDivName).empty();
+        this.initializeChart(data['headerline']);
+    }
     var index = 0;
     this.pssData = [];
     this.table.rows().remove().draw( true );
