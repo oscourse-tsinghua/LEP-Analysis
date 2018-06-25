@@ -21,7 +21,7 @@ var CpuTopTable = function(rootDivName, socket, server) {
     this.maxDataCount = 25;
     this.refreshInterval = 3;
 
-    // this.updateChartHeader();
+//     this.updateChartHeader();
 //    this.initializeChart();
     this.setupSocketIO();
 };
@@ -32,8 +32,12 @@ CpuTopTable.prototype.constructor = CpuTopTable;
 CpuTopTable.prototype.initializeChart = function(headerLine) {
       let table1 = $('#' + this.mainDivName)
       console.log(table1)
+//      if (table)
+//      {
+//        table.clear();
+//        table.destroy();
+//      }
       var headerColumns = headerLine.split(/\s+/);
-
       var columns = [];
       headerColumns.forEach(function(value, index) {
         var columnItem = {};
@@ -43,9 +47,9 @@ CpuTopTable.prototype.initializeChart = function(headerLine) {
         columns.push(columnItem);
       });
       console.log(this.mainDivName)
-      table = this.table
+//      table = this.table
       this.table = $('#' + this.mainDivName).DataTable( {
-        destroy: true,
+//        destroy: true,
         paging: false,
         info: false,
         searching: true,
@@ -61,8 +65,18 @@ CpuTopTable.prototype.updateChartData = function(response) {
     data = response['data']
     console.log(data)
     var thisChart = this;
-    
+    table = this.table
     if (!this.table) {
+//        this.table.empty();
+//        this.table.destroy();
+//        this.initializeChart(data['headerline']);
+        console.log("111");
+    }
+    else
+    {
+        console.log("222");
+        this.table.empty();
+        this.table.destroy();
         this.initializeChart(data['headerline']);
     }
     

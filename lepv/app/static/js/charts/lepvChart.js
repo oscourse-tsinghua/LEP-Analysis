@@ -60,7 +60,16 @@ LepvChart.prototype.locateUIElements = function() {
 
     var divChart = divCardBody.firstElementChild;
     this.mainDivName = 'X-' + this.rootDivName.replace("container-", "");
-    divChart.id = this.mainDivName;
+    if (divChart.firstElementChild && divChart.children[1].id == "X-div-cpu-top-table")
+    {
+        divChart.id = "XX-test1"
+    }
+    else
+    {
+        divChart.id = this.mainDivName;
+    }
+//    divChart.id = this.mainDivName;
+//    divChart.id = "table-body";
 
 };
 

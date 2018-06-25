@@ -37,7 +37,7 @@ IoTopTable.prototype.initializeChart = function() {
     table = this.table
     this.table = $('#' + this.mainDivName).DataTable( {
 //    this.table = $(X-div-cpu-top-table).DataTable( {
-        destroy: true,
+//        destroy: true,
         paging: false,
         info: false,
         searching: true,

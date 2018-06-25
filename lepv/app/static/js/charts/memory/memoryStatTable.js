@@ -37,7 +37,7 @@ MemoryStatTable.prototype.initializeChart = function() {
     console.log(table1)
     table = this.table
     this.table = $('#' + this.mainDivName).DataTable( {
-        destroy: true,
+//        destroy: true,
         paging: false,
         info: false,
         searching: true,

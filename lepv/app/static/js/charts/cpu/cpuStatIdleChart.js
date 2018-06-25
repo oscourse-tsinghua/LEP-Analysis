@@ -35,6 +35,8 @@ CpuStatIdleChart.prototype.constructor = CpuStatIdleChart;
 CpuStatIdleChart.prototype.initializeChart = function() {
 
     var thisChart = this;
+    let table1 = $('#' + this.mainDivName)
+    console.log(table1)
 //    if (this.type == "line" || this.type == "spline" || this.type == "area" || this.type == "area-spline" || this.type == "scatter"){
     if (type_data_1.indexOf(this.type) != -1){
     console.log(this.type)

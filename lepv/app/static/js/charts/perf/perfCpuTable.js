@@ -38,7 +38,8 @@ PerfCpuTable.prototype.initializeChart = function() {
     let table1 = $('#' + this.mainDivName);
     console.log(table1);
 //    table = this.table;
-    this.table = $('#' + this.mainDivName).DataTable( {
+
+    this.table = $('#' + this.mainDivName).DataTable({
 //        destroy: true,
         paging: false,
         info: false,
