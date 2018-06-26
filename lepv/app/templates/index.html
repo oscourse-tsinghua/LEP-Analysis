@@ -785,21 +785,10 @@
     <script src="/static/js/charts/perf/perfCpuTable.js"></script>
 
     <script src="/static/js/charts/perf/perfFlameGraph.js"></script>
+    <script src="/static/js/charts/initial.js"></script>
 
     <!--<script src="/static/ts/charts/tsLepvChart.js"></script>-->
-    <script>
-    var div = document.getElementById("testdiv");
-    var div2 = document.getElementById("container-div-cpu-top-table");
-    <!--var div3 = document.getElementById("testtable2");-->
-    <!--var div4 = document.getElementById("testtable3");-->
-    <!--var div5 = document.getElementById("testtable4");-->
-    div.style.display = "none";
-    div2.style.display = "none";
-    <!--div3.style.display = "none";-->
-    <!--div4.style.display = "none";-->
-    <!--div5.style.display = "none";-->
 
-    </script>
     <!-- Custom scripts for this page-->
     <!-- Toggle between fixed and static navbar-->
     <script>
@@ -837,6 +826,8 @@
          var serverToWatch = null;
          var InfoToWatch = null;
          var InfoDetailToWacth = null;
+         var div2 = document.getElementById("container-div-cpu-top-table");
+         div2.style.display = "none";
 
          $( document ).ready(function() {
 
@@ -850,6 +841,7 @@
             url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
             window.history.pushState({},0,url);
         });
+        new InitialChart("testdiv");
     </script>
 
     <script>
