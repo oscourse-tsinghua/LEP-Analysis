@@ -84,6 +84,9 @@
             <li>
               <input type="checkbox" name="check-box" target="container-div-cpu-top-table" checked="checked" /><span><a href="#container-div-cpu-top-table">TOP</a></span>
             </li>
+              <li>
+              <span><a href="#test">test</a></span>
+            </li>
           </ul>
         </li>
 
@@ -153,7 +156,7 @@
           <form class="form-inline my-2 my-lg-0 mr-lg-2">
             <div class="input-group">
               <!--<input id='txt_server_to_watch' class="form-control" type="text" placeholder="www.rmlink.cn" value="www.rmlink.cn">-->
-              <input id='txt_server_to_watch' class="form-control" type="text" placeholder="127.0.0.1" value="127.0.0.1">
+              <input id='txt_server_to_watch' class="form-control" type="text" placeholder="127.0.0.1" value="127.0.0.1" onchange="toWatch()">
               <!--<select id="txt_info_to_watch">-->
                   <!--<option value=" "> </option>-->
                   <!--<option value="container-div-cpu-stat-donut"> CPU Stat: Overall </option>-->
@@ -169,12 +172,11 @@
                   <!--<option value="container-div-cpu-mysql">MySql</option>-->
                   <!--<option value="container-div-cpu-mysql2">MySql2</option>-->
                   <!--<option value="container-div-cpu-top-table">CPU TOP</option>-->
-
-
               <!--</select>-->
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#first" data-parent="#sideBarAccordion"></a>
               <select id="first" onChange="change()">
                   <option selected="selected">　</option>
-                  <option>CPU</option>
+                  <option><span><a href="#cpu ">CPU</a></span></option>
                   <option>Memory</option>
                   <option>IO</option>
                   <option>Perf</option>
@@ -844,21 +846,73 @@
               trigger: 'focus'
             });
 
+            url = 'http://' + document.domain + ':' + location.port;
+            url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
+            window.history.pushState({},0,url);
         });
     </script>
 
+    <script>
+    function changeURLPar(destiny, par, par_value)
+    {
+    var pattern = par+'=([^&]*)';
+    var replaceText = par+'='+par_value;
+    if (destiny.match(pattern))
+    {
+    var tmp = '/\\'+par+'=[^&]*/';
+    tmp = destiny.replace(eval(tmp), replaceText);
+    return (tmp);
+    }
+    else
+    {
+    if (destiny.match('[\?]'))
+    {
+    return destiny+'&'+ replaceText;
+    }
+    else
+    {
+    return destiny+'?'+replaceText;
+    }
+    }
+    return destiny+'\n'+par+'\n'+par_value;
+    }
+    </script>
+
+    <script>
+    function toWatch(){
+        url = 'http://' + document.domain + ':' + location.port;
+        url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
+        window.history.pushState({},0,url);
+        if (document.getElementById("first").selectedIndex != 0)
+        {
+            change();
+        }
+    }
+    </script>
     <script>
     function change()
     {
        var x = document.getElementById("first");
        var y = document.getElementById("second");
        var z = document.getElementById("type");
+       <!--url = 'http://' + document.domain + ':' + location.port;-->
+       url = 'http://' + document.domain + ':' + location.port;
+       url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
+
+       console.log("url"+url);
        y.options.length = 0; // 清除second下拉框的所有内容
        z.options.length = 0;
 
        if(x.selectedIndex == 1)
        {
             changetype();
+            url = changeURLPar(url, "first", "CPU");
+            url = changeURLPar(url, "second", "overall");
+            url = changeURLPar(url, "type", "donut");
+            console.log("url" + url);
+            <!--window.location.href = url;-->
+            window.history.pushState({},0,url);
+            <!--console.log("url" + url);-->
             y.options.add(new Option(" CPU Stat: Overall ", "0", false, true));
             y.options.add(new Option(" CPU Stat: Idle ", "1"));
             y.options.add(new Option(" CPU Stat: User + System + Nice ", "2"));
@@ -877,6 +931,13 @@
        if(x.selectedIndex == 2)
        {
             changetype();
+            url = changeURLPar(url, "first", "Memory");
+            url = changeURLPar(url, "second", "stat");
+            url = changeURLPar(url, "type", "table");
+            console.log("url" + url);
+            <!--window.location.href = url;-->
+            window.history.pushState({},0,url);
+            console.log("url" + url);
             y.options.add(new Option(" Memory Stat ", "0", false, true));
             y.options.add(new Option(" memoryPssAgainstTotal ", "1"));
             y.options.add(new Option(" memoryPssDonut ", "2"));
@@ -885,6 +946,14 @@
        if(x.selectedIndex == 3)
        {
             changetype();
+            url = changeURLPar(url, "first", "IO");
+            url = changeURLPar(url, "second", "stat");
+            url = changeURLPar(url, "type", "donut");
+            console.log("url" + url);
+            <!--window.location.href = url;-->
+            window.history.pushState({},0,url);
+            console.log("url" + url);
+            <!--x.setAttribute("href", "#io-stat");-->
             y.options.add(new Option(" IO Stat ", "0", false, true));
             y.options.add(new Option(" IO Top ", "1"));
        }
@@ -892,6 +961,14 @@
        if(x.selectedIndex == 4)
        {
             changetype();
+            url = changeURLPar(url, "first", "Perf");
+            url = changeURLPar(url, "second", "perf_table");
+            url = changeURLPar(url, "type", "table");
+            console.log("url" + url);
+            <!--window.location.href = url;-->
+            window.history.pushState({},0,url);
+            console.log("url" + url);
+            x.setAttribute("href", "#perf-table");
             y.options.add(new Option(" Perf Table ", "0", false, true));
             y.options.add(new Option(" Perf Flame ", "1"));
        }
