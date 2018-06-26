@@ -201,7 +201,7 @@
                   <!--<option>黄冈</option>-->
                   <!--<option selected="selected">武汉</option>-->
               </select>
-              <select id="type">
+              <select id="type" onchange="selecttype()">
               <option value ="testtype">  </option>
               <option value ="donut"> donut </option>
               <option value ="pie"> pie </option>
@@ -905,13 +905,15 @@
 
        if(x.selectedIndex == 1)
        {
-            changetype();
+
             url = changeURLPar(url, "first", "CPU");
             url = changeURLPar(url, "second", "overall");
             url = changeURLPar(url, "type", "donut");
             console.log("url" + url);
+
             <!--window.location.href = url;-->
             window.history.pushState({},0,url);
+            changetype();
             <!--console.log("url" + url);-->
             y.options.add(new Option(" CPU Stat: Overall ", "0", false, true));
             y.options.add(new Option(" CPU Stat: Idle ", "1"));
@@ -968,7 +970,7 @@
             <!--window.location.href = url;-->
             window.history.pushState({},0,url);
             console.log("url" + url);
-            x.setAttribute("href", "#perf-table");
+            <!--x.setAttribute("href", "#perf-table");-->
             y.options.add(new Option(" Perf Table ", "0", false, true));
             y.options.add(new Option(" Perf Flame ", "1"));
        }
@@ -983,18 +985,26 @@
        var z = document.getElementById("type");
        z.options.length = 0; // 清除type下拉框的所有内容
 
+       url = 'http://' + document.domain + ':' + location.port;
+       url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
+
        switch(x.selectedIndex)
        {
        case 1:
+           url = changeURLPar(url, "first", "CPU");
            switch(y.selectedIndex)
            {
            case 12:
+               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
            break;
            <!--case 10:-->
            <!--case 11:-->
            <!--break;-->
            default:
+               url = changeURLPar(url, "second", y.value);
+               url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" line ", "line"));
@@ -1005,11 +1015,15 @@
                z.options.add(new Option(" scatter ", "scatter"));
 
            }
+           window.history.pushState({},0,url);
        break;
        case 2:
+           url = changeURLPar(url, "first", "Memory");
            switch(y.selectedIndex)
            {
            case 1:
+               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" line ", "line"));
@@ -1020,22 +1034,31 @@
                z.options.add(new Option(" scatter ", "scatter"));
            break;
            case 2:
+               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" bar ", "bar"));
                break;
            default:
+               url = changeURLPar(url, "second", y.value);
+               url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
            }
+           window.history.pushState({},0,url);
        break;
        case 3:
+           url = changeURLPar(url, "first", "IO");
            switch(y.selectedIndex)
            {
            case 1:
+               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
            break;
-
            default:
+               url = changeURLPar(url, "second", y.value);
+               url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" line ", "line"));
@@ -1045,21 +1068,39 @@
                z.options.add(new Option(" area-spline ", "area-spline"));
                z.options.add(new Option(" scatter ", "scatter"));
            }
+           window.history.pushState({},0,url);
        break;
        case 4:
+           url = changeURLPar(url, "first", "IO");
            switch(y.selectedIndex)
            {
            case 1:
+               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               url = changeURLPar(url, "type", "falme");
                z.options.add(new Option(" flame ", "0", false, true));
            break;
            default:
+               url = changeURLPar(url, "second", y.value);
+               url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" table ", "0", false, true));
            }
+           window.history.pushState({},0,url);
        break;
        }
     }
     </script>
 
+    <script>
+        function selecttype()
+        {
+            url = 'http://' + document.domain + ':' + location.port;
+            url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
+            url = changeURLPar(url, "first", document.getElementById("first").value);
+            url = changeURLPar(url, "second", document.getElementById("second").value);
+            url = changeURLPar(url, "type", document.getElementById("type").value);
+            window.history.pushState({},0,url);
+        }
+    </script>
     <!--triggered when the user specifies the LEPD server and click the start button.-->
     <script>
       flag = true;
