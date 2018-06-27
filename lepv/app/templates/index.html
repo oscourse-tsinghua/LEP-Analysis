@@ -347,7 +347,7 @@
 
               <!--</select>-->
           </div>
-          <div class="card-body"><div class="chart-panel"></div></div>
+          <div class="card-body"><div class="chart-panel" id="chart"></div></div>
             <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
 
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
@@ -377,32 +377,6 @@
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
         </div>
       </div>
-
-      <!--<div class="col-md-12">-->
-        <!--<div id="testtable2" class="card mb-3">-->
-          <!--<div class="card-header"><i class="icon-cpu-processor"></i> </div>-->
-            <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
-
-          <!--<div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
-        <!--</div>-->
-      <!--</div>-->
-
-      <!--<div class="col-md-12">-->
-        <!--<div id="testtable3" class="card mb-3">-->
-          <!--<div class="card-header"><i class="icon-cpu-processor"></i> </div>-->
-            <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
-
-          <!--<div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="col-md-12">-->
-        <!--<div id="testtable4" class="card mb-3">-->
-          <!--<div class="card-header"><i class="icon-cpu-processor"></i> </div>-->
-            <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
-
-          <!--<div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
-        <!--</div>-->
-      <!--</div>-->
 
       <!--cpu-stat-donut-->
       <div class="col-md-6">
@@ -709,6 +683,7 @@
 
 
     </div>
+
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
@@ -819,8 +794,10 @@
           })
     });
     </script>
-     <script>
 
+
+     <script>
+         new InitialChart();
          var socket = null;
          var socketConnected = false;
          var serverToWatch = null;
@@ -828,7 +805,6 @@
          var InfoDetailToWacth = null;
          var div2 = document.getElementById("container-div-cpu-top-table");
          div2.style.display = "none";
-
          $( document ).ready(function() {
 
             $('[data-toggle="popover"]').popover();
@@ -841,7 +817,7 @@
             url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
             window.history.pushState({},0,url);
         });
-        new InitialChart("testdiv");
+
     </script>
 
     <script>
@@ -1315,9 +1291,6 @@
         function initializeCharts() {
           var div = document.getElementById("testdiv");
           var div1 = document.getElementById("container-div-cpu-top-table");
-          <!--var div2 = document.getElementById("testtable2");-->
-          <!--var div3 = document.getElementById("testtable3");-->
-          <!--var div4 = document.getElementById("testtable4");-->
           <!--var type = document.getElementById("type").selectedIndex;-->
           <!--var type = document.getElementById("type").value;-->
           <!--console.log("111"+type);-->
@@ -1336,9 +1309,6 @@
                 <!--var cpuStatDonutChart = new CpuStatDonutChart("test", socket, serverToWatch);-->
                 <!--var div = document.getElementById("testtable");-->
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);
@@ -1346,99 +1316,66 @@
                 break;
             case 1:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);
                 break;
             case 2:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);
                 break;
             case 3:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);
                 break;
             case 4:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);
                 break;
             case 5:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');
                 break;
             case 6:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');
                 break;
             case 7:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');
                 break;
             case 8:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');
                 break;
             case 9:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);
                 break;
             case 10:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);
                 break;
             case 11:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);
@@ -1463,10 +1400,6 @@
                 <!--var div = document.getElementById("testdiv");-->
 
                 <!--var div2 = document.getElementById("testtable");-->
-                <!--div.style.display = "none";-->
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
 
                 <!--var parent = document.getElementById("table-parent");-->
                 <!--console.log("11111111")-->
@@ -1490,28 +1423,19 @@
           case 2:
             switch(document.getElementById("second").selectedIndex){
             case 0:
-                <!--div1.style.display = "none";-->
                 div.style.display = "none";
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div1.style.display = "none")
                     div1.style.display = "block";
                 var memoryStatTable = new MemoryStatTable('container-div-cpu-top-table', socket, serverToWatch);
                 break;
             case 1:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);
                 break;
             case 2:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);
@@ -1522,18 +1446,12 @@
             switch(document.getElementById("second").selectedIndex){
             case 0:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);
                 break;
             case 1:
-                <!--div1.style.display = "none";-->
-                <!--div2.style.display = "none";-->
                 div.style.display = "none";
-                <!--div4.style.display = "none";-->
                 if (div1.style.display = "none")
                     div1.style.display = "block";
                 var ioTopTable = new IoTopTable('container-div-cpu-top-table', socket, serverToWatch);
@@ -1545,9 +1463,6 @@
           case 4:
             switch(document.getElementById("second").selectedIndex){
             case 0:
-                <!--div1.style.display = "none";-->
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
                 div.style.display = "none";
                 if (div1.style.display = "none")
                     div1.style.display = "block";
@@ -1556,9 +1471,6 @@
                 break;
             case 1:
                 div1.style.display = "none";
-                <!--div2.style.display = "none";-->
-                <!--div3.style.display = "none";-->
-                <!--div4.style.display = "none";-->
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);
