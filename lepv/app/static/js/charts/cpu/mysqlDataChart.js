@@ -33,6 +33,8 @@ var CpuMySqlDataChart = function(rootDivName, socket, server) {
 
     this.defaultMaxValue = 1;
     this.maxValues = [1];
+    var type = document.getElementById("type").value;
+    this.type = type;
 //    console.log('mysql----5---');
     this.initializeChart();
 //    console.log('mysql----6---');
@@ -61,13 +63,12 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
         data: {
             x: 'x',
             columns: [thisChart.timeData,
-                ['value']]
-//                ['Last 5 minute'],
-//                ['Last 15 minute']]
-
+                ['value']],
+            type : this.type
         },
         zoom: {
-            enabled: true
+            enabled: true,
+            rescale: true
         },
         legend: {
             show: true,
@@ -106,7 +107,6 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
             }
         }
     });
-//    console.log('mysql----9---');
 
 };
 
@@ -187,6 +187,6 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
     });
 //   console.log('mysql----11---');
     // this.requestData();
-    var type = document.getElementById("select").value;
-    this.chart.transform(type);
+//    var type = document.getElementById("select").value;
+//    this.chart.transform(type);
 };

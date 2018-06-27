@@ -973,9 +973,16 @@
                url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
            break;
-           <!--case 10:-->
-           <!--case 11:-->
-           <!--break;-->
+           case 10:
+           case 11:
+               url = changeURLPar(url, "second", y.value);
+               url = changeURLPar(url, "type", "line");
+               z.options.add(new Option(" line ", "line"));
+               z.options.add(new Option(" spline ", "spline"));
+               z.options.add(new Option(" area ", "area"));
+               z.options.add(new Option(" area-spline ", "area-spline"));
+               z.options.add(new Option(" scatter ", "scatter"));
+           break;
            default:
                if (y.selectedIndex == -1){
                     url = changeURLPar(url, "second", 0);
