@@ -900,13 +900,15 @@
        {
 
             url = changeURLPar(url, "first", "CPU");
-            url = changeURLPar(url, "second", "overall");
+            url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "donut");
             console.log("url" + url);
 
             <!--window.location.href = url;-->
             window.history.pushState({},0,url);
+            console.log("url" + url);
             changetype();
+            console.log("url" + url);
             <!--console.log("url" + url);-->
             y.options.add(new Option(" CPU Stat: Overall ", "0", false, true));
             y.options.add(new Option(" CPU Stat: Idle ", "1"));
@@ -927,7 +929,7 @@
        {
             changetype();
             url = changeURLPar(url, "first", "Memory");
-            url = changeURLPar(url, "second", "stat");
+            url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "table");
             console.log("url" + url);
             <!--window.location.href = url;-->
@@ -942,7 +944,7 @@
        {
             changetype();
             url = changeURLPar(url, "first", "IO");
-            url = changeURLPar(url, "second", "stat");
+            url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "donut");
             console.log("url" + url);
             <!--window.location.href = url;-->
@@ -957,7 +959,7 @@
        {
             changetype();
             url = changeURLPar(url, "first", "Perf");
-            url = changeURLPar(url, "second", "perf_table");
+            url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "table");
             console.log("url" + url);
             <!--window.location.href = url;-->
@@ -985,10 +987,13 @@
        {
        case 1:
            url = changeURLPar(url, "first", "CPU");
+           console.log("y.selectedIndex"+y.selectedIndex);
            switch(y.selectedIndex)
            {
            case 12:
-               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
+               url = changeURLPar(url, "second", y.value);
+               console.log("y.value"+y.value+"y.selectedIndex"+y.selectedIndex);
                url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
            break;
@@ -996,7 +1001,13 @@
            <!--case 11:-->
            <!--break;-->
            default:
-               url = changeURLPar(url, "second", y.value);
+               if (y.selectedIndex == -1){
+                    url = changeURLPar(url, "second", 0);
+               }else
+               {
+                    url = changeURLPar(url, "second", y.selectedIndex);
+               }
+               console.log("y.value"+y.value);
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
@@ -1009,13 +1020,15 @@
 
            }
            window.history.pushState({},0,url);
+           console.log("url" + url);
        break;
        case 2:
            url = changeURLPar(url, "first", "Memory");
            switch(y.selectedIndex)
            {
            case 1:
-               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
+               url = changeURLPar(url, "second", y.value);
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
@@ -1027,14 +1040,21 @@
                z.options.add(new Option(" scatter ", "scatter"));
            break;
            case 2:
-               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
+               url = changeURLPar(url, "second", y.value);
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" bar ", "bar"));
                break;
            default:
-               url = changeURLPar(url, "second", y.value);
+               <!--url = changeURLPar(url, "second", y.value);-->
+               if (y.selectedIndex == -1){
+                    url = changeURLPar(url, "second", 0);
+               }else
+               {
+                    url = changeURLPar(url, "second", y.selectedIndex);
+               }
                url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
            }
@@ -1045,12 +1065,19 @@
            switch(y.selectedIndex)
            {
            case 1:
-               url = changeURLPar(url, "second", y[y.selectedIndex].text);
+               <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
+               url = changeURLPar(url, "second", y.value);
                url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
            break;
            default:
-               url = changeURLPar(url, "second", y.value);
+               <!--url = changeURLPar(url, "second", y.value);-->
+               if (y.selectedIndex == -1){
+                    url = changeURLPar(url, "second", 0);
+               }else
+               {
+                    url = changeURLPar(url, "second", y.selectedIndex);
+               }
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
                z.options.add(new Option(" pie ", "pie"));
@@ -1064,16 +1091,23 @@
            window.history.pushState({},0,url);
        break;
        case 4:
-           url = changeURLPar(url, "first", "IO");
+           url = changeURLPar(url, "first", "Perf");
            switch(y.selectedIndex)
            {
            case 1:
-               url = changeURLPar(url, "second", y[y.selectedIndex].text);
-               url = changeURLPar(url, "type", "falme");
+               <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
+               url = changeURLPar(url, "second", y.value);
+               url = changeURLPar(url, "type", "flame");
                z.options.add(new Option(" flame ", "0", false, true));
            break;
            default:
-               url = changeURLPar(url, "second", y.value);
+               <!--url = changeURLPar(url, "second", y.value);-->
+               if (y.selectedIndex == -1){
+                    url = changeURLPar(url, "second", 0);
+               }else
+               {
+                    url = changeURLPar(url, "second", y.selectedIndex);
+               }
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" table ", "0", false, true));
            }
