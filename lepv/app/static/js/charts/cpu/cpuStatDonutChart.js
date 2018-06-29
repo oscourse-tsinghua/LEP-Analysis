@@ -78,9 +78,9 @@ CpuStatDonutChart.prototype.initializeChart = function() {
             enabled: true,
             rescale: true
         },
-//        subchart:{
-//            show: true,
-//        },
+        subchart:{
+            show: true,
+        },
         axis: {
             x: {
                 type: 'timeseries',

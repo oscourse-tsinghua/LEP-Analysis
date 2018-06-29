@@ -68,7 +68,16 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
         },
         zoom: {
             enabled: true,
-            rescale: true
+            rescale: true,
+            onzoomstart: function (event) {
+                console.log("start");
+            },
+            onzoom: function (domain) {
+                console.log("ing");
+            },
+            onzoomend: function (domain) {
+                console.log("end");
+            }
         },
         legend: {
             show: true,

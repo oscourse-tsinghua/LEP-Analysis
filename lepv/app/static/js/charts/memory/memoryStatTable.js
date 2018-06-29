@@ -24,7 +24,7 @@ var MemoryStatTable = function(rootDivName, socket, server) {
     this.pssBenchmark = 200;
 
     // this.updateChartHeader();
-//    this.initializeChart();
+    this.initializeChart();
     this.setupSocketIO();
 };
 
@@ -35,9 +35,18 @@ MemoryStatTable.prototype.initializeChart = function() {
     console.log(this.mainDivName)
     let table1 = $('#' + this.mainDivName)
     console.log(table1)
-    table = this.table
+////    table = this.table
+//    if (table)
+//    {
+//        table.clear();
+//        table.destroy();
+////        $('#' + this.mainDivName).empty();
+//        console.log("333"   );
+//    }
+    console.log('#' + this.mainDivName)
     this.table = $('#' + this.mainDivName).DataTable( {
-//        destroy: true,
+        destroy: true,
+        retrieve: true,
         paging: false,
         info: false,
         searching: true,
@@ -51,6 +60,7 @@ MemoryStatTable.prototype.initializeChart = function() {
         ],
         order: [[ 4, "desc" ]]
     });
+    console.log("444")
 };
 
 MemoryStatTable.prototype.updateChartData = function(response) {

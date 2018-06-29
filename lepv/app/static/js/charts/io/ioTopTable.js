@@ -23,7 +23,7 @@ var IoTopTable = function(rootDivName, socket, server) {
     this.maxDataCount = 25;
     this.refreshInterval = 3;
 
-//    this.initializeChart();
+    this.initializeChart();
     this.setupSocketIO();
 };
 
