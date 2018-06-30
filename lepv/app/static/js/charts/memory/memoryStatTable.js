@@ -24,7 +24,22 @@ var MemoryStatTable = function(rootDivName, socket, server) {
     this.pssBenchmark = 200;
 
     // this.updateChartHeader();
-    this.initializeChart();
+    this.table = table;
+    if (!this.table)
+    {
+        this.initializeChart();
+        console.log("111");
+    }
+    else
+    {
+        console.log("222");
+        this.table.clear();
+        this.table.destroy();
+        $('#' + this.mainDivName).empty();
+        this.initializeChart();
+
+    }
+//    this.initializeChart();
     this.setupSocketIO();
 };
 
@@ -61,6 +76,7 @@ MemoryStatTable.prototype.initializeChart = function() {
         order: [[ 4, "desc" ]]
     });
     console.log("444")
+    table = this.table;
 };
 
 MemoryStatTable.prototype.updateChartData = function(response) {
@@ -68,21 +84,21 @@ MemoryStatTable.prototype.updateChartData = function(response) {
     console.log(procranks)
     var thisChart = this;
 
-     table = this.table
-    if (!this.table) {
-//        this.table.empty();
+//     table = this.table
+//    if (!this.table) {
+////        this.table.empty();
+////        this.table.destroy();
+//        this.initializeChart();
+//        console.log("111");
+//    }
+//    else
+//    {
+//        console.log("222");
+//        this.table.clear();
 //        this.table.destroy();
-        this.initializeChart();
-        console.log("111");
-    }
-    else
-    {
-        console.log("222");
-        this.table.clear();
-        this.table.destroy();
-        $('#' + this.mainDivName).empty();
-        this.initializeChart();
-    }
+//        $('#' + this.mainDivName).empty();
+//        this.initializeChart();
+//    }
     var index = 0;
     this.pssData = [];
     this.table.rows().remove().draw( true );

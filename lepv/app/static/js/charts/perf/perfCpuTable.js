@@ -21,6 +21,21 @@ var PerfCpuTable = function(rootDivName, socket, server) {
     this.maxDataCount = 25;
     this.refreshInterval = 5;
 
+    this.table = table;
+    if (!this.table)
+    {
+        this.initializeChart();
+        console.log("111");
+    }
+    else
+    {
+        console.log("222");
+        this.table.clear();
+        this.table.destroy();
+        $('#' + this.mainDivName).empty();
+        this.initializeChart();
+
+    }
 //    this.initializeChart();
     this.setupSocketIO();
 };
@@ -65,29 +80,30 @@ PerfCpuTable.prototype.initializeChart = function() {
         ],
         order: [[ 1, "desc" ]]
     });
+    table = this.table;
 };
 
 PerfCpuTable.prototype.updateChartData = function(response) {
     // console.log(response)
     data = response['data']
-    console.log(data)
+    console.log(data);
     var thisChart = this;
 
-    table = this.table
-    if (!this.table) {
-//        this.table.empty();
+//    table = this.table;
+//    if (!this.table) {
+////        this.table.empty();
+////        this.table.destroy();
+//        this.initializeChart();
+//        console.log("111");
+//    }
+//    else
+//    {
+//        console.log("222");
+//        this.table.clear();
 //        this.table.destroy();
-        this.initializeChart();
-        console.log("111");
-    }
-    else
-    {
-        console.log("222");
-        this.table.clear();
-        this.table.destroy();
-        $('#' + this.mainDivName).empty();
-        this.initializeChart();
-    }
+//        $('#' + this.mainDivName).empty();
+//        this.initializeChart();
+//    }
     this.table.rows().remove().draw( true );
     if (data != null) {
         $.each( data, function( itemIndex, dataItem ) {
