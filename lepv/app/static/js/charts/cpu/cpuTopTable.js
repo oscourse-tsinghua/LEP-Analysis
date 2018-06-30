@@ -49,7 +49,8 @@ CpuTopTable.prototype.initializeChart = function(headerLine) {
       console.log(this.mainDivName)
 //      table = this.table
       this.table = $('#' + this.mainDivName).DataTable( {
-//        destroy: true,
+        destroy: true,
+        retrieve: true,
         paging: false,
         info: false,
         searching: true,
