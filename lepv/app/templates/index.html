@@ -329,7 +329,14 @@
 
       <!--</div>-->
 
-
+      <div class="col-md-12" >
+        <div id="testinit" class="card mb-3">
+          <div class="card-header"><i class="icon-cpu-processor"></i>
+          </div>
+          <div class="card-body"><div class="chart-panel" id="chart"></div></div>
+          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
+        </div>
+      </div>
 
       <div class="col-md-12" >
         <div id="testdiv" class="card mb-3">
@@ -347,7 +354,7 @@
 
               <!--</select>-->
           </div>
-          <div class="card-body"><div class="chart-panel" id="chart"></div></div>
+          <div class="card-body"><div class="chart-panel"></div></div>
             <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
 
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
@@ -803,6 +810,10 @@
          var serverToWatch = null;
          var InfoToWatch = null;
          var InfoDetailToWacth = null;
+         var div = document.getElementById("testinit");
+         div.style.display = "block";
+         var div1 = document.getElementById("testdiv");
+         div1.style.display = "none";
          var div2 = document.getElementById("container-div-cpu-top-table");
          div2.style.display = "none";
          $( document ).ready(function() {
@@ -872,11 +883,137 @@
        y.options.length = 0; // 清除second下拉框的所有内容
        z.options.length = 0;
 
-       <!--if(x.selectedIndex == 0)-->
-       <!--{-->
-            <!--window.history.pushState({},0,url);-->
-            <!--new InitialChart();-->
-       <!--}-->
+       if(x.selectedIndex == 0)
+       {
+            window.history.pushState({},0,url);
+            console.log("first==0");
+            var div = document.getElementById("testinit");
+            var div1 = document.getElementById("testdiv");
+            var div2 = document.getElementById("container-div-cpu-top-table");
+            div2.style.display = "none";
+            div1.style.display = "none";
+            if (div.style.display == "none")
+            {
+                div.style.display = "block";
+            }
+            if (socket != null)
+            {
+            console.log("con");
+            switch(InfoToWatch){
+            case "CPU":
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statoverall';
+                break;
+            case 1:
+                <!--var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statidle';
+                break;
+            case 2:
+                <!--var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statusergroup';
+                break;
+            case 3:
+                <!--var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statirqgroup';
+                break;
+            case 4:
+                <!--var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.statirq';
+                break;
+            case 5:
+                <!--var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 6:
+                <!--var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+
+            case 7:
+                <!--var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 8:
+                <!--var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');-->
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 9:
+                <!--var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.avgload';
+                break;
+            case 10:
+                <!--var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.mysql';
+                break;
+            case 11:
+                <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.mysql2';
+                break;
+            case 12:
+                <!--var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);-->
+                var socket_message_key = 'cpu.top';
+                <!--$('#X-div-cpu-top-table').DataTable( {-->
+                    <!--destroy: true,-->
+                <!--});-->
+
+                break;
+            }
+            break;
+            case "Memory":
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);-->
+                var socket_message_key = 'memory.procrank';
+                break;
+            case 1:
+                <!--var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);-->
+                var socket_message_key = 'memory.procrankvs';
+                break;
+            case 2:
+                <!--var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);-->
+                var socket_message_key = 'memory.procrankpss';
+                break;
+            }
+            break;
+            case "IO":
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);-->
+                var socket_message_key = 'io.status';
+                break;
+            case 1:
+                <!--var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);-->
+                var socket_message_key = 'io.top';
+                break;
+            }
+            break;
+            case "Perf":
+            switch(InfoDetailToWacth){
+            case 0:
+                <!--var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);-->
+                var socket_message_key = 'perf.cpuclock';
+                break;
+            case 1:
+                <!--var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);-->
+                var socket_message_key = 'perf.flame';
+                break;
+            }
+            break;
+            }
+            console.log("1"+socket_message_key);
+            socket.emit(socket_message_key + ".req",
+                            {
+                                'server': $("#txt_server_to_watch").val(),
+                                'interval': 3,
+                                'flag': false,
+                            }
+            );
+        }
+
+            new InitialChart();
+       }
        if(x.selectedIndex == 1)
        {
 
@@ -1121,7 +1258,8 @@
       flag = true;
 
       function startWatching() {
-
+        var div = document.getElementById("testinit");
+        div.style.display = "none";
         var specifiedServer = $("#txt_server_to_watch").val();
         var specifiedInfo = document.getElementById("first").value;
         console.log(specifiedInfo);
