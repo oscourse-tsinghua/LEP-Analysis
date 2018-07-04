@@ -1220,8 +1220,17 @@
            case 1:
                <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
                url = changeURLPar(url, "second", y.value);
+               if (tag == null)
+               {
+
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
+               }
+               else
+               {
+               url = changeURLPar(url, "type", getQueryString("type"));
+               z.options.add(new Option(" donut ", "donut"));
+               }
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" line ", "line"));
                z.options.add(new Option(" bar ", "bar"));
@@ -1233,8 +1242,17 @@
            case 2:
                <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
                url = changeURLPar(url, "second", y.value);
+               if (tag == null)
+               {
+
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
+               }
+               else
+               {
+               url = changeURLPar(url, "type", getQueryString("type"));
+               z.options.add(new Option(" donut ", "donut"));
+               }
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" bar ", "bar"));
                break;
@@ -1259,7 +1277,7 @@
                <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
                url = changeURLPar(url, "second", y.value);
                url = changeURLPar(url, "type", "table");
-               z.options.add(new Option(" table ", "0", false, true));
+               z.options.add(new Option(" table ", "table", false, true));
            break;
            default:
                <!--url = changeURLPar(url, "second", y.value);-->
@@ -1269,8 +1287,17 @@
                {
                     url = changeURLPar(url, "second", y.selectedIndex);
                }
+               if (tag == null)
+               {
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
+               }
+               else
+               {
+               url = changeURLPar(url, "type", getQueryString("type"));
+               z.options.add(new Option(" donut ", "donut"));
+               }
+
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" line ", "line"));
                z.options.add(new Option(" bar ", "bar"));
@@ -1289,7 +1316,7 @@
                <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
                url = changeURLPar(url, "second", y.value);
                url = changeURLPar(url, "type", "flame");
-               z.options.add(new Option(" flame ", "0", false, true));
+               z.options.add(new Option(" flame ", "flame", false, true));
            break;
            default:
                <!--url = changeURLPar(url, "second", y.value);-->
@@ -1299,8 +1326,8 @@
                {
                     url = changeURLPar(url, "second", y.selectedIndex);
                }
-               url = changeURLPar(url, "type", "donut");
-               z.options.add(new Option(" table ", "0", false, true));
+               url = changeURLPar(url, "type", "table");
+               z.options.add(new Option(" table ", "table", false, true));
            }
            window.history.pushState({},0,url);
        break;
