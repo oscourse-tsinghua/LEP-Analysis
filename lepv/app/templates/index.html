@@ -174,7 +174,7 @@
                   <!--<option value="container-div-cpu-top-table">CPU TOP</option>-->
               <!--</select>-->
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#first" data-parent="#sideBarAccordion"></a>
-              <select id="first" onChange="change()">
+              <select id="first" onChange=" change() ">
                   <option selected="selected">　</option>
                   <option><span><a href="#cpu ">CPU</a></span></option>
                   <option>Memory</option>
@@ -802,6 +802,21 @@
     });
     </script>
 
+    <script>
+    function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var reg_rewrite = new RegExp("(^|/)" + name + "/([^/]*)(/|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    var q = window.location.pathname.substr(1).match(reg_rewrite);
+    if(r != null){
+        return unescape(r[2]);
+    }else if(q != null){
+        return unescape(q[2]);
+    }else{
+        return null;
+    }
+    }
+    </script>
 
      <script>
          new InitialChart();
@@ -823,10 +838,29 @@
             $('.popover-dismiss').popover({
               trigger: 'focus'
             });
-
+            var str = location.href;
+            var num = str.indexOf("first");
+            if (num < 0)
+            {
+            console.log("222");
             url = 'http://' + document.domain + ':' + location.port;
+
             url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
             window.history.pushState({},0,url);
+            }
+            else
+            {
+            console.log("111");
+            console.log("first"+ "---" + getQueryString("first"));
+            console.log("second" + "---" + getQueryString("second"));
+            console.log("type" + "---" + getQueryString("type"));
+            document.getElementById("first").value = getQueryString("first");
+            change("False");
+            document.getElementById("second").selectedIndex = getQueryString("second");
+            changetype("False");
+            document.getElementById("type").value = getQueryString("type");
+            selecttype("False");
+            }
         });
 
     </script>
@@ -870,8 +904,9 @@
     }
     </script>
     <script>
-    function change()
+    function change(tag)
     {
+        console.log("tag"+tag);
        var x = document.getElementById("first");
        var y = document.getElementById("second");
        var z = document.getElementById("type");
@@ -903,76 +938,56 @@
             case "CPU":
             switch(InfoDetailToWacth){
             case 0:
-                <!--var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.statoverall';
                 break;
             case 1:
-                <!--var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.statidle';
                 break;
             case 2:
-                <!--var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.statusergroup';
                 break;
             case 3:
-                <!--var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.statirqgroup';
                 break;
             case 4:
-                <!--var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.statirq';
                 break;
             case 5:
-                <!--var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');-->
                 var socket_message_key = 'cpu.softirq';
                 break;
             case 6:
-                <!--var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');-->
                 var socket_message_key = 'cpu.softirq';
                 break;
 
             case 7:
-                <!--var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');-->
                 var socket_message_key = 'cpu.softirq';
                 break;
             case 8:
-                <!--var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');-->
                 var socket_message_key = 'cpu.softirq';
                 break;
             case 9:
-                <!--var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.avgload';
                 break;
             case 10:
-                <!--var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.mysql';
                 break;
             case 11:
-                <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.mysql2';
                 break;
             case 12:
-                <!--var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);-->
                 var socket_message_key = 'cpu.top';
-                <!--$('#X-div-cpu-top-table').DataTable( {-->
-                    <!--destroy: true,-->
-                <!--});-->
-
                 break;
             }
             break;
             case "Memory":
             switch(InfoDetailToWacth){
             case 0:
-                <!--var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);-->
                 var socket_message_key = 'memory.procrank';
                 break;
             case 1:
-                <!--var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);-->
                 var socket_message_key = 'memory.procrankvs';
                 break;
             case 2:
-                <!--var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);-->
                 var socket_message_key = 'memory.procrankpss';
                 break;
             }
@@ -980,11 +995,9 @@
             case "IO":
             switch(InfoDetailToWacth){
             case 0:
-                <!--var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);-->
                 var socket_message_key = 'io.status';
                 break;
             case 1:
-                <!--var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);-->
                 var socket_message_key = 'io.top';
                 break;
             }
@@ -992,11 +1005,9 @@
             case "Perf":
             switch(InfoDetailToWacth){
             case 0:
-                <!--var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);-->
                 var socket_message_key = 'perf.cpuclock';
                 break;
             case 1:
-                <!--var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);-->
                 var socket_message_key = 'perf.flame';
                 break;
             }
@@ -1018,17 +1029,22 @@
        {
 
             url = changeURLPar(url, "first", "CPU");
+            if (tag == null)
+            {
             url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "donut");
-            console.log("url" + url);
 
-            <!--window.location.href = url;-->
+            console.log("url" + url);
             window.history.pushState({},0,url);
             console.log("url" + url);
             changetype();
             console.log("url" + url);
-            <!--console.log("url" + url);-->
             y.options.add(new Option(" CPU Stat: Overall ", "0", false, true));
+            }
+            else
+            {
+            y.options.add(new Option(" CPU Stat: Overall ", "0"));
+            }
             y.options.add(new Option(" CPU Stat: Idle ", "1"));
             y.options.add(new Option(" CPU Stat: User + System + Nice ", "2"));
             y.options.add(new Option(" CPU Stat: IRQ + SoftIRQ ", "3"));
@@ -1045,38 +1061,58 @@
 
        if(x.selectedIndex == 2)
        {
-            changetype();
             url = changeURLPar(url, "first", "Memory");
+            if (tag == null)
+            {
+            changetype();
+
             url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "table");
             console.log("url" + url);
-            <!--window.location.href = url;-->
+
             window.history.pushState({},0,url);
             console.log("url" + url);
             y.options.add(new Option(" Memory Stat ", "0", false, true));
+            }
+            else
+            {
+            y.options.add(new Option(" Memory Stat ", "0"));
+            }
             y.options.add(new Option(" memoryPssAgainstTotal ", "1"));
             y.options.add(new Option(" memoryPssDonut ", "2"));
        }
 
        if(x.selectedIndex == 3)
        {
-            changetype();
             url = changeURLPar(url, "first", "IO");
+            if (tag == null)
+            {
+            changetype();
+
             url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "donut");
             console.log("url" + url);
-            <!--window.location.href = url;-->
+
             window.history.pushState({},0,url);
             console.log("url" + url);
             <!--x.setAttribute("href", "#io-stat");-->
             y.options.add(new Option(" IO Stat ", "0", false, true));
+            }
+            else
+            {
+            y.options.add(new Option(" IO Stat ", "0"));
+            }
             y.options.add(new Option(" IO Top ", "1"));
+
        }
 
        if(x.selectedIndex == 4)
        {
-            changetype();
             url = changeURLPar(url, "first", "Perf");
+            if (tag == null)
+            {
+            changetype();
+
             url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "table");
             console.log("url" + url);
@@ -1085,13 +1121,18 @@
             console.log("url" + url);
             <!--x.setAttribute("href", "#perf-table");-->
             y.options.add(new Option(" Perf Table ", "0", false, true));
+            }
+            else
+            {
+            y.options.add(new Option(" Perf Table ", "0"));
+            }
             y.options.add(new Option(" Perf Flame ", "1"));
        }
     }
     </script>
 
     <script>
-    function changetype()
+    function changetype(tag)
     {
        var x = document.getElementById("first");
        var y = document.getElementById("second");
@@ -1109,17 +1150,34 @@
            switch(y.selectedIndex)
            {
            case 12:
-               <!--url = changeURLPar(url, "second", y[y.selectedIndex].text);-->
                url = changeURLPar(url, "second", y.value);
                console.log("y.value"+y.value+"y.selectedIndex"+y.selectedIndex);
+               if (tag  == null)
+               {
                url = changeURLPar(url, "type", "table");
                z.options.add(new Option(" table ", "0", false, true));
+               }
+               else
+               {
+               url = changeURLPar(url, "type", "table");
+               z.options.add(new Option(" table ", "0"));
+               }
            break;
            case 10:
            case 11:
+
                url = changeURLPar(url, "second", y.value);
+               if ( tag == null )
+               {
                url = changeURLPar(url, "type", "line");
+               z.options.add(new Option(" line ", "line", false, true));
+               }
+               else
+               {
+               url = changeURLPar(url, "type", getQueryString("type"));
                z.options.add(new Option(" line ", "line"));
+               }
+
                z.options.add(new Option(" spline ", "spline"));
                z.options.add(new Option(" area ", "area"));
                z.options.add(new Option(" area-spline ", "area-spline"));
@@ -1133,8 +1191,16 @@
                     url = changeURLPar(url, "second", y.selectedIndex);
                }
                console.log("y.value"+y.value);
+               if ( tag == null)
+               {
                url = changeURLPar(url, "type", "donut");
                z.options.add(new Option(" donut ", "donut", false, true));
+               }
+               else
+               {
+               url = changeURLPar(url, "type", getQueryString("type"));
+               z.options.add(new Option(" donut ", "donut"));
+               }
                z.options.add(new Option(" pie ", "pie"));
                z.options.add(new Option(" line ", "line"));
                z.options.add(new Option(" bar ", "bar"));
@@ -1243,14 +1309,25 @@
     </script>
 
     <script>
-        function selecttype()
+        function selecttype(tag )
         {
             url = 'http://' + document.domain + ':' + location.port;
             url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
             url = changeURLPar(url, "first", document.getElementById("first").value);
             url = changeURLPar(url, "second", document.getElementById("second").value);
+            if (tag == null)
+            {
             url = changeURLPar(url, "type", document.getElementById("type").value);
             window.history.pushState({},0,url);
+            }
+            else
+            {
+            url = changeURLPar(url, "type", getQueryString("type"));
+            window.history.pushState({},0,url);
+            }
+
+
+
         }
     </script>
     <!--triggered when the user specifies the LEPD server and click the start button.-->
