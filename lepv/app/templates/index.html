@@ -819,6 +819,7 @@
     </script>
 
      <script>
+
          new InitialChart();
          var socket = null;
          var socketConnected = false;
@@ -831,12 +832,105 @@
          div1.style.display = "none";
          var div2 = document.getElementById("container-div-cpu-top-table");
          div2.style.display = "none";
+
          $( document ).ready(function() {
 
             $('[data-toggle="popover"]').popover();
 
             $('.popover-dismiss').popover({
               trigger: 'focus'
+            });
+
+            $(window).on("beforeunload",function(){
+            switch(document.getElementById("first").value){
+            case "CPU":
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var socket_message_key = 'cpu.statoverall';
+                break;
+            case 1:
+                var socket_message_key = 'cpu.statidle';
+                break;
+            case 2:
+                var socket_message_key = 'cpu.statusergroup';
+                break;
+            case 3:
+                var socket_message_key = 'cpu.statirqgroup';
+                break;
+            case 4:
+                var socket_message_key = 'cpu.statirq';
+                break;
+            case 5:
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 6:
+                var socket_message_key = 'cpu.softirq';
+                break;
+
+            case 7:
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 8:
+                var socket_message_key = 'cpu.softirq';
+                break;
+            case 9:
+                var socket_message_key = 'cpu.avgload';
+                break;
+            case 10:
+                var socket_message_key = 'cpu.mysql';
+                break;
+            case 11:
+                var socket_message_key = 'cpu.mysql2';
+                break;
+            case 12:
+                var socket_message_key = 'cpu.top';
+                break;
+            }
+            break;
+            case "Memory":
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var socket_message_key = 'memory.procrank';
+                break;
+            case 1:
+                var socket_message_key = 'memory.procrankvs';
+                break;
+            case 2:
+                var socket_message_key = 'memory.procrankpss';
+                break;
+            }
+            break;
+            case "IO":
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var socket_message_key = 'io.status';
+                break;
+            case 1:
+                var socket_message_key = 'io.top';
+                break;
+            }
+            break;
+            case "Perf":
+            switch(document.getElementById("second").selectedIndex){
+            case 0:
+                var socket_message_key = 'perf.cpuclock';
+                break;
+            case 1:
+                var socket_message_key = 'perf.flame';
+                break;
+            }
+            break;
+            }
+            console.log("unload"+socket_message_key);
+            socket.emit(socket_message_key + ".req",
+                            {
+                                'server': $("#txt_server_to_watch").val(),
+                                'interval': 3,
+                                'flag': false,
+                            }
+            );
+            <!--startWatching();-->
+            <!--alert("Goodbye!");-->
             });
             var str = location.href;
             var num = str.indexOf("first");
@@ -851,6 +945,7 @@
             else
             {
             console.log("111");
+
             console.log("first"+ "---" + getQueryString("first"));
             console.log("second" + "---" + getQueryString("second"));
             console.log("type" + "---" + getQueryString("type"));
@@ -860,7 +955,9 @@
             changetype("False");
             document.getElementById("type").value = getQueryString("type");
             selecttype("False");
+            <!--window.history.pushState({},0,url);-->
             }
+
         });
 
     </script>
@@ -1160,7 +1257,7 @@
                else
                {
                url = changeURLPar(url, "type", "table");
-               z.options.add(new Option(" table ", "0"));
+               z.options.add(new Option(" table ", "table"));
                }
            break;
            case 10:
@@ -1265,7 +1362,7 @@
                     url = changeURLPar(url, "second", y.selectedIndex);
                }
                url = changeURLPar(url, "type", "table");
-               z.options.add(new Option(" table ", "0", false, true));
+               z.options.add(new Option(" table ", "table", false, true));
            }
            window.history.pushState({},0,url);
        break;
@@ -1352,8 +1449,6 @@
             url = changeURLPar(url, "type", getQueryString("type"));
             window.history.pushState({},0,url);
             }
-
-
 
         }
     </script>

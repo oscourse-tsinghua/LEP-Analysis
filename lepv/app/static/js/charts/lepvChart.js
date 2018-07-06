@@ -98,18 +98,17 @@ LepvChart.prototype.setupSocketIO = function() {
         this.requestData();
     }
 
+
 };
 
 
 LepvChart.prototype.requestData = function() {
 
     if (this.socket_message_key == null) {
-        console.log("000");
         return;
     }
 
     if (! this.isLeadingChart) {
-        console.log("111");
         return;
     }
 
