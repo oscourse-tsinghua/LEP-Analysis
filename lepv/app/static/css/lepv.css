@@ -97,3 +97,34 @@
 /*ive reduced the border radius' of '.flip-clock-wrapper ul li a div div.inn' and '.flip-clock-wrapper ul li a div.down' for aesthetics.*/
 
 /*'.flip-clock-wrapper ul li a div.up:after' represents the line between the top and bottom parts of the flip. Its 'top' property has to be the height of '.flip-clock-wrapper ul' divided by 2 minus its own height divided by 2 [(78/2) - (2/2) = 38].*/
+
+.left{
+    position: absolute;
+    top: 100px;
+    left: 65px;
+    z-index: 10;
+    width: 30px;
+    height: 200px;
+    border: none;
+    background-color: rgba(220,38,38,0.2);
+    text-align: center;
+    padding: 0;
+    opacity: 0.1;
+    cursor: pointer;
+}
+
+.left:hover{
+    position: absolute;
+    top: 100px;
+    left: 65px;
+    z-index: 10;
+    width: 30px;
+    height: 200px;
+    border: none;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    padding: 0;
+    opacity: 0.1;
+    cursor: pointer;
+}

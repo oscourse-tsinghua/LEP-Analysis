@@ -60,6 +60,7 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
 //            ['data2', 130, 340, 200, 500, 250, 350]
 //        ]
 //        },
+
         data: {
             x: 'x',
             columns: [thisChart.timeData,
@@ -122,7 +123,7 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
 CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
 //    console.log('mysql----10---');
     data = responseData['data'];
-//    console.log(data);
+    console.log("mysql"+data);
     if (data == null) {
         return
     }

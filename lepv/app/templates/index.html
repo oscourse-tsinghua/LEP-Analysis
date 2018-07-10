@@ -340,7 +340,7 @@
 
       <div class="col-md-12" >
         <div id="testdiv" class="card mb-3">
-          <div class="card-header"><i class="icon-cpu-processor"></i>
+          <div class="card-header">
               <!--<select id="select">-->
               <!--<option value ="donut">donut</option>-->
               <!--<option value ="pie">pie</option>-->
@@ -353,8 +353,15 @@
               <!--<option value="scatter">scatter</option>-->
 
               <!--</select>-->
+
+                <!--<i class="fa fa-chevron-left"></i>-->
           </div>
-          <div class="card-body"><div class="chart-panel"></div></div>
+
+          <div class="card-body">
+
+              <div class="chart-panel"></div>
+              <div id="btn-left"><button class="left" ><</button></div>
+          </div>
             <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
 
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
@@ -363,7 +370,7 @@
 
       <div class="col-md-12">
         <div id="container-div-cpu-top-table" class="card mb-3">
-          <div class="card-header"><i class="icon-cpu-processor"></i>
+          <div class="card-header">
               <!--<select id="select2">-->
               <!--<option value ="donut" >donut</option>-->
               <!--<option value ="pie">pie</option>-->
@@ -832,7 +839,8 @@
          div1.style.display = "none";
          var div2 = document.getElementById("container-div-cpu-top-table");
          div2.style.display = "none";
-
+         var btn = document.getElementById("btn-left");
+         btn.style.display = "none";
          $( document ).ready(function() {
 
             $('[data-toggle="popover"]').popover();
@@ -1439,6 +1447,8 @@
             url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
             url = changeURLPar(url, "first", document.getElementById("first").value);
             url = changeURLPar(url, "second", document.getElementById("second").value);
+
+
             if (tag == null)
             {
             url = changeURLPar(url, "type", document.getElementById("type").value);
@@ -1590,6 +1600,7 @@
             <!--socket.close();-->
         }
 
+
         InfoToWatch = specifiedInfo;
         InfoDetailToWacth = specifiedInfodetail;
 
@@ -1643,6 +1654,26 @@
           <!--var type = document.getElementById("type").selectedIndex;-->
           <!--var type = document.getElementById("type").value;-->
           <!--console.log("111"+type);-->
+
+          <!--var btn = document.getElementById("btn-left");-->
+
+          <!--var type_1 = document.getElementById("type").value;-->
+          <!--console.log("type-1-" + type);-->
+          <!--var type1 = ["line", "spline", "area", "area-spline", "scatter"];-->
+          <!--var type2 = ["donut", "pie", "bar", "table", "flame"];-->
+          <!--if (type1.indexOf(type_1) != -1)-->
+          <!--{-->
+              <!--if (btn.style.display == "none"){-->
+                  <!--btn.style.display = "block";-->
+              <!--}-->
+          <!--}-->
+          <!--&lt;!&ndash;else if(type2.indexOf(type) != -1)&ndash;&gt;-->
+          <!--else if (type_1 == "pie")-->
+          <!--{-->
+              <!--if (btn.style.display == "block"){-->
+                  <!--btn.style.display = "none";-->
+              <!--}-->
+          <!--}-->
 
           switch(document.getElementById("first").selectedIndex){
           case 1:

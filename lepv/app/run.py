@@ -21,7 +21,6 @@ def ping_lepd_server(request):
     client = LepDClient(server=server)
 
     ping_result = client.ping()
-    print('received ping:11111'+ str(ping_result))
     if ping_result:
         emit('lepd.ping.succeeded', {"server": server})
     else:

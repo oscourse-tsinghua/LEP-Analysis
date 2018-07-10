@@ -30,6 +30,7 @@ var CpuStatDonutChart = function(rootDivName, socket, server) {
   this.chartData['guest'] = ['guest'];
   this.chartData['guestnice'] = ['guestnice'];
   var type = document.getElementById("type").value;
+  var btn = document.getElementById("btn-left");
   this.type = type;
 
   this.initializeChart();
@@ -48,6 +49,9 @@ CpuStatDonutChart.prototype.initializeChart = function() {
     console.log('#' + this.mainDivName)
 //    if (this.type == "line" || this.type == "spline" || this.type == "area" || this.type == "area-spline" || this.type == "scatter"){
     if (type_data_1.indexOf(this.type) != -1){
+        if (btn.style.display == "none"){
+            btn.style.display = "block";
+        }
         this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
@@ -78,9 +82,9 @@ CpuStatDonutChart.prototype.initializeChart = function() {
             enabled: true,
             rescale: true
         },
-        subchart:{
-            show: true,
-        },
+//        subchart:{
+//            show: true,
+//        },
         axis: {
             x: {
                 type: 'timeseries',
@@ -122,6 +126,9 @@ CpuStatDonutChart.prototype.initializeChart = function() {
 //    else if(this.type == "donut" || this.type == "pie" || this.type == "bar" )
     else if (type_data_2.indexOf(this.type) != -1)
     {
+    if (btn.style.display == "block"){
+        btn.style.display = "none";
+    }
     this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
