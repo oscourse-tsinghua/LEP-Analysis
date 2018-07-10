@@ -120,7 +120,8 @@ LepvChart.prototype.requestData = function() {
                                 'interval': this.refreshInterval,
                                 "request_id": this.socket_request_id,
                                 "request_time": (new Date()).getTime(),
-                                "flag":true,
+                                "flag": true,
+                                "tag": 0,
                             }
     );
 };

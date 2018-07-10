@@ -360,7 +360,7 @@
           <div class="card-body">
 
               <div class="chart-panel"></div>
-              <div id="btn-left"><button class="left" ><</button></div>
+              <div id="btn-left"><button class="left" id="btnleft" ><</button></div>
           </div>
             <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
 
@@ -935,7 +935,7 @@
 
             $(window).on("beforeunload",function(){
             socket_message_key = getSocketMessageKey(document.getElementById("first").value,document.getElementById("second").selectedIndex);
-            
+
             console.log("unload"+socket_message_key);
             socket.emit(socket_message_key + ".req",
                             {
@@ -945,13 +945,12 @@
                             }
             );
             <!--startWatching();-->
-            <!--alert("Goodbye!");-->
             });
             var str = location.href;
             var num = str.indexOf("first");
             if (num < 0)
             {
-            console.log("222");
+
             url = 'http://' + document.domain + ':' + location.port;
 
             url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
@@ -959,7 +958,6 @@
             }
             else
             {
-            console.log("111");
 
             console.log("first"+ "---" + getQueryString("first"));
             console.log("second" + "---" + getQueryString("second"));
@@ -1494,109 +1492,7 @@
         {
             console.log("con");
             socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);
-            <!--switch(InfoToWatch){-->
-            <!--case "CPU":-->
-            <!--switch(InfoDetailToWacth){-->
-            <!--case 0:-->
-                <!--&lt;!&ndash;var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.statoverall';-->
-                <!--break;-->
-            <!--case 1:-->
-                <!--&lt;!&ndash;var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.statidle';-->
-                <!--break;-->
-            <!--case 2:-->
-                <!--&lt;!&ndash;var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.statusergroup';-->
-                <!--break;-->
-            <!--case 3:-->
-                <!--&lt;!&ndash;var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.statirqgroup';-->
-                <!--break;-->
-            <!--case 4:-->
-                <!--&lt;!&ndash;var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.statirq';-->
-                <!--break;-->
-            <!--case 5:-->
-                <!--&lt;!&ndash;var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.softirq';-->
-                <!--break;-->
-            <!--case 6:-->
-                <!--&lt;!&ndash;var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.softirq';-->
-                <!--break;-->
 
-            <!--case 7:-->
-                <!--&lt;!&ndash;var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.softirq';-->
-                <!--break;-->
-            <!--case 8:-->
-                <!--&lt;!&ndash;var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.softirq';-->
-                <!--break;-->
-            <!--case 9:-->
-                <!--&lt;!&ndash;var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.avgload';-->
-                <!--break;-->
-            <!--case 10:-->
-                <!--&lt;!&ndash;var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.mysql';-->
-                <!--break;-->
-            <!--case 11:-->
-                <!--&lt;!&ndash;var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.mysql2';-->
-                <!--break;-->
-            <!--case 12:-->
-                <!--&lt;!&ndash;var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'cpu.top';-->
-                <!--&lt;!&ndash;$('#X-div-cpu-top-table').DataTable( {&ndash;&gt;-->
-                    <!--&lt;!&ndash;destroy: true,&ndash;&gt;-->
-                <!--&lt;!&ndash;});&ndash;&gt;-->
-
-                <!--break;-->
-            <!--}-->
-            <!--break;-->
-            <!--case "Memory":-->
-            <!--switch(InfoDetailToWacth){-->
-            <!--case 0:-->
-                <!--&lt;!&ndash;var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'memory.procrank';-->
-                <!--break;-->
-            <!--case 1:-->
-                <!--&lt;!&ndash;var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'memory.procrankvs';-->
-                <!--break;-->
-            <!--case 2:-->
-                <!--&lt;!&ndash;var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'memory.procrankpss';-->
-                <!--break;-->
-            <!--}-->
-            <!--break;-->
-            <!--case "IO":-->
-            <!--switch(InfoDetailToWacth){-->
-            <!--case 0:-->
-                <!--&lt;!&ndash;var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'io.status';-->
-                <!--break;-->
-            <!--case 1:-->
-                <!--&lt;!&ndash;var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'io.top';-->
-                <!--break;-->
-            <!--}-->
-            <!--break;-->
-            <!--case "Perf":-->
-            <!--switch(InfoDetailToWacth){-->
-            <!--case 0:-->
-                <!--&lt;!&ndash;var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'perf.cpuclock';-->
-                <!--break;-->
-            <!--case 1:-->
-                <!--&lt;!&ndash;var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);&ndash;&gt;-->
-                <!--var socket_message_key = 'perf.flame';-->
-                <!--break;-->
-            <!--}-->
-            <!--break;-->
-            <!--}-->
             console.log("1"+socket_message_key);
             socket.emit(socket_message_key + ".req",
                             {
@@ -1914,7 +1810,19 @@
         this.value = this.value=="stop" ? "continue" : "stop";
     }
     </script>
-
+    <script>
+    btnleft.onclick=function(){
+        console.log("button-left");
+        socket_message_key = getSocketMessageKey(document.getElementById("first").value,document.getElementById("second").selectedIndex);
+        socket.emit(socket_message_key + ".req",
+                            {
+                                'server': $("#txt_server_to_watch").val(),
+                                'time': '1531205192',
+                                'tag': 1,
+                            }
+            );
+    }
+    </script>
   </div>
 </body>
 

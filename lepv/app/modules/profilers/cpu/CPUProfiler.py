@@ -505,19 +505,30 @@ class CPUProfiler:
     def get_mysql_data(self, tableinfo, response_lines=None):
         print("CPUProfiler-5-")
         # 打开数据库连接
-        db = MySQLdb.connect("192.168.2.81", "root", "596100", "zabbix")
+        db = MySQLdb.connect("192.168.253.244", "root", "135246", "zabbix")
+        # db = MySQLdb.connect("192.168.2.9", "root", "596100", "zabbix")
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()
 
         # SQL 插入语句
         # sql = "SELECT clock,value FROM history where itemid=25462 order by clock DESC limit 100"
-        sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
-              " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
+        # sql = "SELECT clock,value FROM history where itemid=25462 and clock < value  order by clock DESC limit 100
+        # if (tableinfo.has_key('list4')):
+        if ('list4' in tableinfo):
+            sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
+                  " where itemid= " + tableinfo['list3'] + " AND   " + tableinfo['list1'] + " < " + tableinfo['list4'] + \
+                  " order by " + tableinfo['list1'] + " DESC "
+            print("sql-time")
+        else:
+            sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
+                  " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
+            print("sql-fjfk")
         try:
             # 执行sql语句
             cursor.execute(sql)
             # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
-            ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]
+            # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]//wh
+            ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(10)]
             # 提交到数据库执行
             db.commit()
         except:
@@ -529,6 +540,7 @@ class CPUProfiler:
 
         response_data = {}
         response_data['data'] = ones
+        print("mysql-data"+str(ones))
         return response_data
 
     # def get_mysql_data2(self, tableinfo, response_lines=None):
