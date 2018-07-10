@@ -808,7 +808,90 @@
           })
     });
     </script>
+    <script>
+    function getSocketMessageKey(first,second){
+    switch(first){
+        case "CPU":
+        switch(second){
+        case 0:
+            var socket_message_key = 'cpu.statoverall';
+            break;
+        case 1:
+            var socket_message_key = 'cpu.statidle';
+            break;
+        case 2:
+            var socket_message_key = 'cpu.statusergroup';
+            break;
+        case 3:
+            var socket_message_key = 'cpu.statirqgroup';
+            break;
+        case 4:
+            var socket_message_key = 'cpu.statirq';
+            break;
+        case 5:
+            var socket_message_key = 'cpu.softirq';
+            break;
+        case 6:
+            var socket_message_key = 'cpu.softirq';
+            break;
 
+        case 7:
+            var socket_message_key = 'cpu.softirq';
+            break;
+        case 8:
+            var socket_message_key = 'cpu.softirq';
+            break;
+        case 9:
+            var socket_message_key = 'cpu.avgload';
+            break;
+        case 10:
+            var socket_message_key = 'cpu.mysql';
+            break;
+        case 11:
+            var socket_message_key = 'cpu.mysql2';
+            break;
+        case 12:
+            var socket_message_key = 'cpu.top';
+            break;
+        }
+        break;
+        case "Memory":
+        switch(second){
+        case 0:
+            var socket_message_key = 'memory.procrank';
+            break;
+        case 1:
+            var socket_message_key = 'memory.procrankvs';
+            break;
+        case 2:
+            var socket_message_key = 'memory.procrankpss';
+            break;
+        }
+        break;
+        case "IO":
+        switch(second){
+        case 0:
+            var socket_message_key = 'io.status';
+            break;
+        case 1:
+            var socket_message_key = 'io.top';
+            break;
+        }
+        break;
+        case "Perf":
+        switch(second){
+        case 0:
+            var socket_message_key = 'perf.cpuclock';
+            break;
+        case 1:
+            var socket_message_key = 'perf.flame';
+            break;
+        }
+        break;
+        }
+        return (socket_message_key);
+    }
+    </script>
     <script>
     function getQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -824,6 +907,7 @@
     }
     }
     </script>
+
 
      <script>
 
@@ -850,85 +934,8 @@
             });
 
             $(window).on("beforeunload",function(){
-            switch(document.getElementById("first").value){
-            case "CPU":
-            switch(document.getElementById("second").selectedIndex){
-            case 0:
-                var socket_message_key = 'cpu.statoverall';
-                break;
-            case 1:
-                var socket_message_key = 'cpu.statidle';
-                break;
-            case 2:
-                var socket_message_key = 'cpu.statusergroup';
-                break;
-            case 3:
-                var socket_message_key = 'cpu.statirqgroup';
-                break;
-            case 4:
-                var socket_message_key = 'cpu.statirq';
-                break;
-            case 5:
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 6:
-                var socket_message_key = 'cpu.softirq';
-                break;
-
-            case 7:
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 8:
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 9:
-                var socket_message_key = 'cpu.avgload';
-                break;
-            case 10:
-                var socket_message_key = 'cpu.mysql';
-                break;
-            case 11:
-                var socket_message_key = 'cpu.mysql2';
-                break;
-            case 12:
-                var socket_message_key = 'cpu.top';
-                break;
-            }
-            break;
-            case "Memory":
-            switch(document.getElementById("second").selectedIndex){
-            case 0:
-                var socket_message_key = 'memory.procrank';
-                break;
-            case 1:
-                var socket_message_key = 'memory.procrankvs';
-                break;
-            case 2:
-                var socket_message_key = 'memory.procrankpss';
-                break;
-            }
-            break;
-            case "IO":
-            switch(document.getElementById("second").selectedIndex){
-            case 0:
-                var socket_message_key = 'io.status';
-                break;
-            case 1:
-                var socket_message_key = 'io.top';
-                break;
-            }
-            break;
-            case "Perf":
-            switch(document.getElementById("second").selectedIndex){
-            case 0:
-                var socket_message_key = 'perf.cpuclock';
-                break;
-            case 1:
-                var socket_message_key = 'perf.flame';
-                break;
-            }
-            break;
-            }
+            socket_message_key = getSocketMessageKey(document.getElementById("first").value,document.getElementById("second").selectedIndex);
+            
             console.log("unload"+socket_message_key);
             socket.emit(socket_message_key + ".req",
                             {
@@ -1486,109 +1493,110 @@
         if (socket != null)
         {
             console.log("con");
-            switch(InfoToWatch){
-            case "CPU":
-            switch(InfoDetailToWacth){
-            case 0:
-                <!--var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.statoverall';
-                break;
-            case 1:
-                <!--var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.statidle';
-                break;
-            case 2:
-                <!--var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.statusergroup';
-                break;
-            case 3:
-                <!--var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.statirqgroup';
-                break;
-            case 4:
-                <!--var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.statirq';
-                break;
-            case 5:
-                <!--var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');-->
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 6:
-                <!--var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');-->
-                var socket_message_key = 'cpu.softirq';
-                break;
+            socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);
+            <!--switch(InfoToWatch){-->
+            <!--case "CPU":-->
+            <!--switch(InfoDetailToWacth){-->
+            <!--case 0:-->
+                <!--&lt;!&ndash;var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.statoverall';-->
+                <!--break;-->
+            <!--case 1:-->
+                <!--&lt;!&ndash;var cpuStatIdleChart = new CpuStatIdleChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.statidle';-->
+                <!--break;-->
+            <!--case 2:-->
+                <!--&lt;!&ndash;var cpuStatUserGroupChart = new CpuStatUserGroupChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.statusergroup';-->
+                <!--break;-->
+            <!--case 3:-->
+                <!--&lt;!&ndash;var cpuIrqGroupChart = new CpuIrqGroupChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.statirqgroup';-->
+                <!--break;-->
+            <!--case 4:-->
+                <!--&lt;!&ndash;var cpuIrqChart = new CpuIrqChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.statirq';-->
+                <!--break;-->
+            <!--case 5:-->
+                <!--&lt;!&ndash;var cpuNettxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_TX');&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.softirq';-->
+                <!--break;-->
+            <!--case 6:-->
+                <!--&lt;!&ndash;var cpuNetrxIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'NET_RX');&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.softirq';-->
+                <!--break;-->
 
-            case 7:
-                <!--var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');-->
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 8:
-                <!--var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');-->
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 9:
-                <!--var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.avgload';
-                break;
-            case 10:
-                <!--var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.mysql';
-                break;
-            case 11:
-                <!--var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.mysql2';
-                break;
-            case 12:
-                <!--var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);-->
-                var socket_message_key = 'cpu.top';
-                <!--$('#X-div-cpu-top-table').DataTable( {-->
-                    <!--destroy: true,-->
-                <!--});-->
+            <!--case 7:-->
+                <!--&lt;!&ndash;var cputaskletIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'TASKLET');&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.softirq';-->
+                <!--break;-->
+            <!--case 8:-->
+                <!--&lt;!&ndash;var cpuhrtimerIrqChart = new CpuSoftIrqChart("testdiv", socket, serverToWatch, 'HRTIMER');&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.softirq';-->
+                <!--break;-->
+            <!--case 9:-->
+                <!--&lt;!&ndash;var cpuAvgloadChart = new CpuAvgLoadChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.avgload';-->
+                <!--break;-->
+            <!--case 10:-->
+                <!--&lt;!&ndash;var cpuMysqlChart = new CpuMySqlDataChart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.mysql';-->
+                <!--break;-->
+            <!--case 11:-->
+                <!--&lt;!&ndash;var cpuMysqlChart2 = new CpuMySqlData2Chart("testdiv", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.mysql2';-->
+                <!--break;-->
+            <!--case 12:-->
+                <!--&lt;!&ndash;var cpuTopTable = new CpuTopTable("testtable", socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'cpu.top';-->
+                <!--&lt;!&ndash;$('#X-div-cpu-top-table').DataTable( {&ndash;&gt;-->
+                    <!--&lt;!&ndash;destroy: true,&ndash;&gt;-->
+                <!--&lt;!&ndash;});&ndash;&gt;-->
 
-                break;
-            }
-            break;
-            case "Memory":
-            switch(InfoDetailToWacth){
-            case 0:
-                <!--var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);-->
-                var socket_message_key = 'memory.procrank';
-                break;
-            case 1:
-                <!--var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);-->
-                var socket_message_key = 'memory.procrankvs';
-                break;
-            case 2:
-                <!--var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);-->
-                var socket_message_key = 'memory.procrankpss';
-                break;
-            }
-            break;
-            case "IO":
-            switch(InfoDetailToWacth){
-            case 0:
-                <!--var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);-->
-                var socket_message_key = 'io.status';
-                break;
-            case 1:
-                <!--var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);-->
-                var socket_message_key = 'io.top';
-                break;
-            }
-            break;
-            case "Perf":
-            switch(InfoDetailToWacth){
-            case 0:
-                <!--var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);-->
-                var socket_message_key = 'perf.cpuclock';
-                break;
-            case 1:
-                <!--var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);-->
-                var socket_message_key = 'perf.flame';
-                break;
-            }
-            break;
-            }
+                <!--break;-->
+            <!--}-->
+            <!--break;-->
+            <!--case "Memory":-->
+            <!--switch(InfoDetailToWacth){-->
+            <!--case 0:-->
+                <!--&lt;!&ndash;var memoryStatTable = new MemoryStatTable('testtable', socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'memory.procrank';-->
+                <!--break;-->
+            <!--case 1:-->
+                <!--&lt;!&ndash;var memoryFreePssStatChart = new ProcrankFreeVsPieChart('testdiv', socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'memory.procrankvs';-->
+                <!--break;-->
+            <!--case 2:-->
+                <!--&lt;!&ndash;var memoryPssStatChart = new ProcrankPssPieChart('testdiv', socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'memory.procrankpss';-->
+                <!--break;-->
+            <!--}-->
+            <!--break;-->
+            <!--case "IO":-->
+            <!--switch(InfoDetailToWacth){-->
+            <!--case 0:-->
+                <!--&lt;!&ndash;var ioStatChart = new IOStatChart('testdiv', socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'io.status';-->
+                <!--break;-->
+            <!--case 1:-->
+                <!--&lt;!&ndash;var ioTopTable = new IoTopTable('testtable', socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'io.top';-->
+                <!--break;-->
+            <!--}-->
+            <!--break;-->
+            <!--case "Perf":-->
+            <!--switch(InfoDetailToWacth){-->
+            <!--case 0:-->
+                <!--&lt;!&ndash;var perfCpuTable = new PerfCpuTable('testtable', socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'perf.cpuclock';-->
+                <!--break;-->
+            <!--case 1:-->
+                <!--&lt;!&ndash;var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);&ndash;&gt;-->
+                <!--var socket_message_key = 'perf.flame';-->
+                <!--break;-->
+            <!--}-->
+            <!--break;-->
+            <!--}-->
             console.log("1"+socket_message_key);
             socket.emit(socket_message_key + ".req",
                             {
@@ -1653,27 +1661,6 @@
           var div1 = document.getElementById("container-div-cpu-top-table");
           <!--var type = document.getElementById("type").selectedIndex;-->
           <!--var type = document.getElementById("type").value;-->
-          <!--console.log("111"+type);-->
-
-          <!--var btn = document.getElementById("btn-left");-->
-
-          <!--var type_1 = document.getElementById("type").value;-->
-          <!--console.log("type-1-" + type);-->
-          <!--var type1 = ["line", "spline", "area", "area-spline", "scatter"];-->
-          <!--var type2 = ["donut", "pie", "bar", "table", "flame"];-->
-          <!--if (type1.indexOf(type_1) != -1)-->
-          <!--{-->
-              <!--if (btn.style.display == "none"){-->
-                  <!--btn.style.display = "block";-->
-              <!--}-->
-          <!--}-->
-          <!--&lt;!&ndash;else if(type2.indexOf(type) != -1)&ndash;&gt;-->
-          <!--else if (type_1 == "pie")-->
-          <!--{-->
-              <!--if (btn.style.display == "block"){-->
-                  <!--btn.style.display = "none";-->
-              <!--}-->
-          <!--}-->
 
           switch(document.getElementById("first").selectedIndex){
           case 1:
@@ -1927,6 +1914,7 @@
         this.value = this.value=="stop" ? "continue" : "stop";
     }
     </script>
+
   </div>
 </body>
 
