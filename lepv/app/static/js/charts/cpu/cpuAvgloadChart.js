@@ -137,8 +137,8 @@ CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
     if (this.chartData['last1'].length > this.maxDataCount) {
         this.timeData.splice(1, 1);
         this.chartData['last1'].splice(1, 1);
-        this.chartData['last1'].splice(1, 1);
-        this.chartData['last1'].splice(1, 1);
+        this.chartData['last5'].splice(1, 1);
+        this.chartData['last15'].splice(1, 1);
         this.maxValues.splice(1,1);
     }
 
