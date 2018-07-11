@@ -122,28 +122,56 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
         return;
     }
 
-//    if (this.chartData['last1'].length > this.maxDataCount) {
-//        this.timeData.splice(1, 1);
-//        this.chartData['last1'].splice(1, 1);
-//        this.chartData['last1'].splice(1, 1);
-//        this.chartData['last1'].splice(1, 1);
+    if (this.chartData['num'].length > this.maxDataCount) {
+        this.timeData.splice(1, 10);
+        this.chartData['num'].splice(1, 10);
 //        this.maxValues.splice(1,1);
-//    }
+    }
 
-    this.chartData = {};
-    this.chartData['num'] = ['value'];
-    this.timeData = {};
-    this.timeData = ['x'];
+//    this.chartData = {};
+//    this.chartData['num'] = ['value'];
+//    this.timeData = {};
+//    this.timeData = ['x'];
 
 //    for (var i = 0; i < 100; i++)//wh
+//    for (var i = 0; i < 10; i++)
+//    {
+//
+////        console.log(data[i]['last1']);
+////        console.log(new Date(data[i]['last1']*1000));
+//        this.timeData.push(new Date(data[i]['time'] * 1000));
+//        this.chartData['num'].push(data[i]['num']);
+//    }
+    if (this.chartData['num'].length == 1)
+    {
+    console.log("1111");
     for (var i = 0; i < 10; i++)
     {
 
-//        console.log(data[i]['last1']);
-//        console.log(new Date(data[i]['last1']*1000));
-        this.timeData.push(new Date(data[i]['time'] * 1000));
-        this.chartData['num'].push(data[i]['num']);
+        this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+        this.chartData['num'].splice(1, 0, data[i]['num']);
     }
+    }
+    else if(this.timeData[1] < new Date(data[0]['time'] * 1000))
+    {
+        console.log("2222");
+        for (var i = 9; i >= 0; i--)
+        {
+            this.timeData.push(new Date(data[i]['time'] * 1000));
+            this.chartData['num'].push(data[i]['num']);
+        }
+
+    }
+    else
+    {
+        console.log("3333");
+        for (var i = 0; i < 10; i++)
+        {
+            this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+            this.chartData['num'].splice(1, 0, data[i]['num']);
+        }
+    }
+
 
     // max values are the max values of each group of data, it determines the max of y axis.
 //    this.maxValues.push(Math.max.apply(Math,[data['last1'], data['last5'], data['last15'], this.cpuCoreCount]));
