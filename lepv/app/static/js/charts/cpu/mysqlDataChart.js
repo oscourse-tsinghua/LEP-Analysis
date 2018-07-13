@@ -113,7 +113,8 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
 CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
 
     data = responseData['data'];
-    console.log("mysql"+data);
+    console.log("mysql " + data[0]['time']);
+    console.log("mysql " + new Date(data[0]['time']* 1000));
     if (data == null) {
         return
     }
@@ -151,6 +152,8 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
         this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
         this.chartData['num'].splice(1, 0, data[i]['num']);
     }
+    min = "'" + data[0]['time'] + "'";
+    console.log("min" + min);
     }
     else if(this.timeData[1] < new Date(data[0]['time'] * 1000))
     {
@@ -170,8 +173,9 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
             this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
             this.chartData['num'].splice(1, 0, data[i]['num']);
         }
+        min = data[0]['time'];
+        console.log("min" + min);
     }
-
 
     // max values are the max values of each group of data, it determines the max of y axis.
 //    this.maxValues.push(Math.max.apply(Math,[data['last1'], data['last5'], data['last15'], this.cpuCoreCount]));
