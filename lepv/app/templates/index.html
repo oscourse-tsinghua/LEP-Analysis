@@ -29,150 +29,13 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav" id="sideBarAccordion">
 
-        <!--<li class="nav-item" data-toggle="tooltip" data-placement="right" title=" Summary">-->
-          <!--<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseSummaryMenu" data-parent="#sideBarAccordion">-->
-            <!--<i class="fa fa-fw fa-dashboard"></i>-->
-            <!--<span class="nav-link-text">Summary</span>-->
-          <!--</a>-->
-          <!--<ul class="sidenav-second-level collapse" id="collapseSummaryMenu">-->
-            <!--<li>-->
-              <!--<a href="#">CPU</a>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<a href="#">MEMORY</a>-->
-            <!--</li>-->
-            <!--<li>-->
-              <!--<a href="#">IO</a>-->
-            <!--</li>-->
-          <!--</ul>-->
-        <!--</li>-->
-
-
-
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="CPU">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCpuMenu" data-parent="#sideBarAccordion">
-            <i class="icon-cpu-processor"></i>
-            <span class="nav-link-text">CPU</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseCpuMenu">
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-stat-donut"  checked="checked"/><span><a href="#container-div-cpu-stat-donut">Stat: Overall</a></span>
-            </li>
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-stat-idle" checked="checked" /><span><a href="#container-div-cpu-stat-idle">Stat: Idle</a></span>
-            </li>
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-stat-user-group" checked="checked"/><span><a href="#container-div-cpu-stat-user-group">Stat: User Group</a></span>
-            </li>
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-stat-irq1" checked="checked"/><span><a href="#container-div-cpu-stat-irqGroup">Stat: Irq Group</a></span>
-            </li>
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-stat-softirq" checked="checked"/><span><a href="#container-div-cpu-stat-nettxIrq">Stat: SoftIRQ</a></span>
-            </li>
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-avgload" checked="checked"><span><a href="#container-div-cpu-avgload">Average Load</a></span>
-            </li>
-              <li>
-                  <input type="checkbox" name="check-box" target="container-div-cpu-mysql" checked="checked"/><span><a href="#container-div-cpu-mysql">mysql</a></span>
-            </li>
-              <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-mysql2" checked="checked" /><span><a href="#container-div-cpu-mysql2">mysql2</a></span>
-            </li>
-            <li>
-              <input type="checkbox" name="check-box" target="container-div-cpu-top-table" checked="checked" /><span><a href="#container-div-cpu-top-table">TOP</a></span>
-            </li>
-              <li>
-              <span><a href="#test">test</a></span>
-            </li>
-          </ul>
-        </li>
-
-
-
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Memory">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#sideBarAccordion">
-            <i class="icon-ram"></i>
-            <span class="nav-link-text">Memory</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseComponents">
-            <!--<li>-->
-              <!--<input type="checkbox" name="check-box" target="container-div-memory-chart" checked="checked" /><span><a href="#container-div-memory-chart">Stat</a></span>-->
-            <!--</li>-->
-            <li>
-              <input type="checkbox" name="check-box" target="container-memory-stat-table" checked="checked" /><span><a href="#container-memory-stat-table">Memory Consumption</a></span>
-            </li>
-            <li>
-                <input type="checkbox" name="check-box" target="container-div-memory" checked="checked" /><span><a href="#container-div-memory-free-pss-stat">PSS Ratio</a></span>
-            </li>
-          </ul>
-        </li>
-
-
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="IO">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseIOMenu" data-parent="#sideBarAccordion">
-            <i class="icon-syncalt"></i>
-            <span class="nav-link-text">IO</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseIOMenu">
-              <li>
-                <input type="checkbox" name="check-box" target="container-div-IOCharts" checked="checked" /><span><a href="#container-div-IOCharts">Stat</a></span>
-              </li>
-              <li>
-                <input type="checkbox" name="check-box" target="container-io-top-table" checked="checked" /><span><a href="#container-io-top-table">Top</a></span>
-              </li>
-          </ul>
-        </li>
-
-
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Perf">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapsePerfMenu" data-parent="#sideBarAccordion">
-            <i class="icon-rawaccesslogs"></i>
-            <span class="nav-link-text">Perf</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapsePerfMenu">
-            <li>
-              <input type="checkbox" name="check-box" target="container-perf-cpu-table" checked="checked" /><span><a href="#container-perf-cpu-table">Perf CPU</a></span>
-            </li>
-              <li>
-              <input type="checkbox" name="check-box" target="container-perf-flame-graph" checked="checked" /><span><a href="#container-perf-flame-graph">Flame Graph</a></span>
-            </li>
-          </ul>
-        </li>
-
-
-      </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
+      <ul class="nav navbar-nav ml-auto">
         <li class="nav-item">
           <form class="form-inline my-2 my-lg-0 mr-lg-2">
             <div class="input-group">
               <!--<input id='txt_server_to_watch' class="form-control" type="text" placeholder="www.rmlink.cn" value="www.rmlink.cn">-->
               <input id='txt_server_to_watch' class="form-control" type="text" placeholder="127.0.0.1" value="127.0.0.1" onchange="toWatch()">
-              <!--<select id="txt_info_to_watch">-->
-                  <!--<option value=" "> </option>-->
-                  <!--<option value="container-div-cpu-stat-donut"> CPU Stat: Overall </option>-->
-                  <!--<option value="container-div-cpu-stat-idle"> CPU Stat: Idle </option>-->
-                  <!--<option value="container-div-cpu-stat-user-group"> CPU Stat: User + System + Nice </option>-->
-                  <!--<option value="container-div-cpu-stat-irqGroup"> CPU Stat: IRQ + SoftIRQ </option>-->
-                  <!--<option value="container-div-cpu-stat-irq"> CPU Stat: IRQ </option>-->
-                  <!--<option value="container-div-cpu-stat-nettxIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
-                  <!--<option value="container-div-cpu-stat-netrxIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
-                  <!--<option value="container-div-cpu-stat-taskletIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
-                  <!--<option value="container-div-cpu-stat-hrtimerIrq"> CPU Stat: SoftIRQ-NET_TX </option>-->
-                  <!--<option value="container-div-cpu-avgload">Average Load</option>-->
-                  <!--<option value="container-div-cpu-mysql">MySql</option>-->
-                  <!--<option value="container-div-cpu-mysql2">MySql2</option>-->
-                  <!--<option value="container-div-cpu-top-table">CPU TOP</option>-->
-              <!--</select>-->
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#first" data-parent="#sideBarAccordion"></a>
               <select id="first" onChange=" change() ">
                   <option selected="selected">　</option>
@@ -180,7 +43,6 @@
                   <option>Memory</option>
                   <option>IO</option>
                   <option>Perf</option>
-                  <!--<option selected="selected"> </option>-->
               </select>
 
               <select id="second" onchange="changetype()">
@@ -198,8 +60,6 @@
                   <option value="container-div-cpu-mysql"> MySql </option>
                   <option value="container-div-cpu-mysql2"> MySql2 </option>
                   <option value="container-div-cpu-top-table"> CPU TOP </option>
-                  <!--<option>黄冈</option>-->
-                  <!--<option selected="selected">武汉</option>-->
               </select>
               <select id="type" onchange="selecttype()">
               <option value ="testtype">  </option>
@@ -227,108 +87,6 @@
   <div class="content-wrapper">
     <div class="container-fluid">
 
-
-      <!--<div class="col-md-12">-->
-        <!--<div id='Summary' class="card mb-3">-->
-          <!--<div class="card-header">-->
-              <!--<i class="fa fa-fw fa-dashboard"></i> {{ languages.SystemSummary }}-->
-          <!--</div>-->
-          <!--<div class="card-body">-->
-              <!---->
-              <!---->
-              <!--<div class="row">-->
-                  <!--<div class="col-md-3">-->
-                      <!--<div class="card-body">-->
-                          <!--<div id="div-cpu-gauge"></div>-->
-
-                          <!--<div class="panel-footer text-center">-->
-                              <!--{% if config == 'debug' %}-->
-                              <!--处理器 - [GetCmdMpstat]-->
-                              <!--{% else %}-->
-                              <!--处理器-->
-                              <!--{% endif %}-->
-                          <!--</div>-->
-                      <!--</div>-->
-                  <!--</div>-->
-                  <!--<div class="col-md-3">-->
-                      <!--<div class="card-body">-->
-                          <!--<div id="div-memory-gauge"></div>-->
-                          <!--<div class="panel-footer text-center">-->
-                              <!--{% if config == 'debug' %}-->
-                              <!--内存 - [GetProcMeminfo]-->
-                              <!--{% else %}-->
-                              <!--内存-->
-                              <!--{% endif %}-->
-                          <!--</div>-->
-                      <!--</div>-->
-                  <!--</div>-->
-                  <!--<div class="col-md-3">-->
-                      <!--<div class="card-body">-->
-                          <!--<div id="div-io-gauge"></div>-->
-                          <!--<div class="panel-footer text-center">-->
-                              <!--{% if config == 'debug' %}-->
-                              <!--磁盘 - [GetCmdIostat]-->
-                              <!--{% else %}-->
-                              <!--磁盘-->
-                              <!--{% endif %}-->
-                          <!--</div>-->
-                      <!--</div>-->
-                  <!--</div>-->
-              <!--</div>-->
-
-              <!--<div class="row">-->
-                  <!--<div class="col-md-3">-->
-                      <!--{% if config == 'debug' %}-->
-                      <!--<div>[GetProcCpuinfo]</div>-->
-                      <!--{% endif %}-->
-                      <!--<div id="div-cpu-summary" class="panel panel-green">-->
-                      <!--</div>-->
-                  <!--</div>-->
-
-                  <!--<div class="col-md-3">-->
-                      <!--{% if config == 'debug' %}-->
-                      <!--<div>[GetProcMeminfo]</div>-->
-                      <!--{% endif %}-->
-                      <!--<div id="div-memory-summary" class="panel panel-green">-->
-                      <!--</div>-->
-                  <!--</div>-->
-
-                  <!--<div class="col-md-3">-->
-                      <!--{% if config == 'debug' %}-->
-                      <!--<div>[GetCmdDf]</div>-->
-                      <!--{% endif %}-->
-                      <!--<div id="div-io-summary" class="panel panel-green">-->
-                      <!--</div>-->
-                  <!--</div>-->
-              <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<div class="col-md-12">-->
-        <!--<div id="test" class="card mb-3">-->
-          <!--<div class="card-header"><i class="icon-cpu-processor"></i>-->
-              <!--&lt;!&ndash;&lt;!&ndash;<select id="cpu-stat-idle-select">&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value ="donut" >donut</option>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value ="pie">pie</option>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value="line" selected>line</option>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;&lt;!&ndash;<option value="table">table</option>&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value="bar">bar</option>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value="spline">spline</option>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value="area">area</option>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value="area-spline">area-spline</option>&ndash;&gt;&ndash;&gt;-->
-              <!--&lt;!&ndash;&lt;!&ndash;<option value="scatter">scatter</option>&ndash;&gt;&ndash;&gt;-->
-
-              <!--&lt;!&ndash;&lt;!&ndash;</select>&ndash;&gt;&ndash;&gt;-->
-          <!--</div>-->
-          <!--&lt;!&ndash;<div class="card-body"><div class="chart-panel"></div></div>&ndash;&gt;-->
-          <!--&lt;!&ndash;<div class="card-body"><table class="display compact chart-panel" ></table></div>&ndash;&gt;-->
-          <!--<div class="card-body" id = "showbyone"></div>-->
-
-          <!--<div id = "card-footer" class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
-        <!--</div>-->
-
-      <!--</div>-->
-
       <div class="col-md-12" >
         <div id="testinit" class="card mb-3">
           <div class="card-header"><i class="icon-cpu-processor"></i>
@@ -340,361 +98,22 @@
 
       <div class="col-md-12" >
         <div id="testdiv" class="card mb-3">
-          <div class="card-header">
-              <!--<select id="select">-->
-              <!--<option value ="donut">donut</option>-->
-              <!--<option value ="pie">pie</option>-->
-              <!--<option value="line" selected >line</option>-->
-              <!--&lt;!&ndash;<option value="table">table</option>&ndash;&gt;-->
-              <!--<option value="bar">bar</option>-->
-              <!--<option value="spline">spline</option>-->
-              <!--<option value="area">area</option>-->
-              <!--<option value="area-spline">area-spline</option>-->
-              <!--<option value="scatter">scatter</option>-->
-
-              <!--</select>-->
-
-                <!--<i class="fa fa-chevron-left"></i>-->
-          </div>
-
+          <div class="card-header"></div>
           <div class="card-body">
-
               <div class="chart-panel"></div>
               <div id="btn-left"><button class="left" id="btnleft" ><</button></div>
           </div>
-            <!--<div class="card-body"><table class="display compact chart-panel" ></table></div>-->
-
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
         </div>
       </div>
 
       <div class="col-md-12">
         <div id="container-div-cpu-top-table" class="card mb-3">
-          <div class="card-header">
-              <!--<select id="select2">-->
-              <!--<option value ="donut" >donut</option>-->
-              <!--<option value ="pie">pie</option>-->
-              <!--<option value="line" selected>line</option>-->
-              <!--&lt;!&ndash;<option value="table">table</option>&ndash;&gt;-->
-              <!--<option value="bar">bar</option>-->
-              <!--<option value="spline">spline</option>-->
-              <!--<option value="area">area</option>-->
-              <!--<option value="area-spline">area-spline</option>-->
-              <!--<option value="scatter">scatter</option>-->
-
-              <!--</select>-->
-          </div>
-          <!--<div class="card-body"><div class="chart-panel"></div></div>-->
-            <!--<div class="card-body" id="table-parent"><table class="display compact chart-panel" id="table-bady" ></table></div>-->
-            <div class="card-body" id="table-parent"><table class="display compact chart-panel" ></table></div>
-
+          <div class="card-header"></div>
+          <div class="card-body" id="table-parent"><table class="display compact chart-panel" ></table></div>
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
         </div>
       </div>
-
-      <!--cpu-stat-donut-->
-      <div class="col-md-6">
-        <div id="container-div-cpu-stat-donut" class="card mb-3">
-          <div class="card-header"><i class="icon-cpu-processor"></i> CPU Stat: Overall
-          <select id="cpu-stat-donut-select">
-              <option value ="donut" selected>donut</option>
-              <option value ="pie">pie</option>
-              <option value="line">line</option>
-              <!--<option value="table">table</option>-->
-              <option value="bar">bar</option>
-              <option value="spline">spline</option>
-              <option value="area">area</option>
-              <option value="area-spline">area-spline</option>
-              <option value="scatter">scatter</option>
-
-          </select></div>
-          <div class="card-body"><div class="chart-panel"></div></div>
-          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-        </div>
-      </div>
-
-
-     <!--cpu-stat-idle-->
-      <div class="col-md-12">
-        <div id="container-div-cpu-stat-idle" class="card mb-3">
-          <div class="card-header"><i class="icon-cpu-processor"></i> CPU Stat: Idle
-              <select id="cpu-stat-idle-select">
-              <option value ="donut" >donut</option>
-              <option value ="pie">pie</option>
-              <option value="line" selected>line</option>
-              <!--<option value="table">table</option>-->
-              <option value="bar">bar</option>
-              <option value="spline">spline</option>
-              <option value="area">area</option>
-              <option value="area-spline">area-spline</option>
-              <option value="scatter">scatter</option>
-
-              </select></div>
-          <div class="card-body"><div class="chart-panel"></div></div>
-          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-        </div>
-      </div>
-
-
-      <!--cpu-stat-user-group-->
-      <div class="col-md-12">
-        <div id="container-div-cpu-stat-user-group" class="card mb-3">
-          <div class="card-header"><i class="icon-cpu-processor"></i> CPU Stat: User + System + Nice</div>
-          <div class="card-body"><div class="chart-panel"></div></div>
-          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-        </div>
-      </div>
-
-
-      <div class="col-md-12">
-      <div class="col" id="container-div-cpu-stat-irq1">
-      <!--cpu-stat-irqGroup-->
-      <div class="col-md-12">
-        <div id="container-div-cpu-stat-irqGroup" class="card mb-3">
-            <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuIrqGroupChartTitle }}</span></div>
-            <div class="card-body"><div class="chart-panel"></div></div>
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-        </div>
-      </div>
-
-      <!--cpu-stat-irq-->
-      <div class="col-md-12">
-          <div id="container-div-cpu-stat-irq" class="card mb-3">
-              <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuIrqChartTitle }}</span></div>
-              <div class="card-body"><div class="chart-panel"></div></div>
-              <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-      </div>
-      </div>
-
-      <div class="col-md-12">
-      <div class="col" id="container-div-cpu-stat-softirq">
-      <!--cpu-stat-nettxIrq-->
-      <div class="col-md-12">
-          <div id="container-div-cpu-stat-nettxIrq" class="card mb-3">
-            <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuNettxIrqChartTitle }}</span></div>
-            <div class="card-body"><div class="chart-panel"></div></div>
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-      <!--cpu-stat-netrxIrq-->
-      <div class="col-md-12">
-          <div id="container-div-cpu-stat-netrxIrq" class="card mb-3">
-            <div class="card-header"><i class="icon-cpu-processor"></i><span class="spanTitle">{{ languages.cpuNetrxIrqChartTitle }}</span></div>
-            <div class="card-body"><div class="chart-panel"></div></div>
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-      <div class="col-md-12">
-          <div id="container-div-cpu-stat-taskletIrq" class="card mb-3">
-            <div class="card-header">
-                <i class="icon-cpu-processor"></i>
-                <span class="spanTitle">{{ languages.cpuTaskletIrqChartTitle }}</span>
-            </div>
-            <div class="card-body"><div class="chart-panel"></div></div>
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-      <div class="col-md-12">
-          <div id="container-div-cpu-stat-hrtimerIrq" class="card mb-3">
-            <div class="card-header">
-                <i class="icon-cpu-processor"></i>
-                <span class="spanTitle">{{ languages.cpuHrtimerIrqChartTitle }}</span>
-            </div>
-            <div class="card-body"><div class="chart-panel"></div></div>
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-      </div>
-      </div>
-
-      <div class="col-md-12">
-        <div id="container-div-cpu-avgload" class="card mb-3">
-          <div class="card-header">
-              <i class="icon-cpu-processor"></i>
-              {% if config == 'debug' %}
-              <span class="spanTitle">{{ languages.averageLoadChartTitle }} - [GetProcLoadavg]</span>
-              {% else %}
-              <span class="spanTitle" fullTitle="{{ languages.averageLoadChartTitleFull }}" shortTitle="{{ languages.averageLoadChartTitle }}">{{ languages.averageLoadChartTitle }}</span>
-              {% endif %}
-              <input type="button" value="stop" id="btn" />
-          </div>
-          <div class="card-body"><div class="chart-panel"></div></div>
-          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <div id="container-div-cpu-mysql" class="card mb-3">
-          <div class="card-header">
-              <i class="icon-cpu-processor"></i>
-
-              <span class="spanTitle">mysql</span>
-
-          </div>
-          <div class="card-body"><div class="chart-panel"></div></div>
-          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-        </div>
-      </div>
-
-        <div class="col-md-12">
-        <div id="container-div-cpu-mysql2" class="card mb-3">
-          <div class="card-header">
-              <i class="icon-cpu-processor"></i>
-
-              <span class="spanTitle">mysql2</span>
-
-          </div>
-          <div class="card-body"><div class="chart-panel"></div></div>
-          <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-        </div>
-      </div>
-
-      <!--<div class="col-md-12">-->
-          <!--<div id="container-div-cpu-top-table" class="card mb-3">-->
-            <!--<div class="card-header">-->
-                <!--{% if config == 'debug' %}-->
-                <!--<i class="icon-cpu-processor"></i> CPU TOP -[GetCmdTop]-->
-                <!--{% else %}-->
-                <!--<i class="icon-cpu-processor"></i> CPU TOP-->
-                <!--{% endif %}-->
-            <!--</div>-->
-            <!--<div class="card-body"><table class="display compact chart-panel" cellspacing="0"></table></div>-->
-            <!--<div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
-          <!--</div>-->
-      <!--</div>-->
-
-
-      <!--<div class="col-md-12">-->
-          <!--<div id="container-div-memory-chart" class="card mb-3">-->
-            <!--<div class="card-header">-->
-                <!--{% if config == 'debug' %}-->
-                <!--<i class="icon-ram"></i> {{ languages.ramChartTitle }} -[GetProcMeminfo]-->
-                <!--{% else %}-->
-                <!--<i class="icon-ram"></i> {{ languages.ramChartTitle }}-->
-                <!--{% endif %}-->
-            <!--</div>-->
-            <!--<div class="card-body"><div class="chart-panel"></div></div>-->
-            <!--<div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>-->
-          <!--</div>-->
-      <!--</div>-->
-
-      <div class="col-md-12">
-          <div id="container-memory-stat-table" class="card mb-3">
-            <div class="card-header">
-                {% if config == 'debug' %}
-                <i class="icon-ram"></i> {{ languages.memoryConsumptionChartTitle }} -[GetCmdProcrank]
-                {% else %}
-                <i class="icon-ram"></i> {{ languages.memoryConsumptionChartTitle }}
-                {% endif %}
-            </div>
-            <!--<div class="card-body"><table class="display compact chart-panel" cellspacing="0"></table></div>-->
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-      <div class="col-md-12">
-          <div class="row" id="container-div-memory">
-
-              <div class="col-md-4">
-            <div id="container-div-memory-free-pss-stat" class="card mb-3">
-              <div class="card-header">
-                  {% if config == 'debug' %}
-                  <i class="icon-ram"></i> {{ languages.memoryPssAgainstTotalChartTitle }} -[GetCmdProcrank]
-                  {% else %}
-                  <i class="icon-ram"></i> {{ languages.memoryPssAgainstTotalChartTitle }}
-                  {% endif %}
-              </div>
-              <div class="card-body"><div class="chart-panel"></div></div>
-              <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <div id="container-div-memory-pss-stat" class="card mb-3">
-              <div class="card-header">
-                  {% if config == 'debug' %}
-                  <i class="icon-ram"></i> {{ languages.memoryPssDonutChartTitle }} -[GetCmdProcrank]
-                  {% else %}
-                  <i class="icon-ram"></i> {{ languages.memoryPssDonutChartTitle }}
-                  {% endif %}
-              </div>
-              <div class="card-body"><div class="chart-panel"></div></div>
-              <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-            </div>
-          </div>
-
-
-          </div>
-
-      </div>
-      
-
-      <div class="col-md-12">
-          <div id='container-div-IOCharts' class="card mb-3">
-              <div class="card-header">
-                  {% if config == 'debug' %}
-                  <i class="icon-syncalt"></i> {{ languages.ioChartTitle }} -[GetCmdIostat]
-                  {% else %}
-                  <i class="icon-syncalt"></i> {{ languages.ioChartTitle }}
-                  {% endif %}
-                  <input type="button" value="stop" id="btn1" />
-              </div>
-              <div class="card-body"><div class="chart-panel"></div></div>
-              <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-      <div class="col-md-12">
-          <div id="container-io-top-table" class="card mb-3">
-            <div class="card-header">
-                {% if config == 'debug' %}
-                <i class="icon-syncalt"></i> I/O Top Table -[GetCmdIotop]
-                {% else %}
-                <i class="icon-syncalt"></i> I/O Top Table
-                {% endif %}
-            </div>
-            <!--<div class="card-body"><table class="display compact chart-panel" cellspacing="0"></table></div>-->
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-      <div class="col-md-12">
-          <div id="container-perf-cpu-table" class="card mb-3">
-            <div class="card-header">
-                <i class="glyphicon glyphicon-tasks"></i>
-                {% if config == 'debug' %}
-                <span class="spanTitle">{{ languages.perfTableTitle }}</span> -[GetCmdPerfCpuclock]
-                {% else %}
-                <span class="spanTitle" fullTitle="{{ languages.perfTableTitleFull }}" shortTitle="{{ languages.perfTableTitle }}">{{ languages.perfTableTitle }}</span>
-                {% endif %}
-            </div>
-            <!--<div class="card-body"><table class="display compact chart-panel" cellspacing="0"></table></div>-->
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-
-      <!--flame graph-->
-      <div class="col-md-12">
-          <div id="container-perf-flame-graph" class="card mb-3">
-            <div class="card-header">
-                <i class="glyphicon glyphicon-tasks"></i>
-                {% if config == 'debug' %}
-                <span class="spanTitle">FlameGraph</span>
-                {% else %}
-                <span class="spanTitle" fullTitle="{{ languages.perfTableTitleFull }}" shortTitle="{{ languages.perfTableTitle }}">Flame Graph</span>
-                {% endif %}
-            </div>
-            <div class="card-body"><div class="chart-panel"></div></div>
-            <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
-          </div>
-      </div>
-
-
 
     </div>
 
@@ -754,8 +173,8 @@
 
     <script src="/static/js/charts/cpu/cpuGauguChart.js"></script>
     <script src="/static/js/charts/cpu/cpuAvgloadChart.js"></script>
-      <script src="/static/js/charts/cpu/mysqlDataChart.js"></script>
-      <script src="/static/js/charts/cpu/mysqlData2Chart.js"></script>
+    <script src="/static/js/charts/cpu/mysqlDataChart.js"></script>
+    <script src="/static/js/charts/cpu/mysqlData2Chart.js"></script>
 
     <script src="/static/js/charts/cpu/cpuIrqChart.js"></script>
     <script src="/static/js/charts/cpu/cpuSoftIrqChart.js"></script>
@@ -796,18 +215,7 @@
     });
 
     </script>
-    <script>
-    $(function(){
-      $("input").bind("click",function(){
-          if(this.checked){
-                $("#"+$(this).attr("target")).show();
-          }else{
-               $("#"+$(this).attr("target")).hide();
-              }
 
-          })
-    });
-    </script>
     <script>
     function getSocketMessageKey(first,second){
     switch(first){
@@ -1773,43 +1181,6 @@
         }
     </script>
 
-    <script>
-    btn.onclick=function(){
-        if (this.value == "continue")
-        {
-            console.log("con");
-            new CpuAvgLoadChart.prototype.con();
-            <!--var cpuAvgloadChart = new CpuAvgLoadChart("container-div-cpu-avgload", socket, serverToWatch);-->
-        }
-        this.value = this.value=="stop" ? "continue" : "stop";
-    }
-    </script>
-    <script>
-    btn1.onclick=function(){
-        if (this.value == "stop")
-        {
-            console.log("con");
-            socket.emit('io.status' + ".req",
-                            {
-                                'server': $("#txt_server_to_watch").val(),
-                                'interval': 3,
-                                'flag': false,
-                            }
-            );
-        }else
-        {
-            console.log("con1");
-            socket.emit('io.status' + ".req",
-                            {
-                                'server': $("#txt_server_to_watch").val(),
-                                'interval': 3,
-                                'flag': true,
-                            }
-            );
-        }
-        this.value = this.value=="stop" ? "continue" : "stop";
-    }
-    </script>
     <script>
     btnleft.onclick=function(){
         console.log("button-left");
