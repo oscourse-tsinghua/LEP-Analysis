@@ -113,8 +113,9 @@ CpuMySqlDataChart.prototype.initializeChart = function() {
 CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
 
     data = responseData['data'];
-    console.log("mysql " + data[0]['time']);
-    console.log("mysql " + new Date(data[0]['time']* 1000));
+
+//    console.log("mysql " + data[0]['time']);
+//    console.log("mysql " + new Date(data[0]['time']* 1000));
     if (data == null) {
         return
     }
@@ -122,10 +123,17 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
     if (this.chart == null) {
         return;
     }
-
-    if (this.chartData['num'].length > this.maxDataCount) {
-        this.timeData.splice(1, 10);
-        this.chartData['num'].splice(1, 10);
+//    if (data.length == 0)
+//    {
+//        console.log("NULL");
+//
+//    }else
+//    {
+    if (this.chartData['num'].length + data.length > this.maxDataCount) {
+        this.timeData.splice(1, data.length);
+        this.chartData['num'].splice(1, data.length);
+        console.log("this.chartData['num'].length + data.length" + this.chartData['num'].length)
+        console.log("this.chartData['num'].length + data.length" + data.length)
 //        this.maxValues.splice(1,1);
     }
 
@@ -146,24 +154,27 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
     if (this.chartData['num'].length == 1)
     {
     console.log("1111");
-    for (var i = 0; i < 10; i++)
+    for (var i = 0; i < 100; i++)
     {
 
         this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
         this.chartData['num'].splice(1, 0, data[i]['num']);
     }
-    min = "'" + data[0]['time'] + "'";
+    min = "'" + data[99]['time'] + "'";
     console.log("min" + min);
+    max = "'" + data[0]['time'] + "'";
+    console.log("max" + max);
     }
     else if(this.timeData[1] < new Date(data[0]['time'] * 1000))
     {
         console.log("2222");
-        for (var i = 9; i >= 0; i--)
+        for (var i = data.length - 1; i >= 0; i--)
         {
             this.timeData.push(new Date(data[i]['time'] * 1000));
             this.chartData['num'].push(data[i]['num']);
         }
-
+        max = "'" + data[0]['time'] + "'";
+        console.log("max" + max);
     }
     else
     {
@@ -173,7 +184,7 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
             this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
             this.chartData['num'].splice(1, 0, data[i]['num']);
         }
-        min = data[0]['time'];
+        min =  "'" + data[9]['time'] + "'";
         console.log("min" + min);
     }
 
@@ -190,7 +201,19 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
             value: ['']
         }
     });
+//    }
 
     // this.requestData();
-
+    this.socketIO.emit(this.socket_message_key + ".req",
+                            {
+                                'server': this.serverToWatch,
+                                'interval': this.refreshInterval,
+                                "request_id": this.socket_request_id,
+                                "request_time": (new Date()).getTime(),
+                                "flag": true,
+                                "max": max,
+                                "tag": 2,
+                            }
+    );
+    console.log("---"+new Date());
 };

@@ -129,27 +129,35 @@ cpu_mysql_timer = None
 @cpu_blueprint.on('cpu.mysql.req')
 def get_ms_data(request):
     server = request['server']
-
     tag = request['tag']
-
     socketio = cpu_blueprint.get_io()
+
     if (tag == 0):
         print("tag" + str(tag))
         interval = request['interval']
         global cpu_mysql_timer,cpu_mysql_count
         # tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '25462'}//wh
-        tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '23252'}
+        tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '23296'}
         # if cpu_mysql_timer is None:
         #       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
-        cpu_mysql_count = request["flag"]
-        set_value("cpumysql",str(cpu_mysql_count))
-        cpu_mysql_timer = Timer(interval, background_timer_stuff_cpumysql, [socketio, interval, "cpu.mysql.res", CPUProfiler(server).get_mysql_data, tableinfo])
-        cpu_mysql_timer.start()
+        # cpu_mysql_count = request["flag"]
+        # set_value("cpumysql",str(cpu_mysql_count))
+        # cpu_mysql_timer = Timer(interval, background_timer_stuff_cpumysql, [socketio, interval, "cpu.mysql.res", CPUProfiler(server).get_mysql_data, tableinfo])
+        # cpu_mysql_timer.start()
+        get_mysql_data = CPUProfiler(server).get_mysql_data(tableinfo)
+        socketio.emit("cpu.mysql.res", get_mysql_data)
     elif (tag == 1):
         print("tag" + str(tag))
-        clock = request['time']
+        clock = request['min']
         print('time-1-'+ clock)
-        tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '23252', 'list4': clock}
+        tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '23296', 'list4': clock}
+        get_mysql_data = CPUProfiler(server).get_mysql_data(tableinfo)
+        socketio.emit("cpu.mysql.res", get_mysql_data)
+    elif (tag == 2):
+        print("tag" + str(tag))
+        clock = request['max']
+        print('time-1-'+ clock)
+        tableinfo = {'tablename': 'history', 'list1': 'clock', 'list2': 'value', 'list3': '23296', 'list5': clock}
         get_mysql_data = CPUProfiler(server).get_mysql_data(tableinfo)
         socketio.emit("cpu.mysql.res", get_mysql_data)
 

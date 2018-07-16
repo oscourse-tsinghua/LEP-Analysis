@@ -7,7 +7,7 @@ import MySQLdb
 import pprint
 import re
 from decimal import Decimal
-from time import gmtime, strftime
+from time import gmtime, strftime, sleep
 
 from app.modules.lepd.LepDClient import LepDClient
 
@@ -514,26 +514,56 @@ class CPUProfiler:
         # sql = "SELECT clock,value FROM history where itemid=25462 order by clock DESC limit 100"
         # sql = "SELECT clock,value FROM history where itemid=25462 and clock < value  order by clock DESC limit 100
         # if (tableinfo.has_key('list4')):
-        if ('list4' in tableinfo):
+        if ('list5' in tableinfo):
+            sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
+                  " where itemid= " + tableinfo['list3'] + " AND   " + tableinfo['list1'] + " > " + tableinfo['list5'] + \
+                  " order by " + tableinfo['list1'] + " DESC "
+            print("sql-time5")
+            try:
+                # 执行sql语句
+
+                sleep(5)
+                cursor.execute(sql)
+                ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
+                # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]//wh
+                # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(10)]
+                # 提交到数据库执行
+                db.commit()
+            except:
+                # 发生错误时回滚
+                db.rollback()
+        elif ('list4' in tableinfo):
             sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
                   " where itemid= " + tableinfo['list3'] + " AND   " + tableinfo['list1'] + " < " + tableinfo['list4'] + \
                   " order by " + tableinfo['list1'] + " DESC "
             print("sql-time")
+            try:
+                # 执行sql语句
+                cursor.execute(sql)
+                # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
+                # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]//wh
+                ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(10)]
+                # 提交到数据库执行
+                db.commit()
+            except:
+                # 发生错误时回滚
+                db.rollback()
+
         else:
             sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
                   " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
             print("sql-fjfk")
-        try:
-            # 执行sql语句
-            cursor.execute(sql)
-            # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
-            # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]//wh
-            ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(10)]
-            # 提交到数据库执行
-            db.commit()
-        except:
-            # 发生错误时回滚
-            db.rollback()
+            try:
+                # 执行sql语句
+                cursor.execute(sql)
+                # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
+                ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]
+                # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(10)]
+                # 提交到数据库执行
+                db.commit()
+            except:
+                # 发生错误时回滚
+                db.rollback()
 
         # 关闭数据库连接
         db.close()

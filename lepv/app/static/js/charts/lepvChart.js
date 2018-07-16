@@ -5,7 +5,9 @@
 var type_data_1 = ["line", "spline", "area", "area-spline", "scatter"];
 var type_data_2 = ["donut", "pie", "bar"];
 var table = null;
-var min = '1531112209';
+//var min = '1531112209';
+var min;
+var max;
 var LepvChart = function(rootDivName, socket, server) {
 
   this.rootDivName = rootDivName;
@@ -35,16 +37,13 @@ var LepvChart = function(rootDivName, socket, server) {
   // otherwise, it just listen to message, but not send.
   this.isLeadingChart = true;
 
-
-
-
 //  this.initializeChart();
 //  this.setupSocketIO();
 
 };
 
 LepvChart.prototype.locateUIElements = function() {
-    console.log("kukukuku")
+
     var thisChart = this;
 
     if (this.rootDivName.startsWith('#')) {

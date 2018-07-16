@@ -350,6 +350,7 @@
                                 'server': $("#txt_server_to_watch").val(),
                                 'interval': 3,
                                 'flag': false,
+                                'tag': 0,
                             }
             );
             <!--startWatching();-->
@@ -422,13 +423,12 @@
     }
     </script>
     <script>
-    function change(tag)
+    function change(args)
     {
-        console.log("tag"+tag);
+       console.log("args"+args);
        var x = document.getElementById("first");
        var y = document.getElementById("second");
        var z = document.getElementById("type");
-       <!--url = 'http://' + document.domain + ':' + location.port;-->
        url = 'http://' + document.domain + ':' + location.port;
        url = changeURLPar(url, "toWatch", $("#txt_server_to_watch").val());
 
@@ -451,92 +451,14 @@
             }
             if (socket != null)
             {
-            console.log("con");
-            switch(InfoToWatch){
-            case "CPU":
-            switch(InfoDetailToWacth){
-            case 0:
-                var socket_message_key = 'cpu.statoverall';
-                break;
-            case 1:
-                var socket_message_key = 'cpu.statidle';
-                break;
-            case 2:
-                var socket_message_key = 'cpu.statusergroup';
-                break;
-            case 3:
-                var socket_message_key = 'cpu.statirqgroup';
-                break;
-            case 4:
-                var socket_message_key = 'cpu.statirq';
-                break;
-            case 5:
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 6:
-                var socket_message_key = 'cpu.softirq';
-                break;
-
-            case 7:
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 8:
-                var socket_message_key = 'cpu.softirq';
-                break;
-            case 9:
-                var socket_message_key = 'cpu.avgload';
-                break;
-            case 10:
-                var socket_message_key = 'cpu.mysql';
-                break;
-            case 11:
-                var socket_message_key = 'cpu.mysql2';
-                break;
-            case 12:
-                var socket_message_key = 'cpu.top';
-                break;
-            }
-            break;
-            case "Memory":
-            switch(InfoDetailToWacth){
-            case 0:
-                var socket_message_key = 'memory.procrank';
-                break;
-            case 1:
-                var socket_message_key = 'memory.procrankvs';
-                break;
-            case 2:
-                var socket_message_key = 'memory.procrankpss';
-                break;
-            }
-            break;
-            case "IO":
-            switch(InfoDetailToWacth){
-            case 0:
-                var socket_message_key = 'io.status';
-                break;
-            case 1:
-                var socket_message_key = 'io.top';
-                break;
-            }
-            break;
-            case "Perf":
-            switch(InfoDetailToWacth){
-            case 0:
-                var socket_message_key = 'perf.cpuclock';
-                break;
-            case 1:
-                var socket_message_key = 'perf.flame';
-                break;
-            }
-            break;
-            }
+            socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);
             console.log("1"+socket_message_key);
             socket.emit(socket_message_key + ".req",
                             {
                                 'server': $("#txt_server_to_watch").val(),
                                 'interval': 3,
                                 'flag': false,
+                                'tag': 0,
                             }
             );
         }
@@ -547,7 +469,7 @@
        {
 
             url = changeURLPar(url, "first", "CPU");
-            if (tag == null)
+            if (args == null)
             {
             url = changeURLPar(url, "second", 0);
             url = changeURLPar(url, "type", "donut");
@@ -580,7 +502,7 @@
        if(x.selectedIndex == 2)
        {
             url = changeURLPar(url, "first", "Memory");
-            if (tag == null)
+            if (args == null)
             {
             changetype();
 
@@ -603,7 +525,7 @@
        if(x.selectedIndex == 3)
        {
             url = changeURLPar(url, "first", "IO");
-            if (tag == null)
+            if (args == null)
             {
             changetype();
 
@@ -627,7 +549,7 @@
        if(x.selectedIndex == 4)
        {
             url = changeURLPar(url, "first", "Perf");
-            if (tag == null)
+            if (args == null)
             {
             changetype();
 
@@ -907,6 +829,7 @@
                                 'server': $("#txt_server_to_watch").val(),
                                 'interval': 3,
                                 'flag': false,
+                                'tag': 0,
                             }
             );
             <!--socket.close();-->
@@ -1189,7 +1112,7 @@
                             {
                                 'server': $("#txt_server_to_watch").val(),
                                 <!--'time': '1531112209',-->
-                                'time': min,
+                                'min': min,
                                 'tag': 1,
                             }
             );
