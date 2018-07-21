@@ -516,15 +516,14 @@ class CPUProfiler:
         # if (tableinfo.has_key('list4')):
         if ('list5' in tableinfo):
             sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
-                  " where itemid= " + tableinfo['list3'] + " AND   " + tableinfo['list1'] + " > " + tableinfo['list5'] + \
-                  " order by " + tableinfo['list1'] + " DESC "
+                  " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
             print("sql-time5")
             try:
                 # 执行sql语句
 
                 sleep(5)
                 cursor.execute(sql)
-                ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchall()]
+                ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(1)]
                 # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(100)]//wh
                 # ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(10)]
                 # 提交到数据库执行

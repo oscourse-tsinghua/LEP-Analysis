@@ -17,13 +17,14 @@ var CpuMySqlDataChart = function(rootDivName, socket, server) {
     this.chartTitle = "MySql Chart";
     this.chartHeaderColor = 'orange';
 
-    this.maxDataCount = 150;
+    this.maxDataCount = 120;
 //    this.refreshInterval = 60;
     this.refreshInterval = 3;
 
     this.chart = null;
     this.chartData = {};
     this.chartData['num'] = ['value'];
+    this.timeStamp = ['timestamp'];
 //    this.chartData['last5'] = ['Last 5 minutes'];
 //    this.chartData['last15'] = ['Last 15 minutes'];
 
@@ -114,8 +115,8 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
 
     data = responseData['data'];
 
-//    console.log("mysql " + data[0]['time']);
-//    console.log("mysql " + new Date(data[0]['time']* 1000));
+    console.log("mysql " + data[0]['time']);
+    console.log("mysql " + new Date(data[0]['time']* 1000));
     if (data == null) {
         return
     }
@@ -132,61 +133,59 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
     if (this.chartData['num'].length + data.length > this.maxDataCount) {
         this.timeData.splice(1, data.length);
         this.chartData['num'].splice(1, data.length);
-        console.log("this.chartData['num'].length + data.length" + this.chartData['num'].length)
-        console.log("this.chartData['num'].length + data.length" + data.length)
+        this.timeStamp.splice(1, data.length);
+        min = "'" + this.timeStamp[1] + "'";
+        console.log("new min"+ min);
 //        this.maxValues.splice(1,1);
     }
 
-//    this.chartData = {};
-//    this.chartData['num'] = ['value'];
-//    this.timeData = {};
-//    this.timeData = ['x'];
-
-//    for (var i = 0; i < 100; i++)//wh
-//    for (var i = 0; i < 10; i++)
-//    {
-//
-////        console.log(data[i]['last1']);
-////        console.log(new Date(data[i]['last1']*1000));
-//        this.timeData.push(new Date(data[i]['time'] * 1000));
-//        this.chartData['num'].push(data[i]['num']);
-//    }
     if (this.chartData['num'].length == 1)
     {
     console.log("1111");
     for (var i = 0; i < 100; i++)
     {
-
+        this.timeStamp.splice(1, 0, data[i]['time']);
         this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
         this.chartData['num'].splice(1, 0, data[i]['num']);
     }
     min = "'" + data[99]['time'] + "'";
     console.log("min" + min);
-    max = "'" + data[0]['time'] + "'";
-    console.log("max" + max);
+    max = data[0]['time'];
+    console.log("max"+ max);
+//    max = "'" + data[0]['time'] + "'";
+//    console.log("max" + max + "--" + parseInt(max.substring(1, max.length -1)));
     }
-    else if(this.timeData[1] < new Date(data[0]['time'] * 1000))
+    else if(max < data[0]['time'])
     {
-        console.log("2222");
+        console.log("2222"+ max + "--" + data[0]['time']);
         for (var i = data.length - 1; i >= 0; i--)
         {
             this.timeData.push(new Date(data[i]['time'] * 1000));
             this.chartData['num'].push(data[i]['num']);
         }
-        max = "'" + data[0]['time'] + "'";
+//        max = "'" + data[0]['time'] + "'";
+        max = data[0]['time'];
         console.log("max" + max);
+
     }
-    else
+    else if (this.timeData[1] > new Date(data[0]['time'] * 1000))
     {
         console.log("3333");
         for (var i = 0; i < 10; i++)
         {
+            this.timeStamp.splice(1, 0, data[i]['time']);
             this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
             this.chartData['num'].splice(1, 0, data[i]['num']);
         }
         min =  "'" + data[9]['time'] + "'";
         console.log("min" + min);
     }
+//    else
+//    {
+//
+//    console.log("5555"+ data[0]['time']);
+//    console.log("5555");
+//    }
 
     // max values are the max values of each group of data, it determines the max of y axis.
 //    this.maxValues.push(Math.max.apply(Math,[data['last1'], data['last5'], data['last15'], this.cpuCoreCount]));
@@ -204,16 +203,5 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
 //    }
 
     // this.requestData();
-    this.socketIO.emit(this.socket_message_key + ".req",
-                            {
-                                'server': this.serverToWatch,
-                                'interval': this.refreshInterval,
-                                "request_id": this.socket_request_id,
-                                "request_time": (new Date()).getTime(),
-                                "flag": true,
-                                "max": max,
-                                "tag": 2,
-                            }
-    );
-    console.log("---"+new Date());
+
 };

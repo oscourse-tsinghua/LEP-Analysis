@@ -13,8 +13,11 @@ class SocketIOBlueprint:
             def wrap(io):
                 @io.on(key, namespace=self.namespace)
                 def wrapped(*args, **kwargs):
+                    # print("IOBlueprint" + str(f(*args, **kwargs)))
                     return f(*args, **kwargs)
+                # print("IOBlueprint-1-"+str(io))
                 return io
+
             self._handlers.append(wrap)
         return wrapper
 
