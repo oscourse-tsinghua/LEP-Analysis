@@ -180,12 +180,6 @@ CpuMySqlDataChart.prototype.updateChartData = function(responseData) {
         min =  "'" + data[9]['time'] + "'";
         console.log("min" + min);
     }
-//    else
-//    {
-//
-//    console.log("5555"+ data[0]['time']);
-//    console.log("5555");
-//    }
 
     // max values are the max values of each group of data, it determines the max of y axis.
 //    this.maxValues.push(Math.max.apply(Math,[data['last1'], data['last5'], data['last15'], this.cpuCoreCount]));

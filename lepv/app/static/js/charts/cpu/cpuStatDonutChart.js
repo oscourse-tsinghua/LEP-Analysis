@@ -27,8 +27,9 @@ var CpuStatDonutChart = function(rootDivName, socket, server) {
   this.chartData['irq'] = ['irq'];
   this.chartData['softirq'] = ['softirq'];
   this.chartData['steal'] = ['steal'];
-  this.chartData['guest'] = ['guest'];
-  this.chartData['guestnice'] = ['guestnice'];
+  this.timeStamp = ['timestamp'];
+//  this.chartData['guest'] = ['guest'];
+//  this.chartData['guestnice'] = ['guestnice'];
   var type = document.getElementById("type").value;
   var btn = document.getElementById("btn-left");
   this.type = type;
@@ -65,9 +66,9 @@ CpuStatDonutChart.prototype.initializeChart = function() {
                 ['iowait'],
                 ['irq'],
                 ['softirq'],
-                ['steal'],
-                ['guest'],
-                ['guestnice']
+                ['steal']
+//                ['guest'],
+//                ['guestnice']
             ],
             type : this.type,
             colors: {
@@ -120,6 +121,9 @@ CpuStatDonutChart.prototype.initializeChart = function() {
                     return value;
                 }
             }
+        },
+        point: {
+            show: false
         }
         });
     }
@@ -140,9 +144,9 @@ CpuStatDonutChart.prototype.initializeChart = function() {
                 ['iowait', 0],
                 ['irq', 0],
                 ['softirq', 0],
-                ['steal', 0],
-                ['guest', 0],
-                ['guestnice', 0]
+                ['steal', 0]
+//                ['guest', 0],
+//                ['guestnice', 0]
             ],
             type : this.type,
             colors: {
@@ -175,36 +179,91 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
     console.log("donutoverall");
     console.log(responseData);
     var thisChart = this;
-    var overallData = responseData['data']['all'];
-    if (overallData == null) {
+//    var overallData = responseData['data']['all'];
+    var data = responseData['data'];
+    if (data == null) {
         return
     }
-    if (this.chartData['user'].length > this.maxDataCount) {
-        this.timeData.splice(1, 1);
-        this.chartData['user'].splice(1, 1);
-        this.chartData['nice'].splice(1, 1);
-        this.chartData['system'].splice(1, 1);
-        this.chartData['idle'].splice(1, 1);
-        this.chartData['iowait'].splice(1, 1);
-        this.chartData['irq'].splice(1, 1);
-        this.chartData['softirq'].splice(1, 1);
-        this.chartData['steal'].splice(1, 1);
-        this.chartData['guest'].splice(1, 1);
-        this.chartData['guestnice'].splice(1, 1);
+    if (this.chartData['user'].length + data.length> this.maxDataCount) {
+        this.timeData.splice(1, data.length);
+        this.chartData['user'].splice(1, data.length);
+        this.chartData['nice'].splice(1, data.length);
+        this.chartData['system'].splice(1, data.length);
+        this.chartData['idle'].splice(1, data.length);
+        this.chartData['iowait'].splice(1, data.length);
+        this.chartData['irq'].splice(1, data.length);
+        this.chartData['softirq'].splice(1, data.length);
+        this.chartData['steal'].splice(1, data.length);
+        min = "'" + this.timeStamp[1] + "'";
+        console.log("new min"+ min);
+//        this.chartData['guest'].splice(1, 1);
+//        this.chartData['guestnice'].splice(1, 1);
 //        this.maxValues.splice(1,1);
     }
 
-    this.timeData.push(new Date());
-    this.chartData['user'].push(overallData['user']);
-    this.chartData['nice'].push(overallData['nice']);
-    this.chartData['system'].push(overallData['system']);
-    this.chartData['idle'].push(overallData['idle']);
-    this.chartData['iowait'].push(overallData['iowait']);
-    this.chartData['irq'].push(overallData['irq']);
-    this.chartData['softirq'].push(overallData['soft']);
-    this.chartData['steal'].push(overallData['steal']);
-    this.chartData['guest'].push(overallData['guest']);
-    this.chartData['guestnice'].push(overallData['gnice']);
+    if (this.chartData['user'].length == 1)
+    {
+        console.log("1111");
+        for (var i = 0; i < 100; i++)
+        {
+            this.timeStamp.splice(1, 0, data[i]['time']);
+            this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+            this.chartData['user'].splice(1, 0, data[i]['user']);
+            this.chartData['nice'].splice(1, 0, data[i]['nice']);
+            this.chartData['system'].splice(1, 0, data[i]['system']);
+            this.chartData['idle'].splice(1, 0, data[i]['idle']);
+            this.chartData['iowait'].splice(1, 0, data[i]['iowait']);
+            this.chartData['irq'].splice(1, 0, data[i]['irq']);
+            this.chartData['softirq'].splice(1, 0, data[i]['softirq']);
+            this.chartData['steal'].splice(1, 0, data[i]['steal']);
+
+        }
+        min = "'" + data[99]['time'] + "'";
+        console.log("min" + min);
+        max = data[0]['time'];
+        console.log("max"+ max);
+
+    }
+    else if(max < data[0]['time'])
+    {
+        console.log("2222"+ max + "--" + data[0]['time']);
+        for (var i = data.length - 1; i >= 0; i--)
+        {
+            this.timeData.push(new Date(data[i]['time'] * 1000));
+            this.chartData['user'].push(data[i]['user']);
+            this.chartData['nice'].push(data[i]['nice']);
+            this.chartData['system'].push(data[i]['system']);
+            this.chartData['idle'].push(data[i]['idle']);
+            this.chartData['iowait'].push(data[i]['iowait']);
+            this.chartData['irq'].push(data[i]['irq']);
+            this.chartData['softirq'].push(data[i]['softirq']);
+            this.chartData['steal'].push(data[i]['steal']);
+
+        }
+//        max = "'" + data[0]['time'] + "'";
+        max = data[0]['time'];
+        console.log("max" + max);
+
+    }
+    else if (this.timeData[1] > new Date(data[0]['time'] * 1000))
+    {
+        console.log("3333");
+        for (var i = 0; i < 10; i++)
+        {
+            this.timeStamp.splice(1, 0, data[i]['time']);
+            this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+            this.chartData['user'].splice(1, 0, data[i]['user']);
+            this.chartData['nice'].splice(1, 0, data[i]['nice']);
+            this.chartData['system'].splice(1, 0, data[i]['system']);
+            this.chartData['idle'].splice(1, 0, data[i]['idle']);
+            this.chartData['iowait'].splice(1, 0, data[i]['iowait']);
+            this.chartData['irq'].splice(1, 0, data[i]['irq']);
+            this.chartData['softirq'].splice(1, 0, data[i]['softirq']);
+            this.chartData['steal'].splice(1, 0, data[i]['steal']);
+        }
+        min =  "'" + data[9]['time'] + "'";
+        console.log("min" + min);
+    }
 
 
 //    if (this.type == "line"  || this.type == "spline" || this.type == "area" || this.type == "area-spline" || this.type == "scatter"){
@@ -219,9 +278,9 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
                 this.chartData['iowait'],
                 this.chartData['irq'],
                 this.chartData['softirq'],
-                this.chartData['steal'],
-                this.chartData['guest'],
-                this.chartData['guestnice']],
+                this.chartData['steal']],
+//                this.chartData['guest'],
+//                this.chartData['guestnice']],
             keys: {
                 value: ['']
             }
@@ -230,18 +289,19 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
 //    else if(this.type == "donut" || this.type == "pie" || this.type == "bar")
     else if (type_data_2.indexOf(this.type) != -1)
     {
+
         this.chart.load({
             columns: [
-                ['user', overallData.user],
-                ['nice', overallData.nice],
-                ['system', overallData.system],
-                ['idle', overallData.idle],
-                ['iowait', overallData.iowait],
-                ['irq', overallData.irq],
-                ['softirq', overallData.soft],
-                ['steal', overallData.steal],
-                ['guest', overallData.guest],
-                ['guestnice', overallData.gnice]
+                ['user', data.user],
+                ['nice', data.nice],
+                ['system', data.system],
+                ['idle', data.idle],
+                ['iowait', data.iowait],
+                ['irq', data.irq],
+                ['softirq', data.soft],
+                ['steal', data.steal]
+//                ['guest', overallData.guest],
+//                ['guestnice', overallData.gnice]
             ],
             keys: {
                 value: ['']

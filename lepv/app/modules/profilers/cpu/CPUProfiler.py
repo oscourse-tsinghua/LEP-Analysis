@@ -228,6 +228,143 @@ class CPUProfiler:
 
         return responseData
 
+    def get_cpu_stat(self, tableinfo):
+        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        cursor = db.cursor()
+        #(23306,23302,23305,23299,23301,23300,23303,23304)
+
+        if ('list5' in tableinfo):
+            # sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
+            #       " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
+            # print("sql-time5")
+            sql = "SELECT clock,value FROM history where itemid=23306 order by itemid,clock DESC limit 1"
+            sql1 = "SELECT clock,value FROM history where itemid=23302 order by itemid,clock DESC limit 1"
+            sql2 = "SELECT clock,value FROM history where itemid=23305 order by itemid,clock DESC limit 1"
+            sql3 = "SELECT clock,value FROM history where itemid=23299 order by itemid,clock DESC limit 1"
+            sql4 = "SELECT clock,value FROM history where itemid=23301 order by itemid,clock DESC limit 1"
+            sql5 = "SELECT clock,value FROM history where itemid=23300 order by itemid,clock DESC limit 1"
+            sql6 = "SELECT clock,value FROM history where itemid=23303 order by itemid,clock DESC limit 1"
+            sql7 = "SELECT clock,value FROM history where itemid=23304 order by itemid,clock DESC limit 1"
+            try:
+                # 执行sql语句
+                sleep(60)
+                cursor.execute(sql)
+                ones = [
+                    {'time': i[0], 'user': i[1], 'nice': 0, 'system': 0, 'idle': 0, 'iowait': 0, 'irq': 0, 'softirq': 0,
+                     'steal': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'nice': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'system': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql3)
+                ones3 = [{'time': i[0], 'idle': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql4)
+                ones4 = [{'time': i[0], 'iowait': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql5)
+                ones5 = [{'time': i[0], 'irq': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql6)
+                ones6 = [{'time': i[0], 'softirq': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql7)
+                ones7 = [{'time': i[0], 'steal': i[1]} for i in cursor.fetchall()]
+                for i in range(1):
+                    ones[i]['nice'] = ones1[i]['nice']
+                    ones[i]['system'] = ones2[i]['system']
+                    ones[i]['idle'] = ones3[i]['idle']
+                    ones[i]['iowait'] = ones4[i]['iowait']
+                    ones[i]['irq'] = ones5[i]['irq']
+                    ones[i]['softirq'] = ones6[i]['softirq']
+                    ones[i]['steal'] = ones7[i]['steal']
+
+                db.commit()
+            except:
+                db.rollback()
+        elif ('list4' in tableinfo):
+            # sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
+            #       " where itemid= " + tableinfo['list3'] + " AND   " + tableinfo['list1'] + " < " + tableinfo['list4'] + \
+            #       " order by " + tableinfo['list1'] + " DESC "
+            sql = "SELECT clock,value FROM history where itemid=23306 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql1 = "SELECT clock,value FROM history where itemid=23302 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql2 = "SELECT clock,value FROM history where itemid=23305 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql3 = "SELECT clock,value FROM history where itemid=23299 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql4 = "SELECT clock,value FROM history where itemid=23301 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql5 = "SELECT clock,value FROM history where itemid=23300 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql6 = "SELECT clock,value FROM history where itemid=23303 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql7 = "SELECT clock,value FROM history where itemid=23304 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            try:
+                cursor.execute(sql)
+                ones = [
+                    {'time': i[0], 'user': i[1], 'nice': 0, 'system': 0, 'idle': 0, 'iowait': 0, 'irq': 0, 'softirq': 0,
+                     'steal': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'nice': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'system': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql3)
+                ones3 = [{'time': i[0], 'idle': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql4)
+                ones4 = [{'time': i[0], 'iowait': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql5)
+                ones5 = [{'time': i[0], 'irq': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql6)
+                ones6 = [{'time': i[0], 'softirq': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql7)
+                ones7 = [{'time': i[0], 'steal': i[1]} for i in cursor.fetchall()]
+                for i in range(10):
+                    ones[i]['nice'] = ones1[i]['nice']
+                    ones[i]['system'] = ones2[i]['system']
+                    ones[i]['idle'] = ones3[i]['idle']
+                    ones[i]['iowait'] = ones4[i]['iowait']
+                    ones[i]['irq'] = ones5[i]['irq']
+                    ones[i]['softirq'] = ones6[i]['softirq']
+                    ones[i]['steal'] = ones7[i]['steal']
+                db.commit()
+            except:
+                db.rollback()
+        else:
+            sql = "SELECT clock,value FROM history where itemid=23306 order by itemid,clock DESC limit 100"
+            sql1 = "SELECT clock,value FROM history where itemid=23302 order by itemid,clock DESC limit 100"
+            sql2 = "SELECT clock,value FROM history where itemid=23305 order by itemid,clock DESC limit 100"
+            sql3 = "SELECT clock,value FROM history where itemid=23299 order by itemid,clock DESC limit 100"
+            sql4 = "SELECT clock,value FROM history where itemid=23301 order by itemid,clock DESC limit 100"
+            sql5 = "SELECT clock,value FROM history where itemid=23300 order by itemid,clock DESC limit 100"
+            sql6 = "SELECT clock,value FROM history where itemid=23303 order by itemid,clock DESC limit 100"
+            sql7 = "SELECT clock,value FROM history where itemid=23304 order by itemid,clock DESC limit 100"
+            try:
+                cursor.execute(sql)
+                ones = [{'time': i[0], 'user': i[1], 'nice': 0, 'system': 0, 'idle': 0, 'iowait': 0, 'irq': 0, 'softirq': 0,
+                         'steal': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'nice': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'system': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql3)
+                ones3 = [{'time': i[0], 'idle': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql4)
+                ones4 = [{'time': i[0], 'iowait': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql5)
+                ones5 = [{'time': i[0], 'irq': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql6)
+                ones6 = [{'time': i[0], 'softirq': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql7)
+                ones7 = [{'time': i[0], 'steal': i[1]} for i in cursor.fetchall()]
+                for i in range(100):
+                    ones[i]['nice'] = ones1[i]['nice']
+                    ones[i]['system'] = ones2[i]['system']
+                    ones[i]['idle'] = ones3[i]['idle']
+                    ones[i]['iowait'] = ones4[i]['iowait']
+                    ones[i]['irq'] = ones5[i]['irq']
+                    ones[i]['softirq'] = ones6[i]['softirq']
+                    ones[i]['steal'] = ones7[i]['steal']
+
+                db.commit()
+            except:
+                db.rollback()
+        db.close()
+        response_data = {}
+        response_data['data'] = ones
+        print("mysql-data_cpu_stat" + str(ones))
+        return response_data
+
     def get_irq(self, response_lines=[]):
         print("CPUProfiler-1-")
         lepd_command = 'GetCmdMpstat'
@@ -238,7 +375,7 @@ class CPUProfiler:
 
         if len(response_lines) < 3:
             return {}
-
+        print("get_irq_1"+str(response_lines))
         try:
             # discard the first three lines
             response_lines.pop(0)
@@ -247,8 +384,8 @@ class CPUProfiler:
         except Exception as e:
             print(response_lines, "-------  GetCmdMpstat")
             return {}
-        
 
+        print("get_irq_2" + str(response_lines))
         irq_data = {}
         irq_data['data'] = {}
 
@@ -273,6 +410,8 @@ class CPUProfiler:
                 irq_stat['user'] = float(line_values[-10])
 
                 cpu_name = line_values[-11]
+                print("cpu_name"+str(cpu_name))
+                print("irq_stat"+str(irq_stat))
             except Exception as err:
                 print(err, "-------  GetCmdMpstat")
                 continue
@@ -505,7 +644,7 @@ class CPUProfiler:
     def get_mysql_data(self, tableinfo, response_lines=None):
         print("CPUProfiler-5-")
         # 打开数据库连接
-        db = MySQLdb.connect("192.168.253.244", "root", "135246", "zabbix")
+        db = MySQLdb.connect("192.168.253.136", "root", "135246", "zabbix")
         # db = MySQLdb.connect("192.168.2.9", "root", "596100", "zabbix")
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()
@@ -520,7 +659,6 @@ class CPUProfiler:
             print("sql-time5")
             try:
                 # 执行sql语句
-
                 sleep(5)
                 cursor.execute(sql)
                 ones = [{'time': i[0], 'num': i[1]} for i in cursor.fetchmany(1)]

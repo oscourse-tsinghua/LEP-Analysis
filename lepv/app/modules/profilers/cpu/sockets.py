@@ -13,15 +13,43 @@ cpu_statoverall_timer = None
 @cpu_blueprint.on('cpu.statoverall.req')
 def get_cpu_stat(request):
     server = request['server']
-    interval = request['interval']
+    tag = request['tag']
     socketio = cpu_blueprint.get_io()
-    global cpu_statoverall_timer,cpu_statoverall_count
-    cpu_statoverall_count = request["flag"]
-    set_value("cpustatoverall",str(cpu_statoverall_count))
+
+    # global cpu_statoverall_timer,cpu_statoverall_count
+    # cpu_statoverall_count = request["flag"]
+    # set_value("cpustatoverall",str(cpu_statoverall_count))
     # if cpu_statoverall_timer is None:
-    cpu_statoverall_timer = Timer(interval, background_timer_stuff_cpustatoverall, [socketio, interval, "cpu.statoverall.res", CPUProfiler(server).get_irq])
-    cpu_statoverall_timer.start()
+    # cpu_statoverall_timer = Timer(interval, background_timer_stuff_cpustatoverall, [socketio, interval, "cpu.statoverall.res", CPUProfiler(server).get_cpu_stat])
+    # cpu_statoverall_timer.start()
     # emit("cpu.statoverall.res", CPUProfiler(server).get_irq())
+
+    if (tag == 0):
+        print("tag" + str(tag))
+        interval = request['interval']
+        # global cpu_mysql_timer,cpu_mysql_count
+        global cpu_statoverall_timer, cpu_statoverall_count
+        tableinfo = {}
+        # get_mysql_data = CPUProfiler(server).get_mysql_data(tableinfo)
+        socketio.emit("cpu.statoverall.res", CPUProfiler(server).get_cpu_stat(tableinfo))
+        socketio.sleep(0)
+        tableinfo = { 'list5': '1'}
+        # cpu_mysql_count = request["flag"]
+        # set_value("cpumysql",str(cpu_mysql_count))
+        cpu_statoverall_count = request["flag"]
+        set_value("cpustatoverall", str(cpu_statoverall_count))
+        cpu_statoverall_timer = Timer(interval, background_timer_stuff_cpustatoverall, [socketio, interval, "cpu.statoverall.res", CPUProfiler(server).get_cpu_stat, tableinfo])
+        cpu_statoverall_timer.start()
+        # cpu_mysql_timer = Timer(interval, background_timer_stuff_cpumysql, [socketio, interval, "cpu.mysql.res", CPUProfiler(server).get_mysql_data, tableinfo])
+        # cpu_mysql_timer.start()
+
+    elif (tag == 1):
+        print("tag" + str(tag))
+        clock = request['min']
+        print('time-1-'+ clock)
+        tableinfo = {'list4': clock}
+        socketio.emit("cpu.statoverall.res", CPUProfiler(server).get_cpu_stat(tableinfo))
+        socketio.sleep(0)
 
 cpu_statidle_timer = None
 @cpu_blueprint.on('cpu.statidle.req')
