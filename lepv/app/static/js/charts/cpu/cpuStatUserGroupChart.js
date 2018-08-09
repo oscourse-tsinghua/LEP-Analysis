@@ -18,6 +18,7 @@ var CpuStatUserGroupChart = function(rootDivName, socket, server) {
   this.refreshInterval = 3;
   this.maxDataCount = 150;
   this.timeData = ['x'];
+  this.timeStamp = ['timestamp'];
 
   var type = document.getElementById("type").value;
   this.type = type;
@@ -35,6 +36,9 @@ CpuStatUserGroupChart.prototype.initializeChart = function() {
 
     var thisChart = this;
     if (type_data_1.indexOf(this.type) != -1){
+    if (btn.style.display == "none"){
+        btn.style.display = "block";
+    }
     this.chart = c3.generate({
         bindto: '#' + thisChart.mainDivName,
         data: {
@@ -81,11 +85,17 @@ CpuStatUserGroupChart.prototype.initializeChart = function() {
                     return value + " %";
                 }
             }
+        },
+        point: {
+            show: false
         }
     });
     }
     else if (type_data_2.indexOf(this.type) != -1)
     {
+    if (btn.style.display == "block"){
+        btn.style.display = "none";
+    }
      this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
@@ -112,48 +122,135 @@ CpuStatUserGroupChart.prototype.updateChartData = function(response) {
     var thisChart = this;
 
     var data = response['data'];
-    delete data['all'];
+//    delete data['all'];
 
-    if ( !( 'CPU-0' in this.chartData) ) {
+//    if ( !( 'CPU-0' in this.chartData) ) {
+//        this.chartData = {};
+//        $.each( data, function( coreName, statValue ) {
+//            thisChart.chartData['CPU-' + coreName] = ['CPU-' + coreName];
+//        });
+//
+//    }
+    if ( !( 'CPU-0' in this.chartData)){
         this.chartData = {};
-        $.each( data, function( coreName, statValue ) {
-            thisChart.chartData['CPU-' + coreName] = ['CPU-' + coreName];
-        });
+        var coreName =  Object.keys(data[0]).length;
+        for (var i = 0; i < coreName - 1; i++)
+        {
+            thisChart.chartData['CPU-' + i] = ['CPU-' + i];
+        }
+    }
+    if (this.timeData.length + data.length> this.maxDataCount) {
+        this.timeData.splice(1, data.length);
+        var coreName = data[0].length - 1;
+        for (var i = 0; i < coreName; i++)
+        {
+            thisChart.chartData['CPU-' + i].splice(1, data.length);
+        }
+        min = "'" + this.timeStamp[1] + "'";
+        console.log("new min"+ min);
+    }
+
+        if (this.timeData.length == 1)
+    {
+        console.log("1111");
+        for (var i = 0; i < 100; i++)
+        {
+            this.timeStamp.splice(1, 0, data[i]['time']);
+            this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+//            this.chartData['user'].splice(1, 0, data[i]['user']);
+            var coreName =  Object.keys(data[0]).length;
+            console.log("coreName"+ coreName )
+            for (var j = 0; j < coreName - 1; j++)
+            {
+                thisChart.chartData['CPU-' + j].splice(1, 0, data[i]['CPU-' + j]);
+            }
+
+        }
+        min = "'" + data[99]['time'] + "'";
+        console.log("min" + min);
+        max = data[0]['time'];
+        console.log("max"+ max);
 
     }
-    var chartData_ugroup = {};
-    $.each( data, function( coreName, statValue ) {
-         chartData_ugroup['CPU-' + coreName] = ['CPU-' + coreName];
-    });
-    this.chartData_1 = chartData_ugroup;
-    console.log(chartData_ugroup);
-    console.log(this.chartData_1);
-    if (this.timeData.length > this.maxDataCount) {
-        this.timeData.splice(1, 1);
+    else if(max < data[0]['time'])
+    {
+        console.log("2222"+ max + "--" + data[0]['time']);
+        for (var i = data.length - 1; i >= 0; i--)
+        {
+            this.timeData.push(new Date(data[i]['time'] * 1000));
+//            this.chartData['user'].push(data[i]['user']);
+            var coreName =  Object.keys(data[0]).length;
+            for (var j = 0; j < coreName -1; j++)
+            {
+                thisChart.chartData['CPU-' + j].push(data[i]['CPU-' + j]);
+            }
 
-        $.each( data, function( coreName, statValue ) {
-            thisChart.chartData['CPU-' + coreName].splice(1, 1);
-        });
+        }
+//        max = "'" + data[0]['time'] + "'";
+        max = data[0]['time'];
+        console.log("max" + max);
+
     }
+    else if (this.timeData[1] > new Date(data[0]['time'] * 1000))
+    {
+        console.log("3333");
+        for (var i = 0; i < 10; i++)
+        {
+            this.timeStamp.splice(1, 0, data[i]['time']);
+            this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+//            this.chartData['user'].splice(1, 0, data[i]['user']);
+            var coreName =  Object.keys(data[0]).length;
+            for (var j = 0; j < coreName -1; j++)
+            {
+                thisChart.chartData['CPU-' + j].splice(1, 0, data[i]['CPU-' + j]);
+            }
+        }
+        min =  "'" + data[9]['time'] + "'";
+        console.log("min" + min);
+    }
+
+    columnDatas = [];
+    columnDatas_1 = [];
+    columnDatas.push(this.timeData);
+    var coreName =  Object.keys(data[0]).length;
+    for( var i = 0; i < coreName - 1; i++)
+    {
+        columnDatas.push(thisChart.chartData['CPU-' + i]);
+        columnDatas_1.push(thisChart.chartData['CPU-' + i]);
+    }
+
+//    var chartData_ugroup = {};
+//    $.each( data, function( coreName, statValue ) {
+//         chartData_ugroup['CPU-' + coreName] = ['CPU-' + coreName];
+//    });
+//    this.chartData_1 = chartData_ugroup;
+//    console.log(chartData_ugroup);
+//    console.log(this.chartData_1);
+//    if (this.timeData.length > this.maxDataCount) {
+//        this.timeData.splice(1, 1);
+//
+//        $.each( data, function( coreName, statValue ) {
+//            thisChart.chartData['CPU-' + coreName].splice(1, 1);
+//        });
+//    }
 
 //    userGroupStatData[coreName] = parseFloat(coreStatData.user) + parseFloat(coreStatData.system) + parseFloat(coreStatData.nice);
 //    irqGroupStatData[coreName] = parseFloat(coreStatData.irq) + parseFloat(coreStatData.soft);
-    this.timeData.push(new Date());
-    $.each( data, function( coreName, statValue ) {
-        thisChart.chartData['CPU-' + coreName].push(statValue['user'] + statValue['system'] + statValue['nice']);
-        thisChart.chartData_1['CPU-' + coreName].push(statValue['user'] + statValue['system'] + statValue['nice']);
-    });
+//    this.timeData.push(new Date());
+//    $.each( data, function( coreName, statValue ) {
+//        thisChart.chartData['CPU-' + coreName].push(statValue['user'] + statValue['system'] + statValue['nice']);
+//        thisChart.chartData_1['CPU-' + coreName].push(statValue['user'] + statValue['system'] + statValue['nice']);
+//    });
+//
+//    var columnDatas = [];
+//    var columnDatas_1 = [];
+//    columnDatas.push(this.timeData);
+//    $.each( data, function( coreName, statValue ) {
+//        columnDatas.push(thisChart.chartData['CPU-' + coreName]);
+//        columnDatas_1.push(thisChart.chartData_1['CPU-' + coreName]);
+//    });
 
-    var columnDatas = [];
-    var columnDatas_1 = [];
-    columnDatas.push(this.timeData);
-    $.each( data, function( coreName, statValue ) {
-        columnDatas.push(thisChart.chartData['CPU-' + coreName]);
-        columnDatas_1.push(thisChart.chartData_1['CPU-' + coreName]);
-    });
 
-    console.log(columnDatas);
-    console.log(columnDatas_1);
     if (type_data_1.indexOf(this.type) != -1){
     this.chart.load({
         columns: columnDatas

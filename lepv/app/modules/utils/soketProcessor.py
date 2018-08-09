@@ -67,8 +67,8 @@ def background_timer_stuff_cpustatidle(socketio, interval, socket_res_message_ke
         print("cancel()")
 
 
-def background_timer_stuff_cpustatusergroup(socketio, interval, socket_res_message_key, profiler_method):
-    data = profiler_method()
+def background_timer_stuff_cpustatusergroup(socketio, interval, socket_res_message_key, profiler_method,args):
+    data = profiler_method(args)
     socketio.emit(socket_res_message_key, data)
 
     cpu_statusergroup_count = get_value("cpustatusergroup")
@@ -76,7 +76,7 @@ def background_timer_stuff_cpustatusergroup(socketio, interval, socket_res_messa
     if (cpu_statusergroup_count == "True"):
         print("socketProcesor------")
         Timer(interval, background_timer_stuff_cpustatusergroup, [
-            socketio, interval, socket_res_message_key, profiler_method]).start()
+            socketio, interval, socket_res_message_key, profiler_method, args]).start()
     elif (cpu_statusergroup_count == "False"):
         print("cancel()")
 

@@ -86,15 +86,27 @@ cpu_statusergroup_timer = None
 @cpu_blueprint.on('cpu.statusergroup.req')
 def get_cpu_stat(request):
     server = request['server']
-    interval = request['interval']
+    tag = request['tag']
     socketio = cpu_blueprint.get_io()
-    global cpu_statusergroup_timer,cpu_statusergroup_count
-    cpu_statusergroup_count = request["flag"]
-    set_value("cpustatusergroup",str(cpu_statusergroup_count))
-    # if cpu_statusergroup_timer is None:
-    cpu_statusergroup_timer = Timer(interval, background_timer_stuff_cpustatusergroup, [socketio, interval, "cpu.statusergroup.res", CPUProfiler(server).get_irq])
-    cpu_statusergroup_timer.start()
-    # emit("cpu.statusergroup.res", CPUProfiler(server).get_irq())
+    if (tag == 0):
+        print("tag" + str(tag))
+        interval = request['interval']
+        global cpu_statusergroup_timer,cpu_statusergroup_count
+        tableinfo = {}
+        socketio.emit("cpu.statusergroup.res", CPUProfiler(server).get_cpu_usergroup(tableinfo))
+        tableinfo = {'list5': '1'}
+        cpu_statusergroup_count = request["flag"]
+        set_value("cpustatusergroup",str(cpu_statusergroup_count))
+        # if cpu_statusergroup_timer is None:
+        cpu_statusergroup_timer = Timer(interval, background_timer_stuff_cpustatusergroup, [socketio, interval, "cpu.statusergroup.res", CPUProfiler(server).get_cpu_usergroup,tableinfo])
+        cpu_statusergroup_timer.start()
+        # emit("cpu.statusergroup.res", CPUProfiler(server).get_irq())
+    elif (tag == 1):
+        print("tag" + str(tag))
+        clock = request['min']
+        print('time-1-' + clock)
+        tableinfo = {'list4': clock}
+        socketio.emit("cpu.statusergroup.res", CPUProfiler(server).get_cpu_usergroup(tableinfo))
 
 cpu_statirqgroup_timer = None
 @cpu_blueprint.on('cpu.statirqgroup.req')
