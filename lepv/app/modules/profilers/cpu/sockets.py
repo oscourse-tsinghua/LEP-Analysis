@@ -53,17 +53,34 @@ def get_cpu_stat(request):
 
 cpu_statidle_timer = None
 @cpu_blueprint.on('cpu.statidle.req')
-def get_cpu_stat(request):
+def get_cpu_idle(request):
     server = request['server']
-    interval = request['interval']
+    tag = request['tag']
     socketio = cpu_blueprint.get_io()
-    global cpu_statidle_timer,cpu_statidle_count
-    # if cpu_statidle_timer is None:
-    cpu_statidle_count = request["flag"]
-    set_value("cpustatidle",str(cpu_statidle_count))
-    cpu_statidle_timer = Timer(interval, background_timer_stuff_cpustatidle, [socketio, interval, "cpu.statidle.res", CPUProfiler(server).get_irq])
-    cpu_statidle_timer.start()
+
+    # cpu_statidle_timer = Timer(interval, background_timer_stuff_cpustatidle, [socketio, interval, "cpu.statidle.res", CPUProfiler(server).idle])
+    # cpu_statidle_timer.start()
     # emit("cpu.statidle.res", CPUProfiler(server).get_irq())
+    if (tag == 0):
+        print("tag" + str(tag))
+        interval = request['interval']
+        global cpu_statidle_timer, cpu_statidle_count
+        tableinfo = {}
+        socketio.emit("cpu.statidle.res", CPUProfiler(server).get_cpu_idle(tableinfo))
+        tableinfo = { 'list5': '1'}
+
+        cpu_statidle_count = request["flag"]
+        set_value("cpustatidle", str(cpu_statidle_count))
+        print("cpu_statidle_count"+ str(cpu_statidle_count))
+        cpu_statidle_timer = Timer(interval, background_timer_stuff_cpustatidle, [socketio, interval, "cpu.statidle.res", CPUProfiler(server).get_cpu_idle, tableinfo])
+        cpu_statidle_timer.start()
+
+    elif (tag == 1):
+        print("tag" + str(tag))
+        clock = request['min']
+        print('time-1-'+ clock)
+        tableinfo = {'list4': clock}
+        socketio.emit("cpu.statidle.res", CPUProfiler(server).get_cpu_idle(tableinfo))
 
 cpu_statusergroup_timer = None
 @cpu_blueprint.on('cpu.statusergroup.req')

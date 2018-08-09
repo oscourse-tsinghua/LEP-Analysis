@@ -28,18 +28,10 @@ def process_socket_request(request, socket_req_message_key, profiler_method):
 def background_timer_stuff(socketio, interval, socket_res_message_key, profiler_method):
 
     data = profiler_method()
-    # Timer(interval, background_timer_stuff, [
-    #     socketio, interval, socket_res_message_key, profiler_method]).cancel()
-    # print(str(socket_res_message_key)+"111")
     socketio.emit(socket_res_message_key, data)
-    # print("background_timer_stuff")
-    # print(str(socket_res_message_key) + "222")
     Timer(interval, background_timer_stuff, [
               socketio, interval, socket_res_message_key, profiler_method]).start()
-    # print(str(socket_res_message_key) + "333")
-    # Timer(interval, background_timer_stuff, [
-    #     socketio, interval, socket_res_message_key, profiler_method]).cancel()
-    # print(str(socket_res_message_key) + "444")
+
 
 
 def background_timer_stuff1(socketio, interval, socket_res_message_key, profiler_method,args):
@@ -56,23 +48,21 @@ def background_timer_stuff_cpustatoverall(socketio, interval, socket_res_message
     cpu_statoverall_count = get_value("cpustatoverall")
     print("background_timer_stuff-"+str(cpu_statoverall_count))
     if (cpu_statoverall_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_cpustatoverall, [
             socketio, interval, socket_res_message_key, profiler_method, args]).start()
     elif (cpu_statoverall_count == "False"):
         print("cancel()")
 
 
-def background_timer_stuff_cpustatidle(socketio, interval, socket_res_message_key, profiler_method):
-    data = profiler_method()
+def background_timer_stuff_cpustatidle(socketio, interval, socket_res_message_key, profiler_method,args):
+    data = profiler_method(args)
     socketio.emit(socket_res_message_key, data)
 
     cpu_statidle_count = get_value("cpustatidle")
     print("background_timer_stuff-" + str(cpu_statidle_count))
     if (cpu_statidle_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_cpustatidle, [
-            socketio, interval, socket_res_message_key, profiler_method]).start()
+            socketio, interval, socket_res_message_key, profiler_method,args]).start()
     elif (cpu_statidle_count == "False"):
         print("cancel()")
 
@@ -98,7 +88,6 @@ def background_timer_stuff_cpustatirqgroup(socketio, interval, socket_res_messag
     cpu_statirqgroup_count = get_value("cpustatirqgroup")
     print("background_timer_stuff-" + str(cpu_statirqgroup_count))
     if (cpu_statirqgroup_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_cpustatirqgroup, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (cpu_statirqgroup_count == "False"):
@@ -112,7 +101,6 @@ def background_timer_stuff_cpustatirq(socketio, interval, socket_res_message_key
     cpu_statirq_count = get_value("cpustatirq")
     print("background_timer_stuff-" + str(cpu_statirq_count))
     if (cpu_statirq_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_cpustatirq, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (cpu_statirq_count == "False"):
@@ -125,7 +113,6 @@ def background_timer_stuff_cpusoftirq(socketio, interval, socket_res_message_key
     cpu_softirq_count = get_value("cpusoftirq")
     print("background_timer_stuff-" + str(cpu_softirq_count))
     if (cpu_softirq_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_cpusoftirq, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (cpu_softirq_count == "False"):
@@ -139,7 +126,6 @@ def background_timer_stuff_cpuavg(socketio, interval, socket_res_message_key, pr
     cpu_avg_count = get_value("cpuavg")
     print("background_timer_stuff-" + str(cpu_avg_count))
     if (cpu_avg_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_cpuavg, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (cpu_avg_count == "False"):
@@ -187,7 +173,6 @@ def background_timer_stuff_memorystatus(socketio, interval, socket_res_message_k
     memory_status_count = get_value("memorystatus")
     print("background_timer_stuff-"+str(memory_status_count))
     if (memory_status_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_memorystatus, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (memory_status_count == "False"):
@@ -200,7 +185,6 @@ def background_timer_stuff_memoryprocrank(socketio, interval, socket_res_message
     memory_procrank_count = get_value("memoryprocrank")
     print("background_timer_stuff-"+str(memory_procrank_count))
     if (memory_procrank_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_memoryprocrank, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (memory_procrank_count == "False"):
@@ -213,7 +197,6 @@ def background_timer_stuff_memoryprocrankvs(socketio, interval, socket_res_messa
     memory_procrankvs_count = get_value("memoryprocrankvs")
     print("background_timer_stuff-" + str(memory_procrankvs_count))
     if (memory_procrankvs_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_memoryprocrankvs, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (memory_procrankvs_count == "False"):
@@ -226,7 +209,6 @@ def background_timer_stuff_memoryprocrankpss(socketio, interval, socket_res_mess
     memory_procrankpss_count = get_value("memoryprocrankpss")
     print("background_timer_stuff-" + str(memory_procrankpss_count))
     if (memory_procrankpss_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_memoryprocrankpss, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (memory_procrankpss_count == "False"):
@@ -237,16 +219,9 @@ def background_timer_stuff_iostatus(socketio, interval, socket_res_message_key, 
     data = profiler_method()
     socketio.emit(socket_res_message_key, data)
 
-    # count = count + 1
-    # if(count < 5):
-    # fp = open("temp.txt",'r')
-    # count = fp.read()
-    # fp.close()
     io_status_count = get_value("iostatus")
     print("background_timer_stuff-"+str(io_status_count))
     if (io_status_count == "True"):
-        # socketio.sleep(5)
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_iostatus, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (io_status_count == "False"):
@@ -259,8 +234,6 @@ def background_timer_stuff_iotop(socketio, interval, socket_res_message_key, pro
     io_top_count = get_value("iotop")
     print("background_timer_stuff-"+str(io_top_count))
     if (io_top_count == "True"):
-        # socketio.sleep(5)
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_iotop, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (io_top_count == "False"):
@@ -276,7 +249,6 @@ def background_timer_stuff_perfcpuclock(socketio, interval, socket_res_message_k
     perf_cpuclock_count = get_value("perfcpuclock")
     print("background_timer_stuff-"+str(perf_cpuclock_count))
     if (perf_cpuclock_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_perfcpuclock, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (perf_cpuclock_count == "False"):
@@ -290,7 +262,6 @@ def background_timer_stuff_perfflame(socketio, interval, socket_res_message_key,
     perf_flame_count = get_value("perfflame")
     print("background_timer_stuff-" + str(perf_flame_count))
     if (perf_flame_count == "True"):
-        print("socketProcesor------")
         Timer(interval, background_timer_stuff_perfflame, [
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (perf_flame_count == "False"):

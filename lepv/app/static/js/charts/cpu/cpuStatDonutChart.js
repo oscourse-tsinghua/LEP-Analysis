@@ -292,14 +292,14 @@ CpuStatDonutChart.prototype.updateChartData = function(responseData) {
 
         this.chart.load({
             columns: [
-                ['user', data.user],
-                ['nice', data.nice],
-                ['system', data.system],
-                ['idle', data.idle],
-                ['iowait', data.iowait],
-                ['irq', data.irq],
-                ['softirq', data.soft],
-                ['steal', data.steal]
+                ['user', data[0].user],
+                ['nice', data[0].nice],
+                ['system', data[0].system],
+                ['idle', data[0].idle],
+                ['iowait', data[0].iowait],
+                ['irq', data[0].irq],
+                ['softirq', data[0].softirq],
+                ['steal', data[0].steal]
 //                ['guest', overallData.guest],
 //                ['guestnice', overallData.gnice]
             ],
