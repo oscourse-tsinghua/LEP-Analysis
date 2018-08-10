@@ -806,6 +806,92 @@ class CPUProfiler:
         print("mysql-data_cpu_irqgroup" + str(ones))
         return response_data
 
+    def get_cpu_irq(self, tableinfo):
+        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        cursor = db.cursor()
+
+        if ('list5' in tableinfo):
+            sql = "SELECT clock,value FROM history where itemid=28291 order by itemid,clock DESC limit 1"
+            sql1 = "SELECT clock,value FROM history where itemid=28292 order by itemid,clock DESC limit 1"
+            sql2 = "SELECT clock,value FROM history where itemid=28293 order by itemid,clock DESC limit 1"
+            sql3 = "SELECT clock,value FROM history where itemid=28294 order by itemid,clock DESC limit 1"
+
+            try:
+                sleep(60)
+                cursor.execute(sql)
+                # need to modify
+                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql3)
+                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
+                for i in range(1):
+                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
+                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
+                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
+
+                db.commit()
+            except:
+                db.rollback()
+        elif ('list4' in tableinfo):
+
+            sql = "SELECT clock,value FROM history where itemid=28291 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
+            sql1 = "SELECT clock,value FROM history where itemid=28292 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
+            sql2 = "SELECT clock,value FROM history where itemid=28293 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
+            sql3 = "SELECT clock,value FROM history where itemid=28294 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
+
+            try:
+
+                cursor.execute(sql)
+                # need to modify
+                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql3)
+                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
+                for i in range(10):
+                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
+                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
+                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
+
+                db.commit()
+            except:
+                db.rollback()
+        else:
+
+            sql = "SELECT clock,value FROM history where itemid=28291 order by itemid,clock DESC limit 100"
+            sql1 = "SELECT clock,value FROM history where itemid=28292 order by itemid,clock DESC limit 100"
+            sql2 = "SELECT clock,value FROM history where itemid=28293 order by itemid,clock DESC limit 100"
+            sql3 = "SELECT clock,value FROM history where itemid=28294 order by itemid,clock DESC limit 100"
+            try:
+
+                cursor.execute(sql)
+                # need to modify
+                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql3)
+                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
+                for i in range(100):
+                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
+                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
+                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
+
+                db.commit()
+            except:
+                db.rollback()
+        db.close()
+        response_data = {}
+        response_data['data'] = ones
+        print("mysql-data_cpu_irq" + str(ones))
+        return response_data
+
     def get_irq(self, response_lines=[]):
         print("CPUProfiler-1-")
         lepd_command = 'GetCmdMpstat'
