@@ -106,15 +106,15 @@ def background_timer_stuff_cpustatirq(socketio, interval, socket_res_message_key
     elif (cpu_statirq_count == "False"):
         print("cancel()")
 
-def background_timer_stuff_cpusoftirq(socketio, interval, socket_res_message_key, profiler_method):
-    data = profiler_method()
+def background_timer_stuff_cpusoftirq(socketio, interval, socket_res_message_key, profiler_method, args):
+    data = profiler_method(args)
     socketio.emit(socket_res_message_key, data)
 
     cpu_softirq_count = get_value("cpusoftirq")
     print("background_timer_stuff-" + str(cpu_softirq_count))
     if (cpu_softirq_count == "True"):
         Timer(interval, background_timer_stuff_cpusoftirq, [
-            socketio, interval, socket_res_message_key, profiler_method]).start()
+            socketio, interval, socket_res_message_key, profiler_method,args]).start()
     elif (cpu_softirq_count == "False"):
         print("cancel()")
 

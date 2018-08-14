@@ -166,15 +166,29 @@ cpu_softirq_timer = None
 @cpu_blueprint.on('cpu.softirq.req')
 def get_cpu_softirq(request):
     server = request['server']
-    interval = request['interval']
+    tag = request['tag']
+    datatype = request['type']
+    print("datatype"+datatype)
     socketio = cpu_blueprint.get_io()
-    global cpu_softirq_timer,cpu_softirq_count
-    cpu_softirq_count = request["flag"]
-    set_value("cpusoftirq",str(cpu_softirq_count))
-    # if cpu_softirq_timer is None:
-    cpu_softirq_timer = Timer(interval, background_timer_stuff_cpusoftirq, [socketio, interval, "cpu.softirq.res", CPUProfiler(server).get_softirq])
-    cpu_softirq_timer.start()
-    # emit("cpu.softirq.res", CPUProfiler(server).get_softirq())
+    if (tag == 0):
+        print("tag" + str(tag))
+        interval = request['interval']
+        global cpu_softirq_timer,cpu_softirq_count
+        tableinfo = {'datatype':datatype}
+        socketio.emit("cpu.softirq.res",CPUProfiler(server).get_softirq(tableinfo))
+        tableinfo = {'list5':1,'datatype':datatype}
+        cpu_softirq_count = request["flag"]
+        set_value("cpusoftirq",str(cpu_softirq_count))
+        # if cpu_softirq_timer is None:
+        cpu_softirq_timer = Timer(interval, background_timer_stuff_cpusoftirq, [socketio, interval, "cpu.softirq.res", CPUProfiler(server).get_softirq,tableinfo])
+        cpu_softirq_timer.start()
+        # emit("cpu.softirq.res", CPUProfiler(server).get_softirq())
+    elif (tag == 1):
+        print("tag"+str(tag))
+        clock = request['min']
+        print('time-1-'+ clock)
+        tableinfo = {'list4':clock,'datatype':datatype}
+        socketio.emit("cpu.softirq.res",CPUProfiler(server).get_softirq(tableinfo))
 
 # cpu_status_timer = None
 # @cpu_blueprint.on('cpu.status.req')
