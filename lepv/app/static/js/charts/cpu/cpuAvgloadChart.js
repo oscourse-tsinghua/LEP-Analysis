@@ -26,6 +26,7 @@ var CpuAvgLoadChart = function(rootDivName, socket, server) {
     this.chartData['last1'] = ['Last minute'];
     this.chartData['last5'] = ['Last 5 minutes'];
     this.chartData['last15'] = ['Last 15 minutes'];
+    this.timeStamp = ['timestamp'];
 
     this.cpuCoreCount = 0;
     this.yellowAlertValue = 0.7;
@@ -47,6 +48,9 @@ CpuAvgLoadChart.prototype.initializeChart = function() {
 
     var thisChart = this;
     if (type_data_1.indexOf(this.type) != -1){
+    if (btn.style.display == "none"){
+            btn.style.display = "block";
+        }
     thisChart.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
@@ -96,11 +100,17 @@ CpuAvgLoadChart.prototype.initializeChart = function() {
                     return value;
                 }
             }
+        },
+        point: {
+            show: false
         }
     });
     }
     else if (type_data_2.indexOf(this.type) != -1)
     {
+    if (btn.style.display == "block"){
+        btn.style.display = "none";
+    }
     this.chart = c3.generate({
         bindto: '#' + this.mainDivName,
         data: {
@@ -134,23 +144,75 @@ CpuAvgLoadChart.prototype.updateChartData = function(responseData) {
         return;
     }
 
-    if (this.chartData['last1'].length > this.maxDataCount) {
-        this.timeData.splice(1, 1);
-        this.chartData['last1'].splice(1, 1);
-        this.chartData['last5'].splice(1, 1);
-        this.chartData['last15'].splice(1, 1);
-        this.maxValues.splice(1,1);
+    if (this.chartData['last1'].length + data.length > this.maxDataCount) {
+        this.timeData.splice(1, data.length);
+        this.chartData['last1'].splice(1, data.length);
+        this.chartData['last5'].splice(1, data.length);
+        this.chartData['last15'].splice(1, data.length);
+//        this.maxValues.splice(1,1);
+        min = "'" + this.timeStamp[1] + "'";
+        console.log("new min"+ min);
     }
 
-    this.timeData.push(new Date());
-    this.chartData['last1'].push(data['last1']);
-    this.chartData['last5'].push(data['last5']);
-    this.chartData['last15'].push(data['last15']);
+
+if (this.chartData['last1'].length == 1)
+    {
+        console.log("1111");
+        for (var i = 0; i < 100; i++)
+        {
+            this.timeStamp.splice(1, 0, data[i]['time']);
+            this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+            this.chartData['last1'].splice(1, 0, data[i]['last1']);
+            this.chartData['last5'].splice(1, 0, data[i]['last5']);
+            this.chartData['last15'].splice(1, 0, data[i]['last15']);
+
+        }
+        min = "'" + data[99]['time'] + "'";
+        console.log("min" + min);
+        max = data[0]['time'];
+        console.log("max"+ max);
+
+    }
+    else if(max < data[0]['time'])
+    {
+        console.log("2222"+ max + "--" + data[0]['time']);
+        for (var i = data.length - 1; i >= 0; i--)
+        {
+            this.timeData.push(new Date(data[i]['time'] * 1000));
+            this.chartData['last1'].push(data[i]['last1']);
+            this.chartData['last5'].push(data[i]['last5']);
+            this.chartData['last15'].push(data[i]['last15']);
+
+        }
+//        max = "'" + data[0]['time'] + "'";
+        max = data[0]['time'];
+        console.log("max" + max);
+
+    }
+    else if (this.timeData[1] > new Date(data[0]['time'] * 1000))
+    {
+        console.log("3333");
+        for (var i = 0; i < 10; i++)
+        {
+            this.timeStamp.splice(1, 0, data[i]['time']);
+            this.timeData.splice(1, 0, new Date(data[i]['time'] * 1000));
+            this.chartData['last1'].splice(1, 0, data[i]['last1']);
+            this.chartData['last5'].splice(1, 0, data[i]['last5']);
+            this.chartData['last15'].splice(1, 0, data[i]['slast15']);
+
+        }
+        min =  "'" + data[9]['time'] + "'";
+        console.log("min" + min);
+    }
+//    this.timeData.push(new Date());
+//    this.chartData['last1'].push(data['last1']);
+//    this.chartData['last5'].push(data['last5']);
+//    this.chartData['last15'].push(data['last15']);
 
     // max values are the max values of each group of data, it determines the max of y axis.
-    this.maxValues.push(Math.max.apply(Math,[data['last1'], data['last5'], data['last15'], this.cpuCoreCount]));
+//    this.maxValues.push(Math.max.apply(Math,[data['last1'], data['last5'], data['last15'], this.cpuCoreCount]));
 
-    this.chart.axis.max(Math.max.apply(Math, this.maxValues) + 0.1);
+//    this.chart.axis.max(Math.max.apply(Math, this.maxValues) + 0.1);
     if (type_data_1.indexOf(this.type) != -1){
     this.chart.load({
         columns: [this.timeData,

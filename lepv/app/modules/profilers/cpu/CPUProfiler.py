@@ -1284,6 +1284,81 @@ class CPUProfiler:
         return None
 
 
+    def get_avg_load(self,tableinfo):
+        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        cursor = db.cursor()
+
+        if ('list5' in tableinfo):
+            sql = "SELECT clock,value FROM history where itemid=23296 order by itemid,clock DESC limit 1"
+            sql1 = "SELECT clock,value FROM history where itemid=23297 order by itemid,clock DESC limit 1"
+            sql2 = "SELECT clock,value FROM history where itemid=23295 order by itemid,clock DESC limit 1"
+
+            try:
+                sleep(60)
+                cursor.execute(sql)
+                # need to modify
+                ones = [{'time': i[0], 'last1': i[1], 'last5': 0, 'last15': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'last5': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'last15': i[1]} for i in cursor.fetchall()]
+                for i in range(1):
+                    ones[i]['last5'] = ones1[i]['last5']
+                    ones[i]['last15'] = ones2[i]['last15']
+
+                db.commit()
+            except:
+                db.rollback()
+        elif ('list4' in tableinfo):
+
+            sql = "SELECT clock,value FROM history where itemid=23296 AND clock < " + tableinfo[
+                'list4'] + "  order by itemid,clock DESC limit 10"
+            sql1 = "SELECT clock,value FROM history where itemid=23297 AND clock < " + tableinfo[
+                'list4'] + "  order by itemid,clock DESC limit 10"
+            sql2 = "SELECT clock,value FROM history where itemid=23295 AND clock < " + tableinfo[
+                'list4'] + "  order by itemid,clock DESC limit 10"
+            try:
+
+                cursor.execute(sql)
+                # need to modify
+                ones = [{'time': i[0], 'last1': i[1], 'last5': 0, 'last15': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'last5': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'last15': i[1]} for i in cursor.fetchall()]
+                for i in range(10):
+                    ones[i]['last5'] = ones1[i]['last5']
+                    ones[i]['last15'] = ones2[i]['last15']
+                db.commit()
+            except:
+                db.rollback()
+        else:
+
+            sql = "SELECT clock,value FROM history where itemid=23296 order by itemid,clock DESC limit 100"
+            sql1 = "SELECT clock,value FROM history where itemid=23297 order by itemid,clock DESC limit 100"
+            sql2 = "SELECT clock,value FROM history where itemid=23295 order by itemid,clock DESC limit 100"
+            try:
+
+                cursor.execute(sql)
+                # need to modify
+                ones = [{'time': i[0], 'last1': i[1], 'last5': 0, 'last15': 0} for i in cursor.fetchall()]
+                cursor.execute(sql1)
+                ones1 = [{'time': i[0], 'last5': i[1]} for i in cursor.fetchall()]
+                cursor.execute(sql2)
+                ones2 = [{'time': i[0], 'last15': i[1]} for i in cursor.fetchall()]
+                for i in range(100):
+                    ones[i]['last5'] = ones1[i]['last5']
+                    ones[i]['last15'] = ones2[i]['last15']
+                db.commit()
+            except:
+                db.rollback()
+        db.close()
+        response_data = {}
+        response_data['data'] = ones
+        print("mysql-data_cpu_avgload" + str(ones))
+        return response_data
+
+
     def get_average_load(self, response_lines = None):
 
         print("CPUProfiler-----4-----")

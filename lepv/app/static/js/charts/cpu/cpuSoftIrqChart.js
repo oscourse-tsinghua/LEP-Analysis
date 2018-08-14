@@ -89,6 +89,9 @@ CpuSoftIrqChart.prototype.initializeChart = function() {
                     return value + " times ";;
                 }
             }
+        },
+        point: {
+            show: false
         }
     });
     }

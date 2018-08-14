@@ -208,17 +208,29 @@ cpu_avg_timer = None
 @cpu_blueprint.on('cpu.avgload.req')
 def get_avg_load(request):
     server = request['server']
-    interval = request['interval']
+    tag = request['tag']
     socketio = cpu_blueprint.get_io()
-    global cpu_avg_timer,cpu_avg_count
-    cpu_avg_count = request["flag"]
-    set_value("cpuavg",str(cpu_avg_count))
-    # if cpu_avg_timer is None:
-#       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
-    cpu_avg_timer = Timer(interval, background_timer_stuff_cpuavg, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_average_load])
-    cpu_avg_timer.start()
-#    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
-#     emit("cpu.avgload.res", CPUProfiler(server).get_average_load())
+    if (tag == 0):
+        print("tag" + str(tag))
+        interval = request['interval']
+        global cpu_avg_timer,cpu_avg_count
+        tableinfo = {}
+        socketio.emit("cpu.avgload.res", CPUProfiler(server).get_avg_load(tableinfo))
+        tableinfo = {'list5': 1}
+        cpu_avg_count = request["flag"]
+        set_value("cpuavg",str(cpu_avg_count))
+        # if cpu_avg_timer is None:
+        #       print("cpu.avgload.res-2-", str(CPUProfiler(server).get_average_load()))
+        cpu_avg_timer = Timer(interval, background_timer_stuff_cpuavg, [socketio, interval, "cpu.avgload.res", CPUProfiler(server).get_avg_load,tableinfo])
+        cpu_avg_timer.start()
+        #    print("cpu.avgload.res-1-", str(CPUProfiler(server).get_average_load()))
+        #     emit("cpu.avgload.res", CPUProfiler(server).get_average_load())
+    elif (tag == 1):
+        print("tag" + str(tag))
+        clock = request['min']
+        print('time-1-' + clock)
+        tableinfo = {'list4': clock}
+        socketio.emit("cpu.avgload.res",CPUProfiler(server).get_avg_load(tableinfo))
 
 cpu_mysql_timer = None
 @cpu_blueprint.on('cpu.mysql.req')

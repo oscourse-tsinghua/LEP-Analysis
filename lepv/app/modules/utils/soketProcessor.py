@@ -119,15 +119,15 @@ def background_timer_stuff_cpusoftirq(socketio, interval, socket_res_message_key
         print("cancel()")
 
 
-def background_timer_stuff_cpuavg(socketio, interval, socket_res_message_key, profiler_method):
-    data = profiler_method()
+def background_timer_stuff_cpuavg(socketio, interval, socket_res_message_key, profiler_method, args):
+    data = profiler_method(args)
     socketio.emit(socket_res_message_key, data)
 
     cpu_avg_count = get_value("cpuavg")
     print("background_timer_stuff-" + str(cpu_avg_count))
     if (cpu_avg_count == "True"):
         Timer(interval, background_timer_stuff_cpuavg, [
-            socketio, interval, socket_res_message_key, profiler_method]).start()
+            socketio, interval, socket_res_message_key, profiler_method, args]).start()
     elif (cpu_avg_count == "False"):
         print("cancel()")
 
