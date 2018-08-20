@@ -228,9 +228,9 @@ if (this.chartData['last1'].length == 1)
     {
     this.chart.load({
         columns: [
-            ['Last minute', data['last1']],
-            ['Last 5 minute', data['last5']],
-            ['Last 15 minute', data['last15']]],
+            ['Last minute', data[0]['last1']],
+            ['Last 5 minute', data[0]['last5']],
+            ['Last 15 minute', data[0]['last15']]],
         keys: {
             value: ['']
         }
