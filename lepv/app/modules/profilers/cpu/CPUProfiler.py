@@ -6,6 +6,8 @@ __copyright__ = "Licensed under GPLv2 or later."
 import MySQLdb
 import pprint
 import re
+import json
+from urllib import request, parse
 from decimal import Decimal
 from time import gmtime, strftime, sleep
 
@@ -18,12 +20,12 @@ class CPUProfiler:
         self.server = server
         self.client = LepDClient(self.server)
         self.config = config
-        
+
         # this maxDataCount should match the one defined for UI.
         self.maxDataCount = 25
 
         self.loadBalanceBenchMark = Decimal(40)
-    
+
     def getCpuInfoForArm(self, lines):
 
         results = {}
@@ -43,7 +45,7 @@ class CPUProfiler:
                 bogoMips = lines.pop(0).split(":")[1].strip()
                 results['processors'][processorId]["processorId"] = processorId
                 results['processors'][processorId]["bogomips"] = bogoMips
-            
+
             line = lines.pop(0)
 
         return results
@@ -54,7 +56,7 @@ class CPUProfiler:
 
         line = lines.pop(0)
         results['architecture'] = "ARM"
-        
+
         results['model name'] = line.split(":")[1].strip()
         results['processors'] = {}
 
@@ -70,23 +72,23 @@ class CPUProfiler:
             line = lines.pop(0)
 
         return results
-    
+
     def getCpuInfoForX86(self, lines):
 
         results = {}
         results['architecture'] = "X86"
         results['processors'] = {}
-        
+
         for line in lines:
             if (line.strip() == ""):
                 continue
-    
+
             if re.match(r'processor\W+:\W+\d.*', line, re.M|re.I):
                 linePairs = line.split(":")
                 processorId = linePairs[1].strip()
                 results['processors'][processorId] = {}
                 continue
-    
+
             if (":" in line):
                 linePairs = line.split(":")
                 lineKey = linePairs[0].strip()
@@ -95,9 +97,9 @@ class CPUProfiler:
                     lineValue = linePairs[1].strip()
 
                 results['processors'][processorId][lineKey] = lineValue
-    
+
         return results
-    
+
     def get_proc_cpu_info(self, response_lines=[]):
 
         lepd_command = 'GetProcCpuinfo'
@@ -105,7 +107,7 @@ class CPUProfiler:
             response_lines = self.client.getResponse(lepd_command)
         elif isinstance(response_lines, str):
             response_lines = self.client.split_to_lines(response_lines)
-            
+
         response_data = {}
         if self.config == 'debug':
             response_data['rawResult'] = response_lines
@@ -125,7 +127,7 @@ class CPUProfiler:
         for line in response_lines:
             if re.match(r'\W*processor\W*:\W*\d+', line, re.M|re.I):
                 response_data['data']['processorCount'] += 1
-        
+
         return response_data
 
     def get_processor_count(self, response_lines=[]):
@@ -145,13 +147,13 @@ class CPUProfiler:
         if 'count' not in response_data:
             print('failed in getting processor count by GetCpuInfo')
             print(response_lines)
-            
+
         return response_data
 
     def get_capacity(self):
-        
+
         cpuInfoData = self.get_proc_cpu_info()
-        
+
         if (not cpuInfoData):
             return {}
 
@@ -159,19 +161,19 @@ class CPUProfiler:
         if (self.config == 'debug'):
             responseData['rawResult'] = cpuInfoData['rawResult']
             responseData['lepd_command'] = 'GetProcCpuinfo'
-        
+
         capacity = {}
         capacity['processors'] = cpuInfoData['data']['processors']
 
         coresString = 'Core'
         coreCount = len(cpuInfoData['data']['processors'])
         capacity['coresCount'] = coreCount
-        
+
         if (coreCount > 1):
             coresString = "Cores"
 
         for processorId, processorData in cpuInfoData['data']['processors'].items():
-            
+
             if (cpuInfoData['data']['architecture'] == "ARM"):
                 if ('model name' in cpuInfoData['data']):
                     processorData['model'] = cpuInfoData['data']['model name']
@@ -185,26 +187,26 @@ class CPUProfiler:
                 else:
                     capacity['bogomips'] = processorData['bogomips']
                     capacity['summary'] = processorData['bogomips'] + " MHz x " + str(coreCount) + coresString
-                    
+
                 capacity['model'] = processorData['model']
                 capacity['architecture'] = 'ARM'
-            
+
             else:
                 modelName = processorData['model name'].replace("(R)", "").replace(" CPU", "")
                 if (" @" in modelName):
                     modelName = modelName[0:modelName.find(" @")]
                 processorData['model'] = modelName
-                
+
                 processorSpeed = Decimal(processorData['cpu MHz']).quantize(Decimal('0'))
-                
+
                 # Summary is a string to briefly describe the CPU, like "2GHZ x 2", meaning it's a 2-core cpu with 2GHZ speed.
                 capacity['summary'] = str(processorSpeed) + " MHz x " + str(coreCount) + coresString
                 capacity['model'] = modelName
                 capacity['bogomips'] = processorData['bogomips']
                 capacity['architecture'] = 'X86'
-            
+
             break
-        
+
         responseData['data'] = capacity
         return responseData
 
@@ -220,7 +222,7 @@ class CPUProfiler:
         componentInfo["name"] = "cpu"
         componentInfo["ratio"] = 100 - allIdleRatio
         componentInfo['server'] = self.server
-        
+
         if (self.config == 'debug'):
             componentInfo['rawResult'] = statData['rawResult']
 
@@ -917,10 +919,10 @@ class CPUProfiler:
         irq_data['data'] = {}
 
         for line in response_lines:
-            
+
             if (line.strip() == ''):
                 break
-            
+
             line_values = line.split()
 
             irq_stat = {}
@@ -1129,7 +1131,7 @@ class CPUProfiler:
             elif startIndex > 2:
                 break
 
-            softirq_resp.append(line) 
+            softirq_resp.append(line)
 
         if len(softirq_resp) <= 1:
             return softirq_data
@@ -1187,10 +1189,10 @@ class CPUProfiler:
     #     stat_data['data'] = {}
     #     stat_data['data']['cpu_stat'] = {}
     #     for line in response_lines:
-            
+
     #         if (line.strip() == ''):
     #             break
-            
+
     #         line_values = line.split()
 
     #         cpu_stat = {}
@@ -1285,7 +1287,7 @@ class CPUProfiler:
 
 
     def get_avg_load(self,tableinfo):
-        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        db = MySQLdb.connect("192.168.253.128", "root", "135246", "zabbix")
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
@@ -1372,7 +1374,7 @@ class CPUProfiler:
         # if options['debug']:
         #     response_data['rawResult'] = response_lines[:]
         #     response_data['lepd_command'] = 'GetProcLoadavg'
-        
+
         response = response_lines[0].split(" ")
 
         # '0.00 0.01 0.05 1/103 24750
@@ -1395,7 +1397,7 @@ class CPUProfiler:
     def get_mysql_data(self, tableinfo, response_lines=None):
         print("CPUProfiler-5-")
         # 打开数据库连接
-        db = MySQLdb.connect("192.168.253.136", "root", "135246", "zabbix")
+        db = MySQLdb.connect("192.168.253.128", "root", "135246", "zabbix")
         # db = MySQLdb.connect("192.168.2.9", "root", "596100", "zabbix")
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()
@@ -1499,23 +1501,161 @@ class CPUProfiler:
     #     response_data['data'] = ones
     #     return response_data
 
-    def getTopOutput(self, responseLines = None):
-        print("CPUProfiler-6-")
-        lepd_command = 'GetCmdTop'
+    def get_top(self):
 
-        if not responseLines:
-            responseLines = self.client.getResponse(lepd_command)
-        elif isinstance(responseLines, str):
-            responseLines = self.client.split_to_lines(responseLines)
+        authid = self.login()
+        print("get top" + str(authid))
+
+    def script_create(self):
+
+        authid = self.login()
+        self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+        self.headers = {'Content-Type': 'application/json'}
+        auth = {
+            "jsonrpc": "2.0",
+            "method": "script.create",
+            "params": {
+                "name": "cpu top",
+                "command": "ps -e -o pid,user,pri,ni,vsize,rss,s,%cpu,%mem,time,cmd --sort=-%cpu",
+            },
+            "id": 1,
+            "auth": authid,
+        }
+        value = json.dumps(auth).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+        except Exception as e:
+            print("Script create Failed, Please Check Your command:", e)
+        else:
+            response = result.read()
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            print("page" + str(page))
+            # print("Script create Successful. The script ID Is: " .format(page.get('result')))
+            # scriptid = page.get('result')
+            # print('authid'+str(authid))
+            # return scriptid
+
+    def script_execute(self):
+        authid = self.login()
+
+        exec = {
+            "jsonrpc": "2.0",
+            "method": "script.execute",
+            "params": {
+                "scriptid": "9",
+                "hostid": "10084"
+            },
+            "auth": authid,
+            "id": 1
+        }
+
+        value = json.dumps(exec).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+        except Exception as e:
+            print("Auth Failed, Please Check Your Name And Password:", e)
+        else:
+            response = result.read()
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+            authid = page.get('result')
+            test = authid['value']
+            # print('authid'+str(authid))
+            return test
+
+        # def script_get(self):
+        #     authid = self.login()
+        #     self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+        #     self.headers = {'Content-Type': 'application/json'}
+        #     auth = {
+        #         "jsonrpc": "2.0",
+        #         "method": "script.get",
+        #         "params": {
+        #             "": '',
+        #         },
+        #         "id": 1,
+        #         "auth": authid,
+        #     }
+        #     value = json.dumps(auth).encode('utf-8')
+        #     req = request.Request(self.url, headers=self.headers, data=value)
+        #     try:
+        #         result = request.urlopen(req)
+        #     except Exception as e:
+        #         print("Script create Failed, Please Check Your command:", e)
+        #     else:
+        #         response = result.read()
+        #         page = response.decode('utf-8')
+        #         page = json.loads(page)
+        #         result.close()
+        #         print("page script_get " + str(page))
+
+    def login(self):
+        self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+        self.headers = {'Content-Type': 'application/json'}
+        auth = {
+            "jsonrpc": "2.0",
+            "method": "user.login",
+            "params": {
+                "user": "Admin",
+                "password": "135246"
+            },
+            "id": 1,
+            "auth": None,
+        }
+
+        value = json.dumps(auth).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+        except Exception as e:
+            print("Auth Failed, Please Check Your Name And Password:", e)
+        else:
+            response = result.read()
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+            authid = page.get('result')
+            # print('authid'+str(authid))
+            return authid
+
+    # page = json.loads(page)
+    # page1 = json.loads(page1)
+    # result.close()
+    # result1.close()
+    # print("page" + str(page))
+    # print("page1" + str(page1))
+    # print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+
+    def get_cpu_top(self, responseLines = None):
+
+        test = self.script_execute()
+        print("test--"+test)
+        responseLines = test.split('\n')
+        # print("responselines11111111" + str(responseLines))
+        responseLines.pop()
+        # print("responselines--------" + str(responseLines))
+        # if not responseLines:
+        #     responseLines = self.client.getResponse(lepd_command)
+        #     print("responseLines1"+str(responseLines))
+        # elif isinstance(responseLines, str):
+        #     responseLines = self.client.split_to_lines(responseLines)
+        #     print("responseLines2" + str(responseLines))
 
 
         if len(responseLines) == 0:
             return {}
-        
+
         responseData = {}
         if (self.config == 'debug'):
             responseData['rawResult'] = responseLines[:]
-        
+
         headerLine = responseLines.pop(0)
         while ( not re.match(r'\W*PID\W+USER\W+.*', headerLine, re.M|re.I) ):
             headerLine = responseLines.pop(0)
@@ -1527,10 +1667,10 @@ class CPUProfiler:
         for lineIndex, responseLine in enumerate(responseLines):
             if (self.client.LEPDENDINGSTRING in responseLine):
                 break
-            
+
             if (lineIndex > self.maxDataCount):
                 break
- 
+
             lineValues = responseLine.split()
 
             result[lineIndex] = {}
@@ -1545,7 +1685,71 @@ class CPUProfiler:
         responseData['data'] = {}
         responseData['data']['top'] = result
         responseData['data']['headerline'] = headerLine
-        
+
+
+        if (re.match(r'\W*PID\W+USER\W+PR\W+.*', headerLine, re.M|re.I)):
+            # android :
+            #   PID USER     PR  NI CPU% S  #THR     VSS     RSS PCY Name
+            responseData['data']['os'] = 'android'
+        elif (re.match(r'\W*PID\W+USER\W+PRI\W+NI\W+VSZ\W+RSS\W+.*', headerLine, re.M|re.I)):
+            # for Linux:
+            # PID USER     PRI  NI    VSZ   RSS S %CPU %MEM     TIME CMD
+            responseData['data']['os'] = 'linux'
+        else:
+            print("GetCmdTop command returned data from unrecognized system")
+        print("top"+str(responseData))
+        return responseData
+
+    def getTopOutput(self, responseLines = None):
+        print("CPUProfiler-6-")
+        lepd_command = 'GetCmdTop'
+
+        if not responseLines:
+            responseLines = self.client.getResponse(lepd_command)
+            print("responseLines1"+str(responseLines))
+        elif isinstance(responseLines, str):
+            responseLines = self.client.split_to_lines(responseLines)
+            print("responseLines2" + str(responseLines))
+
+
+        if len(responseLines) == 0:
+            return {}
+
+        responseData = {}
+        if (self.config == 'debug'):
+            responseData['rawResult'] = responseLines[:]
+
+        headerLine = responseLines.pop(0)
+        while ( not re.match(r'\W*PID\W+USER\W+.*', headerLine, re.M|re.I) ):
+            headerLine = responseLines.pop(0)
+
+        headerColumns = headerLine.split()
+
+        result = {}
+
+        for lineIndex, responseLine in enumerate(responseLines):
+            if (self.client.LEPDENDINGSTRING in responseLine):
+                break
+
+            if (lineIndex > self.maxDataCount):
+                break
+
+            lineValues = responseLine.split()
+
+            result[lineIndex] = {}
+
+            # print(headerLine)
+            for columnIndex, columnName in enumerate(headerColumns):
+                if (columnName == 'Name' or columnName == 'CMD'):
+                    result[lineIndex][columnName] = ' '.join([str(x) for x in lineValues[columnIndex:]])
+                else:
+                    result[lineIndex][columnName] = lineValues[columnIndex]
+
+        responseData['data'] = {}
+        responseData['data']['top'] = result
+        responseData['data']['headerline'] = headerLine
+
+
         if (re.match(r'\W*PID\W+USER\W+PR\W+.*', headerLine, re.M|re.I)):
             # android :
             #   PID USER     PR  NI CPU% S  #THR     VSS     RSS PCY Name
@@ -1573,14 +1777,15 @@ if( __name__ =='__main__' ):
 
     # pp.pprint(profiler.get_softirq())
 
-    pp.pprint(profiler.get_irq())
+    # pp.pprint(profiler.get_irq())
     # pp.pprint(profiler.getIrqInfo())
     # pp.pprint(profiler.getSoftIrqInfo())
     # pp.pprint(profiler.get_capacity())
     # pp.pprint(profiler.getProcessorCount())
-    pp.pprint(profiler.get_status())
+    # pp.pprint(profiler.get_status())
     # pp.pprint(profiler.getAverageLoad())
     # pp.pprint(profiler.getTopOutput())
     # pp.pprint(profiler.getCpuByName("kworker/u3:0"))
     # pp.pprint(profiler.getCpuByPid("4175"))
     # pp.pprint(profiler.getTopHResult())
+    pp.pprint(profiler.get_cpu_top())

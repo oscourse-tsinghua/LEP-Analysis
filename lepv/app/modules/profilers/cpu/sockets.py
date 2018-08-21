@@ -307,6 +307,7 @@ def get_top(request):
     cpu_top_count = request["flag"]
     set_value("cputop",str(cpu_top_count))
     # if cpu_top_timer is None:
-    cpu_top_timer = Timer(interval, background_timer_stuff_cputop, [socketio, interval, "cpu.top.res", CPUProfiler(server).getTopOutput])
+    # cpu_top_timer = Timer(interval, background_timer_stuff_cputop, [socketio, interval, "cpu.top.res", CPUProfiler(server).getTopOut])
+    cpu_top_timer = Timer(interval, background_timer_stuff_cputop, [socketio, interval, "cpu.top.res", CPUProfiler(server).get_cpu_top])
     cpu_top_timer.start()
     # emit("cpu.top.res", CPUProfiler(server).getTopOutput())
