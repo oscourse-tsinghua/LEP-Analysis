@@ -1,6 +1,6 @@
-LEP与Zabbix的结合,即LEP通过Zabbix获取数据。
+## LEP与Zabbix的结合,即LEP通过Zabbix获取数据。
 
-Zabbix的数据共享有两种途径：
+### Zabbix的数据共享有两种途径：
 
 - 通过数据库查询获取数据。使用这种方式的条件是对Zabbix数据库模型有深入的了解，并且在大量监控的时候，不能因为查询而影响Zabbix自身的运行；
 
@@ -10,7 +10,7 @@ Zabbix的数据共享有两种途径：
 
 具体而言，
 
-1.Zabbix的数据库中已经存储了相应的数据直接通过读Mysql进行数据的整合。
+#### 1.Zabbix的数据库中已经存储了相应的数据直接通过读Mysql进行数据的整合。
 
 步骤：
 
@@ -20,9 +20,9 @@ Zabbix的数据共享有两种途径：
 
 3.表history中存储了Zabbix Server各监控项采集的历史信息。在表history中，通过itemid获取value和clock.
 
-2.Zabbix自带的默认模版里包括了很多监控项，有时候为了满足LEP检索的需求，需要对Zabbix数据库中暂时没有存储数据进行处理。根据能否在数据库中进行存储分为以下几类：
+#### 2.Zabbix自带的默认模版里包括了很多监控项，有时候为了满足LEP检索的需求，需要对Zabbix数据库中暂时没有存储数据进行处理。根据能否在数据库中进行存储分为以下几类：
 
-2.1.获取的信息满足history类表存储的要求时（history类表格中value的属性有物种类型，分别为FLOAT(0)、STRING(1)、LOG(2)、INTEGER(3)、TEXT(4))
+##### 2.1.获取的信息满足history类表存储的要求时（history类表格中value的属性有物种类型，分别为FLOAT(0)、STRING(1)、LOG(2)、INTEGER(3)、TEXT(4))
 
 2.1.1.当LEP所需检索的数据不是Zabbix预定义时，需要用户自定义参数。
 
@@ -80,7 +80,7 @@ UserParameter=get_softirq[*], sh /usr/local/etc/zabbix_scripts/get_softirq.sh $1
 
 在创建了自定义监控脚本和自动发现规则的基础上，创建监控的原项。
 
-2.2.获取的信息是执行某条命令获得的大量数据，难以存储到Zabbix数据库时： 
+##### 2.2.获取的信息是执行某条命令获得的大量数据，难以存储到Zabbix数据库时： 
 
 对于获取这种类型的数据，可以通过创建script和lepv调用相应的API。其中,创建script一般有两种方式：一是界面中配置，二是通过API创建该脚本命令（script.execute）。lepv调用相应的API的方式如下。
 
