@@ -9,7 +9,6 @@
 由此可见，对于Zabbix已有的监控项，采用以上两种方法均可；对于Zabbix不存在的监控项即用户自定义监控项需根据所获取的数据进行具体分析。对于LEP与Zabbix的结合，将以上两种方式进行有机结合。
 
 具体而言，
-
 #### 1.Zabbix的数据库中已经存储了相应的数据直接通过读Mysql进行数据的整合。
 
 步骤：
@@ -123,6 +122,7 @@ UserParameter=get_softirq[*], sh /usr/local/etc/zabbix_scripts/get_softirq.sh $1
 3.登出Zabbix
 
 与登陆的方式相近，执行的方法为 user.logout。
+
 
 由此可见，LEP与Zabbix的结合时，同时采用了数据库查询和API两种方式。通过数据库，可以访问Zabbix以有的数据，同时可以将便于存储的数据存入数据库，这在一定程度上满足了LEP访问历史数据的需求；通过API，可以获取不便于Zabbix存储的数据，加之这个数据一般实时性较强，存储到数据库中的意义不大。
 
