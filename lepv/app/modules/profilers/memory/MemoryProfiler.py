@@ -4,6 +4,8 @@ __copyright__ = "Licensed under GPLv2 or later."
 
 import pprint
 import re
+import json
+from urllib import request, parse
 from decimal import Decimal
 
 from app.modules.lepd.LepDClient import LepDClient
@@ -149,12 +151,172 @@ class MemoryProfiler:
     #             break
     # 
     #     return
+    def script_execute(self):
+        authid = self.login()
+
+        exec = {
+            "jsonrpc": "2.0",
+            "method": "script.execute",
+            "params": {
+                "scriptid": "10",
+                "hostid": "10084"
+            },
+            "auth": authid,
+            "id": 1
+        }
+
+        value = json.dumps(exec).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+        except Exception as e:
+            print("Auth Failed, Please Check Your Name And Password:", e)
+        else:
+            response = result.read()
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            # print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+            print("Auth Successful. The Auth ID Is: {}")
+            authid = page.get('result')
+            test = authid['value']
+            # print('authid'+str(authid))
+            return test
+
+        # def script_get(self):
+        #     authid = self.login()
+        #     self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+        #     self.headers = {'Content-Type': 'application/json'}
+        #     auth = {
+        #         "jsonrpc": "2.0",
+        #         "method": "script.get",
+        #         "params": {
+        #             "": '',
+        #         },
+        #         "id": 1,
+        #         "auth": authid,
+        #     }
+        #     value = json.dumps(auth).encode('utf-8')
+        #     req = request.Request(self.url, headers=self.headers, data=value)
+        #     try:
+        #         result = request.urlopen(req)
+        #     except Exception as e:
+        #         print("Script create Failed, Please Check Your command:", e)
+        #     else:
+        #         response = result.read()
+        #         page = response.decode('utf-8')
+        #         page = json.loads(page)
+        #         result.close()
+        #         print("page script_get " + str(page))
+
+    def login(self):
+        self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+        self.headers = {'Content-Type': 'application/json'}
+        auth = {
+            "jsonrpc": "2.0",
+            "method": "user.login",
+            "params": {
+                "user": "Admin",
+                "password": "135246"
+            },
+            "id": 1,
+            "auth": None,
+        }
+
+        value = json.dumps(auth).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+        except Exception as e:
+            print("Auth Failed, Please Check Your Name And Password:", e)
+        else:
+            response = result.read()
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+            authid = page.get('result')
+            # print('authid'+str(authid))
+            return authid
+
+    def get_procrank(self):
+
+        procrankData = {}
+        test = self.script_execute()
+        # print("test--" + test)
+        resultLines = test.split('\n')
+        # resultLines = self.client.getResponse('GetCmdProcrank')
+        print("getProcrank-2-" + str(resultLines))
+        # if (len(resultLines) == 0):
+        #     return {}
+
+        # if (self.config == 'debug'):
+        #     procrankData['rawResult'] = resultLines[:]
+
+        procrankData['data'] = {}
+        procrankData['data']['procranks'] = {}
+        headerLine = resultLines.pop(0)
+        lineIndex = 0
+
+        for line in resultLines:
+            if (re.match(r'\W+-+\W+-+\W-+.*', line, re.M | re.I)):
+                break
+            lineValues = line.split()
+
+            procrankData['data']['procranks'][lineIndex] = {}
+            procrankData['data']['procranks'][lineIndex]['pid'] = lineValues.pop(0)
+            procrankData['data']['procranks'][lineIndex]['vss'] = self.client.toDecimal(
+                Decimal(Decimal(lineValues.pop(0)[:-1])))
+            procrankData['data']['procranks'][lineIndex]['rss'] = self.client.toDecimal(
+                Decimal(Decimal(lineValues.pop(0)[:-1])))
+            procrankData['data']['procranks'][lineIndex]['pss'] = self.client.toDecimal(
+                Decimal(Decimal(lineValues.pop(0)[:-1])))
+            procrankData['data']['procranks'][lineIndex]['uss'] = self.client.toDecimal(
+                Decimal(Decimal(lineValues.pop(0)[:-1])))
+
+            procrankData['data']['procranks'][lineIndex]['cmdline'] = ' '.join([str(x) for x in lineValues])
+
+            lineIndex += 1
+
+            if (len(procrankData) >= self.dataCount):
+                break
+
+        # now parse from end, which contains summary info
+        lastLine = resultLines[-1]
+        procrankData['data']['sum'] = {}
+        if (lastLine.startswith('RAM:')):
+            lastLine = lastLine.replace("RAM:", '')
+            lastLineValuePairs = lastLine.split(", ")
+            for valuePair in lastLineValuePairs:
+                keyValuePair = valuePair.split()
+
+                keyName = keyValuePair[1].strip()
+                keyValue = keyValuePair[0].strip()
+
+                procrankData['data']['sum'][keyName + "Unit"] = keyValue[-1:]
+                procrankData['data']['sum'][keyName] = self.client.toDecimal(Decimal(Decimal(keyValue[:-1])))
+
+        xssSumLine = resultLines[-3].strip()
+        if (xssSumLine.endswith('TOTAL')):
+            xssValues = xssSumLine.split()
+
+            ussTotalString = xssValues[-2]
+            procrankData['data']['sum']['ussTotalUnit'] = ussTotalString[-1:]
+            procrankData['data']['sum']['ussTotal'] = self.client.toDecimal(Decimal(Decimal(ussTotalString[:-1])))
+
+            pssTotalString = xssValues[-3]
+            procrankData['data']['sum']['pssTotalUnit'] = pssTotalString[-1:]
+            procrankData['data']['sum']['pssTotal'] = self.client.toDecimal(Decimal(Decimal(pssTotalString[:-1])))
+
+        return procrankData
+
 
     def getProcrank(self):
 
         procrankData = {}
-        print("getProcrank-1-")
+
         resultLines = self.client.getResponse('GetCmdProcrank')
+        print("getProcrank-1-"+str(resultLines))
         if (len(resultLines) == 0):
             return {}
         
@@ -211,7 +373,7 @@ class MemoryProfiler:
             pssTotalString = xssValues[-3]
             procrankData['data']['sum']['pssTotalUnit'] = pssTotalString[-1:]
             procrankData['data']['sum']['pssTotal'] = self.client.toDecimal(Decimal(Decimal(pssTotalString[:-1])))
-        print("memoty-1-"+str(procrankData))
+
         return procrankData
 
 
@@ -221,17 +383,17 @@ if( __name__ =='__main__' ):
     profiler = MemoryProfiler('www.rmlink.cn')
     profiler.config = 'debug'
 
-    i = 1
-    while i < 100:
-        print(i)
-        status = profiler.getStatus()
-        if status:
-            print("YES")
-        else:
-            print("NO!!!!!!!!!!!")
-        i += 1
-        print("")
-    # pp.pprint(profiler.getProcrank())
+    # i = 1
+    # while i < 100:
+    #     print(i)
+    #     status = profiler.getStatus()
+    #     if status:
+    #         print("YES")
+    #     else:
+    #         print("NO!!!!!!!!!!!")
+    #     i += 1
+    #     print("")
+    pp.pprint(profiler.getProcrank())
     # print(profiler.getSmemOutput())
     # print(profiler.getProcrankOutput())
     # 
