@@ -54,7 +54,7 @@ def get_proc_rank(request):
     # memory_procrankvs_timer = Timer(interval, background_timer_stuff_memoryprocrankvs, [
     #     socketio, interval, "memory.procrankvs.res", MemoryProfiler(server).getProcrank])
     memory_procrankvs_timer = Timer(interval, background_timer_stuff_memoryprocrankvs, [
-        socketio, interval, "memory.procrankvs.res", MemoryProfiler(server).get_procrankvs])
+        socketio, interval, "memory.procrankvs.res", MemoryProfiler(server).get_procrank])
     memory_procrankvs_timer.start()
     # emit("memory.procrankvs.res", MemoryProfiler(server).getProcrank())
     # process_socket_request(request, 'memory.procrank.req', MemoryProfiler(server).getProcrank)
@@ -71,6 +71,8 @@ def get_proc_rank(request):
     set_value("memoryprocrankpss",str(memory_procrankpss_count))
     memory_procrankpss_timer = Timer(interval, background_timer_stuff_memoryprocrankpss, [
         socketio, interval, "memory.procrankpss.res", MemoryProfiler(server).getProcrank])
+    memory_procrankpss_timer = Timer(interval, background_timer_stuff_memoryprocrankpss, [
+        socketio, interval, "memory.procrankpss.res", MemoryProfiler(server).get_procrank])
     memory_procrankpss_timer.start()
     # emit("memory.procrankpss.res", MemoryProfiler(server).getProcrank())
     # process_socket_request(request, 'memory.procrank.req', MemoryProfiler(server).getProcrank)

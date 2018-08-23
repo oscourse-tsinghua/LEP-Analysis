@@ -243,86 +243,13 @@ class MemoryProfiler:
 
         procrankData = {}
         test = self.script_execute()
-        # print("test--" + test)
-        resultLines = test.split('\n')
-        # resultLines.pop()
-        # resultLines = self.client.getResponse('GetCmdProcrank')
-        print("getProcrank-2-" + str(resultLines))
-        # if (len(resultLines) == 0):
-        #     return {}
 
-        # if (self.config == 'debug'):
-        #     procrankData['rawResult'] = resultLines[:]
-
-        procrankData['data'] = {}
-        procrankData['data']['procranks'] = {}
-        headerLine = resultLines.pop(0)
-        lineIndex = 0
-
-        for line in resultLines:
-            if (re.match(r'\W+-+\W+-+\W-+.*', line, re.M | re.I)):
-                break
-            lineValues = line.split()
-
-            procrankData['data']['procranks'][lineIndex] = {}
-            procrankData['data']['procranks'][lineIndex]['pid'] = lineValues.pop(0)
-            procrankData['data']['procranks'][lineIndex]['vss'] = self.client.toDecimal(
-                Decimal(Decimal(lineValues.pop(0)[:-1])))
-            procrankData['data']['procranks'][lineIndex]['rss'] = self.client.toDecimal(
-                Decimal(Decimal(lineValues.pop(0)[:-1])))
-            procrankData['data']['procranks'][lineIndex]['pss'] = self.client.toDecimal(
-                Decimal(Decimal(lineValues.pop(0)[:-1])))
-            procrankData['data']['procranks'][lineIndex]['uss'] = self.client.toDecimal(
-                Decimal(Decimal(lineValues.pop(0)[:-1])))
-
-            procrankData['data']['procranks'][lineIndex]['cmdline'] = ' '.join([str(x) for x in lineValues])
-
-            lineIndex += 1
-
-            if (len(procrankData) >= self.dataCount):
-                break
-
-        # now parse from end, which contains summary info
-        lastLine = resultLines[-1]
-        procrankData['data']['sum'] = {}
-        if (lastLine.startswith('RAM:')):
-            lastLine = lastLine.replace("RAM:", '')
-            lastLineValuePairs = lastLine.split(", ")
-            for valuePair in lastLineValuePairs:
-                keyValuePair = valuePair.split()
-
-                keyName = keyValuePair[1].strip()
-                keyValue = keyValuePair[0].strip()
-
-                procrankData['data']['sum'][keyName + "Unit"] = keyValue[-1:]
-                procrankData['data']['sum'][keyName] = self.client.toDecimal(Decimal(Decimal(keyValue[:-1])))
-
-        xssSumLine = resultLines[-3].strip()
-        if (xssSumLine.endswith('TOTAL')):
-            xssValues = xssSumLine.split()
-
-            ussTotalString = xssValues[-2]
-            procrankData['data']['sum']['ussTotalUnit'] = ussTotalString[-1:]
-            procrankData['data']['sum']['ussTotal'] = self.client.toDecimal(Decimal(Decimal(ussTotalString[:-1])))
-
-            pssTotalString = xssValues[-3]
-            procrankData['data']['sum']['pssTotalUnit'] = pssTotalString[-1:]
-            procrankData['data']['sum']['pssTotal'] = self.client.toDecimal(Decimal(Decimal(pssTotalString[:-1])))
-
-        return procrankData
-
-
-    def get_procrankvs(self):
-
-        procrankData = {}
-        test = self.script_execute()
-        # print("test--" + test)
         resultLines = test.split('\n')
         resultLines.pop()
         # resultLines = self.client.getResponse('GetCmdProcrank')
         print("getProcrank-2-" + str(resultLines))
-        # if (len(resultLines) == 0):
-        #     return {}
+        if (len(resultLines) == 0):
+            return {}
 
         # if (self.config == 'debug'):
         #     procrankData['rawResult'] = resultLines[:]
@@ -383,7 +310,6 @@ class MemoryProfiler:
             procrankData['data']['sum']['pssTotal'] = self.client.toDecimal(Decimal(Decimal(pssTotalString[:-1])))
 
         return procrankData
-
 
     def getProcrank(self):
 
