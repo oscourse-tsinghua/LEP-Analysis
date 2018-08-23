@@ -245,6 +245,7 @@ class MemoryProfiler:
         test = self.script_execute()
         # print("test--" + test)
         resultLines = test.split('\n')
+        resultLines.pop()
         # resultLines = self.client.getResponse('GetCmdProcrank')
         print("getProcrank-2-" + str(resultLines))
         # if (len(resultLines) == 0):
