@@ -174,7 +174,7 @@ Perf-record:记录一段时间内系统/进程的性能时间
 
 #### （1）环形，以cpu stat为例
 
-![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/CPUstat.png)
+![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/CPUstat.png)
 
 LEPV接收LEPD的数据：{'result': 'Linux 4.4.0-62-generic (iZbp12cjbccf171b7m1srxZ) \t12/31/17 \t_x86_64_\t(2 CPU)\n\n22:36:51     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle\n22:36:52     all   72.00    0.00   27.00    0.00    0.00    0.00    0.00    0.00    0.00    1.00\n22:36:52       0   86.87    0.00   12.12    0.00    0.00    0.00    0.00    0.00    0.00    1.01\n22:36:52       1   58.59    0.00   41.41    0.00    0.00    0.00    0.00    0.00    0.00    0.00\n\nAverage:     CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle\nAverage:     all   72.00    0.00   27.00    0.00    0.00    0.00    0.00    0.00    0.00    1.00\nAverage:       0   86.87    0.00   12.12    0.00    0.00    0.00    0.00    0.00    0.00    1.01\nAverage:       1   58.59    0.00   41.41    0.00    0.00    0.00    0.00    0.00    0.00    0.00\n'}
 
@@ -184,7 +184,7 @@ LEPV接收LEPD的数据：{'result': 'Linux 4.4.0-62-generic (iZbp12cjbccf171b7m
 
 #### （2）折线，以Average Load为例
 
-![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/AverageLoad.png)
+![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/AverageLoad.png)
 
 LEPV接收LEPD的数据：{'result': '10.26 11.48 11.68 5/405 18498\n'}
 
@@ -194,7 +194,7 @@ LEPV接收LEPD的数据：{'result': '10.26 11.48 11.68 5/405 18498\n'}
 
 #### （3）表格，以CPU TOP为例
 
-![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/CPUTOP.png)
+![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/CPUTOP.png)
 
 LEPV接收LEPD的数据：{'result': '  PID USER     PRI  NI    VSZ   RSS S %CPU %MEM     TIME CMD\n    1 root      19   0  37664  5376 S  0.0  0.1 00:00:14 /sbin/init\n    2 root      19   0      0     0 S  0.0  0.0 00:00:00 kthreadd\n    3 root      19   0      0     0 S  0.0  0.0 00:00:14 ksoftirqd/0\n    5 root      39 -20      0     0 S  0.0  0.0 00:00:00 kworker/0:0H\n    7 root      19   0      0     0 S  0.0  0.0 00:11:36 rcu_sched\n    8 root      19   0      0     0 S  0.0  0.0 00:00:00 rcu_bh\n    9 root     139   -      0     0 S  0.0  0.0 00:00:02 migration/0\n   10 root     139   -      0     0 S  0.0  0.0 00:00:08 watchdog/0\n   11 root     139   -      0     0 S  0.0  0.0 00:00:09 watchdog/1\n   12 root     139   -      0     0 S  0.0  0.0 00:00:02 migration/1\n   13 root      19   0      0     0 S  0.0  0.0 00:00:19 ksoftirqd/1\n   15 root      39 -20      0     0 S  0.0  0.0 00:00:00 kworker/1:0H\n   16 root      19   0      0     0 S  0.0  0.0 00:00:00 kdevtmpfs\n   17 root      39 -20      0     0 S  0.0  0.0 00:00:00 netns\n   18 root      39 -20      0     0 S  0.0  0.0 00:00:00 perf\n   19 root      19   0      0     0 S  0.0  0.0 00:00:01 khungtaskd\n   20 root      39 -20      0     0 S  0.0  0.0 00:00:00 writeback\n   21 root      14   5      0     0 S  0.0  0.0 00:00:00 ksmd\n   22 root       0  19      0     0 S  0.0  0.0 00:00:10 khugepaged\n   23 root      39 -20      0     0 S  0.0  0.0 00:00:00 crypto\n   24 root      39 -20      0     0 S  0.0  0.0 00:00:00 kintegrityd\n   25 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   26 root      39 -20      0     0 S  0.0  0.0 00:00:00 kblockd\n   27 root      39 -20      0     0 S  0.0  0.0 00:00:00 ata_sff\n   28 root      39 -20      0     0 S  0.0  0.0 00:00:00 md\n   29 root      39 -20      0     0 S  0.0  0.0 00:00:00 devfreq_wq\n   34 root      19   0      0     0 S  0.0  0.0 00:00:01 kswapd0\n   35 root      39 -20      0     0 S  0.0  0.0 00:00:00 vmstat\n   36 root      19   0      0     0 S  0.0  0.0 00:00:00 fsnotify_mark\n   37 root      19   0      0     0 S  0.0  0.0 00:00:00 ecryptfs-kthrea\n   53 root      39 -20      0     0 S  0.0  0.0 00:00:00 kthrotld\n   54 root      39 -20      0     0 S  0.0  0.0 00:00:00 acpi_thermal_pm\n   55 root      19   0      0     0 S  0.0  0.0 00:00:00 vballoon\n   56 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   57 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   58 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   59 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   60 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   61 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   62 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   63 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   64 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   65 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   66 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   67 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   68 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   69 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   70 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   71 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n   72 root      39 -20      0     0 S  0.0  0.0 00:00:00 bioset\n'}
 
@@ -204,7 +204,7 @@ LEPV接收LEPD的数据：{'result': '  PID USER     PRI  NI    VSZ   RSS S %CPU
 
 #### （4）火焰图
 
-![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/FlameGraph.png)
+![img](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/FlameGraph.png)
 
 ##### 一个例子：
 
