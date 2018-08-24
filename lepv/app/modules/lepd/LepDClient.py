@@ -53,6 +53,7 @@ class LepDClient:
         if (response == None or 'result' not in response):
             return None
 
+        print("response"+ str(response))
         resultLines = response['result'].split('\n')
         # 'Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util'
         # 'vda               9.31     0.44    0.24    0.42    38.76     4.04   129.68     0.00 6331.59 14163.45 1931.28   1.58   0.10'

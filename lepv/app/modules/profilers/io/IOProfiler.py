@@ -5,7 +5,8 @@ __copyright__ = "Licensed under GPLv2 or later."
 import datetime
 import pprint
 import re
-
+import json
+from urllib import request, parse
 from app.modules.lepd.LepDClient import LepDClient
 
 
@@ -16,11 +17,108 @@ class IOProfiler:
         self.client = LepDClient(self.server)
         self.config = config
 
-    def get_status(self):
+    def script_execute(self):
+        authid = self.login()
 
+        exec = {
+            "jsonrpc": "2.0",
+            "method": "script.execute",
+            "params": {
+                "scriptid": "11",
+                "hostid": "10084"
+            },
+            "auth": authid,
+            "id": 1
+        }
+
+        value = json.dumps(exec).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+        except Exception as e:
+            print("Auth Failed, Please Check Your Name And Password:", e)
+        else:
+            response = result.read()
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            # print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+            print("Auth Successful. The Auth ID Is: {}")
+            authid = page.get('result')
+            test = authid['value']
+            # print('authid'+str(authid))
+            return test
+
+        # def script_get(self):
+        #     authid = self.login()
+        #     self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+        #     self.headers = {'Content-Type': 'application/json'}
+        #     auth = {
+        #         "jsonrpc": "2.0",
+        #         "method": "script.get",
+        #         "params": {
+        #             "": '',
+        #         },
+        #         "id": 1,
+        #         "auth": authid,
+        #     }
+        #     value = json.dumps(auth).encode('utf-8')
+        #     req = request.Request(self.url, headers=self.headers, data=value)
+        #     try:
+        #         result = request.urlopen(req)
+        #     except Exception as e:
+        #         print("Script create Failed, Please Check Your command:", e)
+        #     else:
+        #         response = result.read()
+        #         page = response.decode('utf-8')
+        #         page = json.loads(page)
+        #         result.close()
+        #         print("page script_get " + str(page))
+
+    def login(self):
+        self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+        self.headers = {'Content-Type': 'application/json'}
+        auth = {
+            "jsonrpc": "2.0",
+            "method": "user.login",
+            "params": {
+                "user": "Admin",
+                "password": "135246"
+            },
+            "id": 1,
+            "auth": None,
+        }
+
+        value = json.dumps(auth).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+        except Exception as e:
+            print("Auth Failed, Please Check Your Name And Password:", e)
+        else:
+            response = result.read()
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+            authid = page.get('result')
+            # print('authid'+str(authid))
+            return authid
+    def get_status(self):
+        test = self.script_execute()
+        resultLines = test.split('\n')
+        # 'Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util'
+        # 'vda               9.31     0.44    0.24    0.42    38.76     4.04   129.68     0.00 6331.59 14163.45 1931.28   1.58   0.10'
+
+        for i in range(len(resultLines)):
+            if (not resultLines[i].startswith('Device:')):
+                continue
+
+            # return resultLines[i:]
+            result = resultLines[i:]
         start_time = datetime.datetime.now()
         
-        result = self.client.getIostatResult()
+        # result = self.client.getIostatResult()
 
         if not result:
             return {}
@@ -67,7 +165,59 @@ class IOProfiler:
         }
         print("IO-status-"+str(response_data))
         return response_data
-    
+
+    def get_status_bak(self):
+
+        start_time = datetime.datetime.now()
+
+        result = self.client.getIostatResult()
+
+        if not result:
+            return {}
+
+        end_time = datetime.datetime.now()
+
+        raw_results = result[:]
+
+        headerline = result.pop(0)
+
+        duration = "%.1f" % ((end_time - start_time).total_seconds())
+        io_status = {
+            'lepdDuration': duration,
+            'disks': {},
+            'diskCount': 0,
+            'ratio': 0
+        }
+
+        for line in result:
+            if (line.strip() == ""):
+                continue
+
+            line_values = line.split()
+
+            device_name = line_values[0]
+            io_status['diskCount'] += 1
+            io_status['disks'][device_name] = {}
+
+            io_status['disks'][device_name]['rkbs'] = line_values[5]
+            io_status['disks'][device_name]['wkbs'] = line_values[6]
+            io_status['disks'][device_name]['ratio'] = line_values[-1]
+
+            this_disk_ratio = self.client.toDecimal(line_values[-1])
+            if this_disk_ratio > io_status['ratio']:
+                io_status['ratio'] = this_disk_ratio
+
+        end_time_2 = datetime.datetime.now()
+        duration = "%.1f" % ((end_time_2 - end_time).total_seconds())
+        io_status['lepvParsingDuration'] = duration
+
+        response_data = {
+            'data': io_status,
+            'rawResult': raw_results
+        }
+        print("IO-status-" + str(response_data))
+        return response_data
+
     def get_capacity(self):
         responseLines = self.client.getResponse("GetCmdDf")
         if (len(responseLines) == 0):

@@ -17,9 +17,6 @@ def get_io_status(request):
 
     global io_status_timer,io_status_count
     io_status_count = request["flag"]
-    # fp = open('temp.txt','w+')
-    # fp.write(str(count))
-    # fp.close()
     set_value("iostatus",str(io_status_count))
     # if io_status_timer is None:
     io_status_timer = Timer(interval, background_timer_stuff_iostatus, [
