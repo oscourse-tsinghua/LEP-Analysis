@@ -17,14 +17,14 @@ class IOProfiler:
         self.client = LepDClient(self.server)
         self.config = config
 
-    def script_execute(self):
+    def script_execute(self,scriptid):
         authid = self.login()
 
         exec = {
             "jsonrpc": "2.0",
             "method": "script.execute",
             "params": {
-                "scriptid": "11",
+                "scriptid": scriptid,
                 "hostid": "10084"
             },
             "auth": authid,
@@ -105,7 +105,7 @@ class IOProfiler:
             # print('authid'+str(authid))
             return authid
     def get_status(self):
-        test = self.script_execute()
+        test = self.script_execute(11)
         resultLines = test.split('\n')
         # 'Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util'
         # 'vda               9.31     0.44    0.24    0.42    38.76     4.04   129.68     0.00 6331.59 14163.45 1931.28   1.58   0.10'
@@ -250,12 +250,87 @@ class IOProfiler:
         responseData['data'] = capacity
         return responseData
 
+    def get_io_top(self, ioTopLines=None):
+        print("IO-top-")
+        test = self.script_execute(12)
+        ioTopLines = test.split('\n')
+        # if (ioTopLines == None):
+        #     ioTopLines = self.client.getResponse('GetCmdIotop')
 
-    def get_io_top(self, ioTopLines = None):
+        print("IOtop-1-" + str(ioTopLines))
+        ioTopResults = {}
+        ioTopResults['data'] = {}
+        ioTopResults['rawResult'] = ioTopLines[:]
+        # print(len(ioTopLines))
+        if (len(ioTopLines) < 2):
+            return ioTopResults
+
+        dataLineStartingIndex = 0
+        for line in ioTopLines:
+            if (re.match(r'\W*TID\W+PRIO\W+USER\W+DISK READ\W+DISK WRITE\W+SWAPIN\W+IO\W+COMMAND\W*', line.strip(),
+                         re.M | re.I)):
+                break
+            else:
+                dataLineStartingIndex += 1
+
+        while (dataLineStartingIndex >= 0):
+            ioTopLines.pop(0)
+            dataLineStartingIndex -= 1
+
+        # for line in ioTopLines:
+        #     print(line)
+        # print('--------------------')
+
+        orderIndex = 0
+        for line in ioTopLines:
+            # print(line)
+            if (line.strip() == ''):
+                continue
+
+            try:
+                # find the 'M/s" or 'B/s', they are for disk read and write
+                matches = re.findall('\s*\d+\.\d{2}\s*[G|M|K|B]\/s\s+', line)
+                diskRead = matches[0].strip()
+                diskWrite = matches[1].strip()
+
+                # find the "0.00 %" occurrences, they are for swapin and io
+                matches = re.findall('\s*\d+\.\d{2}\s*\%\s+', line)
+                swapin = matches[0].strip()
+                io = matches[1].strip()
+
+                lineValues = line.split()
+                pid = lineValues[0].strip()
+                prio = lineValues[1].strip()
+                user = lineValues[2].strip()
+
+                lastPercentIndex = line.rfind('%')
+                command = line[lastPercentIndex + 1:]
+
+                ioTopItem = {}
+                ioTopItem['TID'] = pid
+                ioTopItem['PRIO'] = prio
+                ioTopItem['USER'] = user
+                ioTopItem['READ'] = diskRead
+                ioTopItem['WRITE'] = diskWrite
+                ioTopItem['SWAPIN'] = swapin
+                ioTopItem['IO'] = io
+                ioTopItem['COMMAND'] = command
+            except Exception as err:
+                print(err, "-------  GetCmdIotop")
+                continue
+
+            # use an incremental int as key, so we keey the order of the items.
+            ioTopResults['data'][orderIndex] = ioTopItem
+            orderIndex += 1
+        print("iotop-2-" + str(ioTopResults))
+        return ioTopResults
+
+    def get_io_top_bak(self, ioTopLines = None):
         print("IO-top-")
         if (ioTopLines == None):
             ioTopLines = self.client.getResponse('GetCmdIotop')
-        
+
+        print("IOtop-1-"+str(ioTopLines))
         ioTopResults = {}
         ioTopResults['data'] = {}
         ioTopResults['rawResult'] = ioTopLines[:]
@@ -320,7 +395,7 @@ class IOProfiler:
             # use an incremental int as key, so we keey the order of the items.
             ioTopResults['data'][orderIndex] = ioTopItem
             orderIndex += 1
-        print("iotop"+str(ioTopResults))
+        print("iotop-2-"+str(ioTopResults))
         return ioTopResults
 
 if( __name__ =='__main__' ):
