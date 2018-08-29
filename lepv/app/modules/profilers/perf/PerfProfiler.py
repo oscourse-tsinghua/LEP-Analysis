@@ -50,6 +50,55 @@ class PerfProfiler:
             # print('authid'+str(authid))
             return test
 
+    def script_execute_1(self):
+        authid = self.login()
+
+        exec1 = {
+            "jsonrpc": "2.0",
+            "method": "script.execute",
+            "params": {
+                "scriptid": "14",
+                "hostid": "10084"
+            },
+            "auth": authid,
+            "id": 1
+        }
+
+        value1 = json.dumps(exec1).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value1)
+
+        exec = {
+            "jsonrpc": "2.0",
+            "method": "script.execute",
+            "params": {
+                "scriptid": "15",
+                "hostid": "10084"
+            },
+            "auth": authid,
+            "id": 1
+        }
+
+        value = json.dumps(exec).encode('utf-8')
+        req = request.Request(self.url, headers=self.headers, data=value)
+        try:
+            result = request.urlopen(req)
+            # print("re" + str(result))
+        except Exception as e:
+            print("Auth Failed, Please Check Your Name And Password:", e)
+        else:
+            response = result.read()
+            print("re" + str(response))
+            page = response.decode('utf-8')
+            page = json.loads(page)
+            result.close()
+            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
+            authid = page.get('result')
+            test = authid['value']
+            print("test---" + str(test))
+            # print('authid'+str(authid))
+            return test
+
+
         # def script_get(self):
         #     authid = self.login()
         #     self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
@@ -116,6 +165,7 @@ class PerfProfiler:
         #     response_lines = self.client.split_to_lines(response_lines)
         test = self.script_execute(13)
         response_lines = test.split('\n')
+        print("perf-4-" + str(response_lines))
 
         if len(response_lines) == 0:
             return {}
@@ -227,11 +277,32 @@ class PerfProfiler:
         return response_data
 
     def get_cmd_perf_flame(self, response_lines=None):
-        print("perf flame")
+        test = self.script_execute_1()
+        response_lines = test.split('\n')
+        print("perf flame" + str(response_lines))
+        # lepd_command = 'GetCmdPerfFlame'
+
+        # if not response_lines:
+        #     response_lines = self.client.getResponse(lepd_command)
+        #     print("perf flame"+str(response_lines))
+        # elif isinstance(response_lines, str):
+        #     response_lines = self.client.split_to_lines(response_lines)
+
+        if len(response_lines) == 0:
+            return {}
+
+        flame_data = self.flame_burner.burn(response_lines)
+        flame_data_hierarchy = []
+        self.flame_burner.generate_json_hierarchy(flame_data, [], flame_data_hierarchy)
+        # print("perf-2-"+str({'flame': flame_data, 'perf_script_output': response_lines, 'hierarchy': flame_data_hierarchy}))
+        return {'flame': flame_data, 'perf_script_output': response_lines, 'hierarchy': flame_data_hierarchy}
+
+    def get_cmd_perf_flame_bak(self, response_lines=None):
         lepd_command = 'GetCmdPerfFlame'
 
         if not response_lines:
             response_lines = self.client.getResponse(lepd_command)
+            print("perf flame"+str(response_lines))
         elif isinstance(response_lines, str):
             response_lines = self.client.split_to_lines(response_lines)
 
@@ -241,10 +312,8 @@ class PerfProfiler:
         flame_data = self.flame_burner.burn(response_lines)
         flame_data_hierarchy = []
         # self.flame_burner.generate_json_hierarchy(flame_data, [], flame_data_hierarchy)
-        print("perf-2-"+str({'flame': flame_data, 'perf_script_output': response_lines, 'hierarchy': flame_data_hierarchy}))
+        # print("perf-2-"+str({'flame': flame_data, 'perf_script_output': response_lines, 'hierarchy': flame_data_hierarchy}))
         return {'flame': flame_data, 'perf_script_output': response_lines, 'hierarchy': flame_data_hierarchy}
-
-
 if __name__ == '__main__' :
     profiler = PerfProfiler(server='www.rmlink.cn', config='debug')
 
