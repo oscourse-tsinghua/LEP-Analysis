@@ -5,9 +5,10 @@ __copyright__ = "Licensed under GPLv2 or later."
 import datetime
 import pprint
 import re
-import json
-from urllib import request, parse
+# import json
+# from urllib import request, parse
 from app.modules.lepd.LepDClient import LepDClient
+from app.modules.utils.zabbixAPI import script_execute
 
 
 class IOProfiler:
@@ -17,95 +18,9 @@ class IOProfiler:
         self.client = LepDClient(self.server)
         self.config = config
 
-    def script_execute(self,scriptid):
-        authid = self.login()
 
-        exec = {
-            "jsonrpc": "2.0",
-            "method": "script.execute",
-            "params": {
-                "scriptid": scriptid,
-                "hostid": "10084"
-            },
-            "auth": authid,
-            "id": 1
-        }
-
-        value = json.dumps(exec).encode('utf-8')
-        req = request.Request(self.url, headers=self.headers, data=value)
-        try:
-            result = request.urlopen(req)
-        except Exception as e:
-            print("Auth Failed, Please Check Your Name And Password:", e)
-        else:
-            response = result.read()
-            page = response.decode('utf-8')
-            page = json.loads(page)
-            result.close()
-            # print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
-            print("Auth Successful. The Auth ID Is: {}")
-            authid = page.get('result')
-            test = authid['value']
-            # print('authid'+str(authid))
-            return test
-
-        # def script_get(self):
-        #     authid = self.login()
-        #     self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
-        #     self.headers = {'Content-Type': 'application/json'}
-        #     auth = {
-        #         "jsonrpc": "2.0",
-        #         "method": "script.get",
-        #         "params": {
-        #             "": '',
-        #         },
-        #         "id": 1,
-        #         "auth": authid,
-        #     }
-        #     value = json.dumps(auth).encode('utf-8')
-        #     req = request.Request(self.url, headers=self.headers, data=value)
-        #     try:
-        #         result = request.urlopen(req)
-        #     except Exception as e:
-        #         print("Script create Failed, Please Check Your command:", e)
-        #     else:
-        #         response = result.read()
-        #         page = response.decode('utf-8')
-        #         page = json.loads(page)
-        #         result.close()
-        #         print("page script_get " + str(page))
-
-    def login(self):
-        self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
-        self.headers = {'Content-Type': 'application/json'}
-        auth = {
-            "jsonrpc": "2.0",
-            "method": "user.login",
-            "params": {
-                "user": "Admin",
-                "password": "135246"
-            },
-            "id": 1,
-            "auth": None,
-        }
-
-        value = json.dumps(auth).encode('utf-8')
-        req = request.Request(self.url, headers=self.headers, data=value)
-        try:
-            result = request.urlopen(req)
-        except Exception as e:
-            print("Auth Failed, Please Check Your Name And Password:", e)
-        else:
-            response = result.read()
-            page = response.decode('utf-8')
-            page = json.loads(page)
-            result.close()
-            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
-            authid = page.get('result')
-            # print('authid'+str(authid))
-            return authid
     def get_status(self):
-        test = self.script_execute(11)
+        test = script_execute(11)
         resultLines = test.split('\n')
         # 'Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util'
         # 'vda               9.31     0.44    0.24    0.42    38.76     4.04   129.68     0.00 6331.59 14163.45 1931.28   1.58   0.10'
@@ -252,7 +167,7 @@ class IOProfiler:
 
     def get_io_top(self, ioTopLines=None):
         print("IO-top-")
-        test = self.script_execute(12)
+        test = script_execute(12)
         ioTopLines = test.split('\n')
         # if (ioTopLines == None):
         #     ioTopLines = self.client.getResponse('GetCmdIotop')

@@ -6,13 +6,11 @@ __copyright__ = "Licensed under GPLv2 or later."
 import MySQLdb
 import pprint
 import re
-import json
-from urllib import request, parse
 from decimal import Decimal
 from time import gmtime, strftime, sleep
 
 from app.modules.lepd.LepDClient import LepDClient
-
+from app.modules.utils.zabbixAPI import script_execute
 
 class CPUProfiler:
 
@@ -1501,160 +1499,20 @@ class CPUProfiler:
     #     response_data['data'] = ones
     #     return response_data
 
-    def get_top(self):
-
-        authid = self.login()
-        print("get top" + str(authid))
-
-    def script_create(self):
-
-        authid = self.login()
-        self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
-        self.headers = {'Content-Type': 'application/json'}
-        auth = {
-            "jsonrpc": "2.0",
-            "method": "script.create",
-            "params": {
-                "name": "cpu top",
-                "command": "ps -e -o pid,user,pri,ni,vsize,rss,s,%cpu,%mem,time,cmd --sort=-%cpu",
-            },
-            "id": 1,
-            "auth": authid,
-        }
-        value = json.dumps(auth).encode('utf-8')
-        req = request.Request(self.url, headers=self.headers, data=value)
-        try:
-            result = request.urlopen(req)
-        except Exception as e:
-            print("Script create Failed, Please Check Your command:", e)
-        else:
-            response = result.read()
-            page = response.decode('utf-8')
-            page = json.loads(page)
-            result.close()
-            print("page" + str(page))
-            # print("Script create Successful. The script ID Is: " .format(page.get('result')))
-            # scriptid = page.get('result')
-            # print('authid'+str(authid))
-            # return scriptid
-
-    def script_execute(self):
-        authid = self.login()
-
-        exec = {
-            "jsonrpc": "2.0",
-            "method": "script.execute",
-            "params": {
-                "scriptid": "9",
-                "hostid": "10084"
-            },
-            "auth": authid,
-            "id": 1
-        }
-
-        value = json.dumps(exec).encode('utf-8')
-        req = request.Request(self.url, headers=self.headers, data=value)
-        try:
-            result = request.urlopen(req)
-        except Exception as e:
-            print("Auth Failed, Please Check Your Name And Password:", e)
-        else:
-            response = result.read()
-            page = response.decode('utf-8')
-            page = json.loads(page)
-            result.close()
-            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
-            authid = page.get('result')
-            test = authid['value']
-            # print('authid'+str(authid))
-            return test
-
-        # def script_get(self):
-        #     authid = self.login()
-        #     self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
-        #     self.headers = {'Content-Type': 'application/json'}
-        #     auth = {
-        #         "jsonrpc": "2.0",
-        #         "method": "script.get",
-        #         "params": {
-        #             "": '',
-        #         },
-        #         "id": 1,
-        #         "auth": authid,
-        #     }
-        #     value = json.dumps(auth).encode('utf-8')
-        #     req = request.Request(self.url, headers=self.headers, data=value)
-        #     try:
-        #         result = request.urlopen(req)
-        #     except Exception as e:
-        #         print("Script create Failed, Please Check Your command:", e)
-        #     else:
-        #         response = result.read()
-        #         page = response.decode('utf-8')
-        #         page = json.loads(page)
-        #         result.close()
-        #         print("page script_get " + str(page))
-
-    def login(self):
-        self.url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
-        self.headers = {'Content-Type': 'application/json'}
-        auth = {
-            "jsonrpc": "2.0",
-            "method": "user.login",
-            "params": {
-                "user": "Admin",
-                "password": "135246"
-            },
-            "id": 1,
-            "auth": None,
-        }
-
-        value = json.dumps(auth).encode('utf-8')
-        req = request.Request(self.url, headers=self.headers, data=value)
-        try:
-            result = request.urlopen(req)
-        except Exception as e:
-            print("Auth Failed, Please Check Your Name And Password:", e)
-        else:
-            response = result.read()
-            page = response.decode('utf-8')
-            page = json.loads(page)
-            result.close()
-            print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
-            authid = page.get('result')
-            # print('authid'+str(authid))
-            return authid
-
-    # page = json.loads(page)
-    # page1 = json.loads(page1)
-    # result.close()
-    # result1.close()
-    # print("page" + str(page))
-    # print("page1" + str(page1))
-    # print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
-
     def get_cpu_top(self, responseLines = None):
 
-        test = self.script_execute()
+        test = script_execute(9)
         print("test--"+test)
         responseLines = test.split('\n')
         # print("responselines11111111" + str(responseLines))
         responseLines.pop()
-        # print("responselines--------" + str(responseLines))
-        # if not responseLines:
-        #     responseLines = self.client.getResponse(lepd_command)
-        #     print("responseLines1"+str(responseLines))
-        # elif isinstance(responseLines, str):
-        #     responseLines = self.client.split_to_lines(responseLines)
-        #     print("responseLines2" + str(responseLines))
-
 
         if len(responseLines) == 0:
             return {}
 
         responseData = {}
-        if (self.config == 'debug'):
-            responseData['rawResult'] = responseLines[:]
+        # if (self.config == 'debug'):
+        #     responseData['rawResult'] = responseLines[:]
 
         headerLine = responseLines.pop(0)
         while ( not re.match(r'\W*PID\W+USER\W+.*', headerLine, re.M|re.I) ):
@@ -1788,4 +1646,4 @@ if( __name__ =='__main__' ):
     # pp.pprint(profiler.getCpuByName("kworker/u3:0"))
     # pp.pprint(profiler.getCpuByPid("4175"))
     # pp.pprint(profiler.getTopHResult())
-    pp.pprint(profiler.get_cpu_top())
+    # pp.pprint(profiler.get_cpu_top())
