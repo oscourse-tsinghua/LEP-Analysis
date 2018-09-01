@@ -1,8 +1,14 @@
 import json
+import MySQLdb
 from urllib import request, parse
 
 url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
 headers = {'Content-Type': 'application/json'}
+host = "192.168.253.134"
+user = "root"
+passwd = "135246"
+dbase = "zabbix"
+
 def script_execute(scriptid):
     authid = login()
 
@@ -138,3 +144,51 @@ def login():
         authid = page.get('result')
         # print('authid'+str(authid))
         return authid
+
+def get_hostid(hostName):
+    db = MySQLdb.connect(host, user, passwd, dbase)
+    print("host"+ str(hostName))
+    cursor = db.cursor()
+    sql = "SELECT hostid FROM interface where ip = \'"  + hostName + "\'"
+    try:
+        cursor.execute(sql)
+        ones = cursor.fetchone()
+        db.commit()
+    except:
+        db.rollback()
+    db.close()
+    hostId = ones[0]
+    return hostId
+
+
+def get_itemid(hostId, key):
+    db = MySQLdb.connect(host, user, passwd, dbase)
+
+    cursor = db.cursor()
+    sql = "SELECT itemid FROM items where hostid = "  + str(hostId) + " AND key_ = \'" + key + "\'"
+    try:
+        cursor.execute(sql)
+        ones = cursor.fetchone()
+        db.commit()
+    except:
+        db.rollback()
+    db.close()
+    itemId = ones[0]
+    return itemId
+
+
+def get_itemid_discovery(key):
+    db = MySQLdb.connect(host, user, passwd, dbase)
+    cursor = db.cursor()
+    itemId_dis = []
+    sql = "SELECT itemid FROM item_discovery where key_ = \'" + key + "\'"
+    try:
+        cursor.execute(sql)
+        ones = cursor.fetchall()
+        db.commit()
+    except:
+        db.rollback()
+    db.close()
+    for one in ones:
+        itemId_dis.append(one[0])
+    return itemId_dis

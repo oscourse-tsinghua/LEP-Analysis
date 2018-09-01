@@ -6,11 +6,12 @@ __copyright__ = "Licensed under GPLv2 or later."
 import MySQLdb
 import pprint
 import re
+import copy
 from decimal import Decimal
 from time import gmtime, strftime, sleep
 
 from app.modules.lepd.LepDClient import LepDClient
-from app.modules.utils.zabbixAPI import script_execute
+from app.modules.utils.zabbixAPI import script_execute,get_hostid,get_itemid,get_itemid_discovery
 
 class CPUProfiler:
 
@@ -23,6 +24,10 @@ class CPUProfiler:
         self.maxDataCount = 25
 
         self.loadBalanceBenchMark = Decimal(40)
+        self.host = "192.168.253.134"
+        self.user = "root"
+        self.passwd = "135246"
+        self.db = "zabbix"
 
     def getCpuInfoForArm(self, lines):
 
@@ -229,7 +234,11 @@ class CPUProfiler:
         return responseData
 
     def get_cpu_stat(self, tableinfo):
-        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        hostid = get_hostid(self.host)
+        print("hostid"+ str(hostid))
+        # itemid1 = get_itemid(hostid, "system.cpu.util[,user]")
+        # print("itemid1" + str(itemid1))
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         #(23306,23302,23305,23299,23301,23300,23303,23304)
 
@@ -237,17 +246,17 @@ class CPUProfiler:
             # sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
             #       " where itemid= " + tableinfo['list3'] + " order by " + tableinfo['list1'] + " DESC "
             # print("sql-time5")
-            sql = "SELECT clock,value FROM history where itemid=23306 order by itemid,clock DESC limit 1"
-            sql1 = "SELECT clock,value FROM history where itemid=23302 order by itemid,clock DESC limit 1"
-            sql2 = "SELECT clock,value FROM history where itemid=23305 order by itemid,clock DESC limit 1"
-            sql3 = "SELECT clock,value FROM history where itemid=23299 order by itemid,clock DESC limit 1"
-            sql4 = "SELECT clock,value FROM history where itemid=23301 order by itemid,clock DESC limit 1"
-            sql5 = "SELECT clock,value FROM history where itemid=23300 order by itemid,clock DESC limit 1"
-            sql6 = "SELECT clock,value FROM history where itemid=23303 order by itemid,clock DESC limit 1"
-            sql7 = "SELECT clock,value FROM history where itemid=23304 order by itemid,clock DESC limit 1"
+            sql = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,user]")) + " order by itemid,clock DESC limit 1"
+            sql1 = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,nice]")) + " order by itemid,clock DESC limit 1"
+            sql2 = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,system]")) + " order by itemid,clock DESC limit 1"
+            sql3 = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,idle]")) + " order by itemid,clock DESC limit 1"
+            sql4 = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,iowait]")) + " order by itemid,clock DESC limit 1"
+            sql5 = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,interrupt]")) + " order by itemid,clock DESC limit 1"
+            sql6 = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,softirq]")) + " order by itemid,clock DESC limit 1"
+            sql7 = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,steal]")) + " order by itemid,clock DESC limit 1"
             try:
                 # 执行sql语句
-                sleep(60)
+                # sleep(60)
                 cursor.execute(sql)
                 ones = [
                     {'time': i[0], 'user': i[1], 'nice': 0, 'system': 0, 'idle': 0, 'iowait': 0, 'irq': 0, 'softirq': 0,
@@ -282,14 +291,22 @@ class CPUProfiler:
             # sql = "SELECT " + tableinfo['list1'] + "," + tableinfo['list2'] + " FROM " + tableinfo['tablename'] + \
             #       " where itemid= " + tableinfo['list3'] + " AND   " + tableinfo['list1'] + " < " + tableinfo['list4'] + \
             #       " order by " + tableinfo['list1'] + " DESC "
-            sql = "SELECT clock,value FROM history where itemid=23306 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql1 = "SELECT clock,value FROM history where itemid=23302 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql2 = "SELECT clock,value FROM history where itemid=23305 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql3 = "SELECT clock,value FROM history where itemid=23299 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql4 = "SELECT clock,value FROM history where itemid=23301 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql5 = "SELECT clock,value FROM history where itemid=23300 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql6 = "SELECT clock,value FROM history where itemid=23303 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql7 = "SELECT clock,value FROM history where itemid=23304 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,user]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql1 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,nice]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql2 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,system]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql3 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,idle]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql4 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,iowait]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql5 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,interrupt]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql6 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,softirq]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            sql7 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,steal]")) + " AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
             try:
                 cursor.execute(sql)
                 ones = [
@@ -321,14 +338,23 @@ class CPUProfiler:
             except:
                 db.rollback()
         else:
-            sql = "SELECT clock,value FROM history where itemid=23306 order by itemid,clock DESC limit 100"
-            sql1 = "SELECT clock,value FROM history where itemid=23302 order by itemid,clock DESC limit 100"
-            sql2 = "SELECT clock,value FROM history where itemid=23305 order by itemid,clock DESC limit 100"
-            sql3 = "SELECT clock,value FROM history where itemid=23299 order by itemid,clock DESC limit 100"
-            sql4 = "SELECT clock,value FROM history where itemid=23301 order by itemid,clock DESC limit 100"
-            sql5 = "SELECT clock,value FROM history where itemid=23300 order by itemid,clock DESC limit 100"
-            sql6 = "SELECT clock,value FROM history where itemid=23303 order by itemid,clock DESC limit 100"
-            sql7 = "SELECT clock,value FROM history where itemid=23304 order by itemid,clock DESC limit 100"
+
+            sql = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,user]")) + " order by itemid,clock DESC limit 100"
+            sql1 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,nice]")) + " order by itemid,clock DESC limit 100"
+            sql2 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,system]")) + " order by itemid,clock DESC limit 100"
+            sql3 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,idle]")) + " order by itemid,clock DESC limit 100"
+            sql4 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,iowait]")) + " order by itemid,clock DESC limit 100"
+            sql5 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,interrupt]")) + " order by itemid,clock DESC limit 100"
+            sql6 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,softirq]")) + " order by itemid,clock DESC limit 100"
+            sql7 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.util[,steal]")) + " order by itemid,clock DESC limit 100"
             try:
                 cursor.execute(sql)
                 ones = [{'time': i[0], 'user': i[1], 'nice': 0, 'system': 0, 'idle': 0, 'iowait': 0, 'irq': 0, 'softirq': 0,
@@ -366,76 +392,111 @@ class CPUProfiler:
         return response_data
 
     def get_cpu_idle(self, tableinfo):
-        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        itemId_discovery = get_itemid_discovery("system.cpu.util[{#CPU.NUMBER},idle]")
+        core = len(itemId_discovery)
+        print("itemid"+ str(itemId_discovery))
+        print("core"+ str(core))
+
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
-
+        sql = []
         if ('list5' in tableinfo):
-            sql = "SELECT clock,value FROM history where itemid=28270 order by itemid,clock DESC limit 1"
-            sql1 = "SELECT clock,value FROM history where itemid=28271 order by itemid,clock DESC limit 1"
-            sql2 = "SELECT clock,value FROM history where itemid=28272 order by itemid,clock DESC limit 1"
-            sql3 = "SELECT clock,value FROM history where itemid=28273 order by itemid,clock DESC limit 1"
+            ones = []
+            re = {}
+            re["time"] = 0
+            for i in range(core):
+                re['CPU-' + str(i)] = 0
+            print("re" + str(re))
+            for i in itemId_discovery:
+                sql.append("SELECT clock,value FROM history where itemid="+ str(i)+" order by itemid,clock DESC limit 1")
+            print(str(sql))
             try:
+                for i in range(core):
+                    cursor.execute(sql[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        re["time"] = row[0]
+                        re["CPU-"+ str(i)] = row[1]
+                print("wwww" + str(re))
+                ones.append(re)
 
-                sleep(60)
-                cursor.execute(sql)
-                # need to modify
-                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql1)
-                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql2)
-                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql3)
-                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(1):
-                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
                 db.commit()
             except:
+                print("oooo")
                 db.rollback()
         elif ('list4' in tableinfo):
-            sql = "SELECT clock,value FROM history where itemid=28270 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql1 = "SELECT clock,value FROM history where itemid=28271 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql2 = "SELECT clock,value FROM history where itemid=28272 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
-            sql3 = "SELECT clock,value FROM history where itemid=28273 AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10"
+            ones = []
+            # re = {}
+            # re["time"] = 0
+            for j in range(10):
+                re = {}
+                re["time"] = 0
+                for i in range(core):
+                    re['CPU-' + str(i)] = 0
+                ones.append(re)
+            # print("re" + str(re))
+            print("ones" + str(ones))
+            temp = []
+            for i in itemId_discovery:
+                sql.append("SELECT clock,value FROM history where itemid="+ str(i)+" AND clock < " +  tableinfo['list4'] + " order by itemid,clock DESC limit 10")
+            # print(str(sql))
             try:
-                cursor.execute(sql)
-                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql1)
-                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql2)
-                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql3)
-                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(10):
-                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
+                for i in range(core):
+                    cursor.execute(sql[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp.append(row)
+                    print("111"+ str(temp))
+                i = 0
+                while (i < 10):
+                    j = 0
+                    while (j < core):
+                        if (j == 0):
+                            ones[i]["time"] = temp[10 * j + i][0]
+                        ones[i]["CPU-" + str(j)] = temp[10 * j + i][1]
+                        j = j + 1
+                    i = i + 1
+                print("333-" + " " + str(i) + " " + str(ones))
+
                 db.commit()
             except:
                 db.rollback()
         else:
-            sql = "SELECT clock,value FROM history where itemid=28270 order by itemid,clock DESC limit 100"
-            sql1 = "SELECT clock,value FROM history where itemid=28271 order by itemid,clock DESC limit 100"
-            sql2 = "SELECT clock,value FROM history where itemid=28272 order by itemid,clock DESC limit 100"
-            sql3 = "SELECT clock,value FROM history where itemid=28273 order by itemid,clock DESC limit 100"
+            ones = []
+            for j in range(100):
+                re = {}
+                re["time"] = j
+                for i in range(core):
+                    re['CPU-' + str(i)] = 0
+                ones.append(re)
+            print("ones" + str(ones))
+            temp = []
+            for i in itemId_discovery:
+                sql.append("SELECT clock,value FROM history where itemid="+ str(i)+" order by itemid,clock DESC limit 100")
+            print(str(sql))
             try:
-                cursor.execute(sql)
-                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql1)
-                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql2)
-                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql3)
-                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(100):
-                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
+                for i in range(core):
+                    cursor.execute(sql[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp.append(row)
+                # print("111"+str(temp))
+
+                i = 0
+                while (i < 100):
+                    j = 0
+                    while (j < core):
+                        if (j == 0):
+                            ones[i]["time"] = temp[100 * j + i][0]
+                        ones[i]["CPU-" + str(j)] = temp[100 * j + i][1]
+                        j = j + 1
+                    i = i + 1
+                # print("333-"+ " "+str(i)+ " "+str(ones))
 
                 db.commit()
             except:
                 db.rollback()
+
         db.close()
         response_data = {}
         response_data['data'] = ones
@@ -443,7 +504,7 @@ class CPUProfiler:
         return response_data
 
     def get_cpu_usergroup(self, tableinfo):
-        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
@@ -650,7 +711,7 @@ class CPUProfiler:
         return response_data
 
     def get_cpu_irqgroup(self, tableinfo):
-        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
@@ -807,7 +868,7 @@ class CPUProfiler:
         return response_data
 
     def get_cpu_irq(self, tableinfo):
-        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
@@ -948,7 +1009,7 @@ class CPUProfiler:
         return irq_data
 
     def get_softirq(self, tableinfo):
-        db = MySQLdb.connect("192.168.253.137", "root", "135246", "zabbix")
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
@@ -1155,7 +1216,6 @@ class CPUProfiler:
         print("softirq"+str(softirq_data))
         return softirq_data
 
-
     # def get_stat(self, response_lines=[]):
 
     #     if not response_lines:
@@ -1243,8 +1303,6 @@ class CPUProfiler:
     #         stat_data['data']['softirq'] = softirq_info['data']
 
     #     return stat_data
-
-
     def analyze_irq_for_load_balance(self, cpu_stat_data):
 
         if not cpu_stat_data:
@@ -1285,7 +1343,7 @@ class CPUProfiler:
 
 
     def get_avg_load(self,tableinfo):
-        db = MySQLdb.connect("192.168.253.128", "root", "135246", "zabbix")
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
@@ -1395,7 +1453,7 @@ class CPUProfiler:
     def get_mysql_data(self, tableinfo, response_lines=None):
         print("CPUProfiler-5-")
         # 打开数据库连接
-        db = MySQLdb.connect("192.168.253.128", "root", "135246", "zabbix")
+        db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         # db = MySQLdb.connect("192.168.2.9", "root", "596100", "zabbix")
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()
@@ -1502,9 +1560,7 @@ class CPUProfiler:
     def get_cpu_top(self, responseLines = None):
 
         test = script_execute(9)
-        print("test--"+test)
         responseLines = test.split('\n')
-        # print("responselines11111111" + str(responseLines))
         responseLines.pop()
 
         if len(responseLines) == 0:
