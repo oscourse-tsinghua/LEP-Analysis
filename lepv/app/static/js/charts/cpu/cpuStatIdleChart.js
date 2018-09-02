@@ -228,6 +228,7 @@ CpuStatIdleChart.prototype.updateChartData = function(response) {
             }
         }
         min =  "'" + data[9]['time'] + "'";
+        console.log("min----"+data[9]['time'])
         console.log("min" + min);
     }
 

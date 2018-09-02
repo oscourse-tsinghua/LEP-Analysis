@@ -504,203 +504,186 @@ class CPUProfiler:
         return response_data
 
     def get_cpu_usergroup(self, tableinfo):
+        itemId_discovery1 = get_itemid_discovery("system.cpu.util[{#CPU.NUMBER},user]")
+        core = len(itemId_discovery1)
+        itemId_discovery2 = get_itemid_discovery("system.cpu.util[{#CPU.NUMBER},system]")
+        itemId_discovery3 = get_itemid_discovery("system.cpu.util[{#CPU.NUMBER},nice]")
+        print("itemid" + str(itemId_discovery1) + "--"+ str(itemId_discovery2) + "--" + str(itemId_discovery3))
+        print("core" + str(core))
+
         db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
-
+        sql1 = []
+        sql2 = []
+        sql3 = []
         if ('list5' in tableinfo):
-            sql = "SELECT clock,value FROM history where itemid=28275 order by itemid,clock DESC limit 1"
-            sql1 = "SELECT clock,value FROM history where itemid=28276 order by itemid,clock DESC limit 1"
-            sql2 = "SELECT clock,value FROM history where itemid=28277 order by itemid,clock DESC limit 1"
-            sql3 = "SELECT clock,value FROM history where itemid=28278 order by itemid,clock DESC limit 1"
+            ones = []
+            re = {}
+            re["time"] = 0
+            for i in range(core):
+                re['CPU-' + str(i)] = 0
+            # print("re" + str(re))
+            for i in itemId_discovery1:
+                sql1.append("SELECT clock,value FROM history where itemid=" + str(i) + " order by itemid,clock DESC limit 1")
+            for i in itemId_discovery2:
+                sql2.append("SELECT clock,value FROM history where itemid=" + str(i) + " order by itemid,clock DESC limit 1")
+            for i in itemId_discovery3:
+                sql3.append("SELECT clock,value FROM history where itemid=" + str(i) + " order by itemid,clock DESC limit 1")
 
-            sql4 = "SELECT clock,value FROM history where itemid=28281 order by itemid,clock DESC limit 1"
-            sql5 = "SELECT clock,value FROM history where itemid=28282 order by itemid,clock DESC limit 1"
-            sql6 = "SELECT clock,value FROM history where itemid=28283 order by itemid,clock DESC limit 1"
-            sql7 = "SELECT clock,value FROM history where itemid=28284 order by itemid,clock DESC limit 1"
-
-            sql8 = "SELECT clock,value FROM history where itemid=28286 order by itemid,clock DESC limit 1"
-            sql9 = "SELECT clock,value FROM history where itemid=28287 order by itemid,clock DESC limit 1"
-            sql10 = "SELECT clock,value FROM history where itemid=28288 order by itemid,clock DESC limit 1"
-            sql11 = "SELECT clock,value FROM history where itemid=28289 order by itemid,clock DESC limit 1"
             try:
-
-                cursor.execute(sql)
-                # need to modify
-                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql1)
-                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql2)
-                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql3)
-                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(1):
-                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
-
-                cursor.execute(sql4)
-                ones4 = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql5)
-                ones5 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql6)
-                ones6 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql7)
-                ones7 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(1):
-                    ones4[i]['CPU-1'] = ones5[i]['CPU-1']
-                    ones4[i]['CPU-2'] = ones6[i]['CPU-2']
-                    ones4[i]['CPU-3'] = ones7[i]['CPU-3']
-
-                cursor.execute(sql8)
-                ones8 = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql9)
-                ones9 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql10)
-                ones10 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql11)
-                ones11 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(1):
-                    ones8[i]['CPU-1'] = ones9[i]['CPU-1']
-                    ones8[i]['CPU-2'] = ones10[i]['CPU-2']
-                    ones8[i]['CPU-3'] = ones11[i]['CPU-3']
-
-                for i in range(1):
-                    ones[i]['CPU-0'] = ones[i]['CPU-0'] + ones4[i]['CPU-0'] + ones8[i]['CPU-0']
-                    ones[i]['CPU-1'] = ones[i]['CPU-1'] + ones4[i]['CPU-1'] + ones8[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones[i]['CPU-2'] + ones4[i]['CPU-2'] + ones8[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones[i]['CPU-3'] + ones4[i]['CPU-3'] + ones8[i]['CPU-3']
+                for i in range(core):
+                    cursor.execute(sql1[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        re["time"] = row[0]
+                        re["CPU-"+ str(i)] = row[1]
+                # print("wwww" + str(re))
+                ones.append(re)
+                for i in range(core):
+                    cursor.execute(sql2[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        ones[0]["CPU-"+ str(i)] += row[1]
+                # print("wwww" + str(re))
+                for i in range(core):
+                    cursor.execute(sql3[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        print("row1"+ str(row[1]))
+                        ones[0]["CPU-" + str(i)] += row[1]
+                # print("wwww" + str(re))
                 db.commit()
             except:
                 db.rollback()
         elif ('list4' in tableinfo):
+            ones = []
+            for j in range(10):
+                re = {}
+                re["time"] = 0
+                for i in range(core):
+                    re['CPU-' + str(i)] = 0
+                ones.append(re)
+            # print("ones" + str(ones))
+            temp1 = []
+            temp2 = []
+            temp3 = []
+            for i in itemId_discovery1:
+                sql1.append("SELECT clock,value FROM history where itemid=" + str(i) + " AND clock < " + tableinfo[
+                    'list4'] + " order by itemid,clock DESC limit 10")
+            for i in itemId_discovery2:
+                sql2.append("SELECT clock,value FROM history where itemid=" + str(i) + " AND clock < " + tableinfo[
+                    'list4'] + " order by itemid,clock DESC limit 10")
+            for i in itemId_discovery3:
+                sql3.append("SELECT clock,value FROM history where itemid=" + str(i) + " AND clock < " + tableinfo[
+                    'list4'] + " order by itemid,clock DESC limit 10")
 
-            sql = "SELECT clock,value FROM history where itemid=28275 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql1 = "SELECT clock,value FROM history where itemid=28276 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql2 = "SELECT clock,value FROM history where itemid=28277 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql3 = "SELECT clock,value FROM history where itemid=28278 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-
-            sql4 = "SELECT clock,value FROM history where itemid=28281 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql5 = "SELECT clock,value FROM history where itemid=28282 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql6 = "SELECT clock,value FROM history where itemid=28283 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql7 = "SELECT clock,value FROM history where itemid=28284 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-
-            sql8 = "SELECT clock,value FROM history where itemid=28286 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql9 = "SELECT clock,value FROM history where itemid=28287 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql10 = "SELECT clock,value FROM history where itemid=28288 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
-            sql11 = "SELECT clock,value FROM history where itemid=28289 AND clock < " +  tableinfo['list4'] + "  order by itemid,clock DESC limit 10"
             try:
 
-                cursor.execute(sql)
-                # need to modify
-                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql1)
-                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql2)
-                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql3)
-                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(10):
-                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
+                for i in range(core):
+                    cursor.execute(sql1[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp1.append(row)
+                for i in range(core):
+                    cursor.execute(sql2[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp2.append(row)
+                for i in range(core):
+                    cursor.execute(sql3[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp3.append(row)
+                i = 0
+                while (i < 10):
+                    j = 0
+                    while (j < core):
+                        if (j == 0):
+                            ones[i]["time"] = temp1[10 * j + i][0]
+                        ones[i]["CPU-" + str(j)] = temp1[10 * j + i][1]
+                        j = j + 1
+                    i = i + 1
+                # print("333-" + " " + str(i) + " " + str(ones))
+                while (i < 10):
+                    j = 0
+                    while (j < core):
 
-                cursor.execute(sql4)
-                ones4 = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql5)
-                ones5 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql6)
-                ones6 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql7)
-                ones7 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(10):
-                    ones4[i]['CPU-1'] = ones5[i]['CPU-1']
-                    ones4[i]['CPU-2'] = ones6[i]['CPU-2']
-                    ones4[i]['CPU-3'] = ones7[i]['CPU-3']
+                        ones[i]["CPU-" + str(j)] += temp2[10 * j + i][1]
+                        j = j + 1
+                    i = i + 1
+                i = 0
+                while (i < 10):
+                    j = 0
+                    while (j < core):
+                        ones[i]["CPU-" + str(j)] += temp3[10 * j + i][1]
+                        j = j + 1
+                    i = i + 1
 
-                cursor.execute(sql8)
-                ones8 = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql9)
-                ones9 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql10)
-                ones10 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql11)
-                ones11 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(10):
-                    ones8[i]['CPU-1'] = ones9[i]['CPU-1']
-                    ones8[i]['CPU-2'] = ones10[i]['CPU-2']
-                    ones8[i]['CPU-3'] = ones11[i]['CPU-3']
-
-                for i in range(10):
-                    ones[i]['CPU-0'] = ones[i]['CPU-0'] + ones4[i]['CPU-0'] + ones8[i]['CPU-0']
-                    ones[i]['CPU-1'] = ones[i]['CPU-1'] + ones4[i]['CPU-1'] + ones8[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones[i]['CPU-2'] + ones4[i]['CPU-2'] + ones8[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones[i]['CPU-3'] + ones4[i]['CPU-3'] + ones8[i]['CPU-3']
                 db.commit()
             except:
                 db.rollback()
         else:
+            ones = []
+            for j in range(100):
+                re = {}
+                re["time"] = j
+                for i in range(core):
+                    re['CPU-' + str(i)] = 0
+                ones.append(re)
+            # print("ones" + str(ones))
+            temp1 = []
+            temp2 = []
+            temp3 = []
 
-            sql = "SELECT clock,value FROM history where itemid=28275 order by itemid,clock DESC limit 100"
-            sql1 = "SELECT clock,value FROM history where itemid=28276 order by itemid,clock DESC limit 100"
-            sql2 = "SELECT clock,value FROM history where itemid=28277 order by itemid,clock DESC limit 100"
-            sql3 = "SELECT clock,value FROM history where itemid=28278 order by itemid,clock DESC limit 100"
+            for i in itemId_discovery1:
+                sql1.append("SELECT clock,value FROM history where itemid="+ str(i)+" order by itemid,clock DESC limit 100")
+            for i in itemId_discovery2:
+                sql2.append("SELECT clock,value FROM history where itemid="+ str(i)+" order by itemid,clock DESC limit 100")
+            for i in itemId_discovery3:
+                sql3.append("SELECT clock,value FROM history where itemid="+ str(i)+" order by itemid,clock DESC limit 100")
 
-            sql4 = "SELECT clock,value FROM history where itemid=28281 order by itemid,clock DESC limit 100"
-            sql5 = "SELECT clock,value FROM history where itemid=28282 order by itemid,clock DESC limit 100"
-            sql6 = "SELECT clock,value FROM history where itemid=28283 order by itemid,clock DESC limit 100"
-            sql7 = "SELECT clock,value FROM history where itemid=28284 order by itemid,clock DESC limit 100"
-
-            sql8 = "SELECT clock,value FROM history where itemid=28286 order by itemid,clock DESC limit 100"
-            sql9 = "SELECT clock,value FROM history where itemid=28287 order by itemid,clock DESC limit 100"
-            sql10 = "SELECT clock,value FROM history where itemid=28288 order by itemid,clock DESC limit 100"
-            sql11 = "SELECT clock,value FROM history where itemid=28289 order by itemid,clock DESC limit 100"
             try:
+                for i in range(core):
+                    cursor.execute(sql1[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp1.append(row)
+                for i in range(core):
+                    cursor.execute(sql2[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp2.append(row)
+                for i in range(core):
+                    cursor.execute(sql3[i])
+                    result = cursor.fetchall()
+                    for row in result:
+                        temp3.append(row)
 
-                cursor.execute(sql)
-                # need to modify
-                ones = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql1)
-                ones1 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql2)
-                ones2 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql3)
-                ones3 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(100):
-                    ones[i]['CPU-1'] = ones1[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones2[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones3[i]['CPU-3']
+                i = 0
+                while (i < 100):
+                    j = 0
+                    while (j < core):
+                        if (j == 0):
+                            ones[i]["time"] = temp1[100 * j + i][0]
+                        ones[i]["CPU-" + str(j)] = temp1[100 * j + i][1]
+                        j = j + 1
+                    i = i + 1
 
-                cursor.execute(sql4)
-                ones4 = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql5)
-                ones5 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql6)
-                ones6 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql7)
-                ones7 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(100):
-                    ones4[i]['CPU-1'] = ones5[i]['CPU-1']
-                    ones4[i]['CPU-2'] = ones6[i]['CPU-2']
-                    ones4[i]['CPU-3'] = ones7[i]['CPU-3']
+                i = 0
+                while (i < 100):
+                    j = 0
+                    while (j < core):
 
-                cursor.execute(sql8)
-                ones8 = [{'time': i[0], 'CPU-0': i[1], 'CPU-1': 0, 'CPU-2': 0, 'CPU-3': 0} for i in cursor.fetchall()]
-                cursor.execute(sql9)
-                ones9 = [{'time': i[0], 'CPU-1': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql10)
-                ones10 = [{'time': i[0], 'CPU-2': i[1]} for i in cursor.fetchall()]
-                cursor.execute(sql11)
-                ones11 = [{'time': i[0], 'CPU-3': i[1]} for i in cursor.fetchall()]
-                for i in range(100):
-                    ones8[i]['CPU-1'] = ones9[i]['CPU-1']
-                    ones8[i]['CPU-2'] = ones10[i]['CPU-2']
-                    ones8[i]['CPU-3'] = ones11[i]['CPU-3']
-
-                for i in range(100):
-                    ones[i]['CPU-0'] = ones[i]['CPU-0'] + ones4[i]['CPU-0'] + ones8[i]['CPU-0']
-                    ones[i]['CPU-1'] = ones[i]['CPU-1'] + ones4[i]['CPU-1'] + ones8[i]['CPU-1']
-                    ones[i]['CPU-2'] = ones[i]['CPU-2'] + ones4[i]['CPU-2'] + ones8[i]['CPU-2']
-                    ones[i]['CPU-3'] = ones[i]['CPU-3'] + ones4[i]['CPU-3'] + ones8[i]['CPU-3']
+                        ones[i]["CPU-" + str(j)] += temp2[100 * j + i][1]
+                        j = j + 1
+                    i = i + 1
+                i = 0
+                while (i < 100):
+                    j = 0
+                    while (j < core):
+                        ones[i]["CPU-" + str(j)] += temp3[100 * j + i][1]
+                        j = j + 1
+                    i = i + 1
                 db.commit()
             except:
                 db.rollback()
