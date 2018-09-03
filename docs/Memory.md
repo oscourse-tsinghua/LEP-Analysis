@@ -14,7 +14,7 @@ VSS：Virtual Set Size，虚拟内存耗用内存，包括共享库的内存
 
 是单个进程全部可访问的地址空间。其大小包括可能还尚未在内存中驻留的部分。比如地址空间已经被 malloc 分配，但是还没有实际写入。对于确定单个进程实际内存使用大小， VSS 用处不大。
 
-![1535959455108](C:\Users\lxia\Documents\vss.png)
+![1535959455108](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/vss.png)
 
 RSS：Resident Set Size，实际使用物理内存，包括共享库  
 
@@ -22,7 +22,7 @@ RSS：Resident Set Size，实际使用物理内存，包括共享库
 
 对于单个进程的内存使用大小， RSS  不是一个精确的描述。
 
-![1535959571819](C:\Users\lxia\Documents\rss.png)
+![1535959571819](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/rss.png)
 
 PSS：Proportional Set Size，实际使用的物理内存，共享库按比例分配  
 
@@ -30,7 +30,7 @@ PSS：Proportional Set Size，实际使用的物理内存，共享库按比例�
 
 如果一个进程被终止， 其PSS 中所使用的共享库大小将会重新按比例分配给剩下的仍在运行并且仍在使用该共享库的进程。此种计算方式有轻微的误差，因为当某个进程中止的时候， PSS 没有精确的表示被返还给整个系统的内存大小。
 
-![1535959770329](C:\Users\lxia\Documents\pss.png)
+![1535959770329](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/pss.png)
 
 USS：Unique Set Size，进程独占的物理内存，不计算共享库，也可以理解为将进程杀死能释放出的内存
 
@@ -40,7 +40,7 @@ USS 是一个非常非常有用的数字， 因为它揭示了运行一个特定
 
 如果进程被终止， USS 就是实际被返还给系统的内存大小。USS 是针对某个进程开始有可疑内存泄露的情况，进行检测的最佳数字。
 
-![1535959816002](C:\Users\lxia\Documents\uss.png)
+![1535959816002](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/uss.png)
 
 #### 2.procrank安装：
 
@@ -59,11 +59,11 @@ USS 是一个非常非常有用的数字， 因为它揭示了运行一个特定
 
 ## 2. memoryPssAgainstTotal
 
-同1
+	同1
 
 ## 3. memoryPssDonut
 
-同1
+	同1
 
 
 

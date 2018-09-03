@@ -4,7 +4,7 @@
 
 ### 1.获取hostid
 
-	表interface中存储了Zabbix监控的各个机器的信息。在表interface中，通过监控ip获取hostid;
+表interface中存储了Zabbix监控的各个机器的信息。在表interface中，通过监控ip获取hostid;
 
 ```python
 def get_hostid(hostName):
@@ -23,11 +23,11 @@ def get_hostid(hostName):
     return hostId
 ```
 
-	通过调用get_hostid(hostName),其中hostName为监控主机的ip,即可返回该主机所对应的hostid.
+通过调用get_hostid(hostName),其中hostName为监控主机的ip,即可返回该主机所对应的hostid.
 
 ### 2.获取itemid
 
-	表items中存储了Zabbix Server各机器的各监控项的信息。在表items中，通过hostid和监控项所对应的_key来获取itemid；
+表items中存储了Zabbix Server各机器的各监控项的信息。在表items中，通过hostid和监控项所对应的_key来获取itemid；
 
 ```python
 def get_itemid(hostId, key):
@@ -46,7 +46,7 @@ def get_itemid(hostId, key):
     return itemId
 ```
 
-	通过调用get_itemid(hostId, key),其中hostid是get_hostid(hostName)返回的结果，key为items表中监控项的类型。例如，监控cpu的空闲时间时为system.cpu.util[,idle]。对于监测cpu stat:overall的信息，需要获取多个监控项的itemid，包括system.cpu.util[,user]、system.cpu.util[,nice]、system.cpu.util[,system]、system.cpu.util[,idle]、system.cpu.util[,iowait]、system.cpu.util[,interrupt]、system.cpu.util[,softirq]、system.cpu.util[,steal]。
+通过调用get_itemid(hostId, key),其中hostid是get_hostid(hostName)返回的结果，key为items表中监控项的类型。例如，监控cpu的空闲时间时为system.cpu.util[,idle]。对于监测cpu stat:overall的信息，需要获取多个监控项的itemid，包括system.cpu.util[,user]、system.cpu.util[,nice]、system.cpu.util[,system]、system.cpu.util[,idle]、system.cpu.util[,iowait]、system.cpu.util[,interrupt]、system.cpu.util[,softirq]、system.cpu.util[,steal]。
 
 ### 3.获取监测的信息
 
@@ -56,29 +56,29 @@ def get_itemid(hostId, key):
 sql = "SELECT clock,value FROM history where itemid=" + str(get_itemid(hostid, "system.cpu.util[,user]")) + " order by itemid,clock DESC limit 1"
 ```
 
-	执行相应的sql语句后，将数据进行分析处理，最终得到CPU状态的一张图表。因此，对于Zabbix已经存储了相关信息的图表，可以采用这种方式。
+执行相应的sql语句后，将数据进行分析处理，最终得到CPU状态的一张图表。因此，对于Zabbix已经存储了相关信息的图表，可以采用这种方式。
 
 ## 2. CPU stat:idle
 
 ### 1.mysql存储数据
 
-	自动发现（LLD）是Zabbix提供的一种在计算机上为不同实体自动创建监控项等的方法。例如，Zabbix可以自动监控CPU内核，而无需为每个CPU内核手动创建监控项。Zabbix支持六种类型的发现项目，为了区分不同的发现项目设定了唯一对应的键值。
+自动发现（LLD）是Zabbix提供的一种在计算机上为不同实体自动创建监控项等的方法。例如，Zabbix可以自动监控CPU内核，而无需为每个CPU内核手动创建监控项。Zabbix支持六种类型的发现项目，为了区分不同的发现项目设定了唯一对应的键值。
 
 1. 在Zabbix界面中，“配置”—>"模板"，在一个合适的模板行点击"自动发现"，创建用于获取CPU和CPU内核的发现规则。其中，名称可以自定义，键值为system.cpu.discovery；
 
-   ![1535643144416](C:\Users\lxia\Documents\发现规则.png)
+   ![1535643144416](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/%E5%8F%91%E7%8E%B0%E8%A7%84%E5%88%99.png)
 
 2. 创建规则后，转到该规则的项目。点击“创建监控项原型”创建监控原型。其中，名称中使用宏。当发现规则被处理时，该宏将被替换为发现的CPU内核。对于CPU内核发现键，返回宏一般是标识CPU序号的{＃CPU.NUMBER}和标识CPU状态的{＃CPU.STATUS}。
 
    选择已有监控的键值、填写好参数。一般参数包括发现键返回宏和监控的信息的类型等。例如，system.cpu.util[{#CPU.NUMER},<type>,<mode>]。
 
-   ![1535643236784](C:\Users\lxia\Documents\监控原型.png)
+   ![1535643236784](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/%E7%9B%91%E6%8E%A7%E5%8E%9F%E5%9E%8B.png)
 
 3. 创建完成后，生效即可存储相应数据。
 
 ### 2.获取itemid
 
-	表items_discovery中存储了Zabbix Server自动发现的各监控项的信息。在表items_discovery中，通过key_来获取itemid；
+表items_discovery中存储了Zabbix Server自动发现的各监控项的信息。在表items_discovery中，通过key_来获取itemid；
 
 ```python
 def get_itemid_discovery(key):
@@ -98,12 +98,12 @@ def get_itemid_discovery(key):
     return itemId_dis
 ```
 
-	通过调用get_itemid_discovery(key),其中key为item_discovery表中监控项的类型。
+通过调用get_itemid_discovery(key),其中key为item_discovery表中监控项的类型。
 
 ### 3.获取监测的信息
 
-	这部分的思路同1，主要就是数据格式的转换。
-	因此，对于Zabbix存储了相应的键值，但所需获取各CPU内核的信息时，可以采用这种方式。
+这部分的思路同1，主要就是数据格式的转换。
+因此，对于Zabbix存储了相应的键值，但所需获取各CPU内核的信息时，可以采用这种方式。
 
 ## 3. CPU stat:user+system+nice
 
@@ -119,7 +119,7 @@ def get_itemid_discovery(key):
 
 ## 6. CPU stat:SoftIRQ-NET_TX
 
-当LEP所需检索的数据不是Zabbix预定义时，需要用户自定义参数。
+Zabbix中提供的标准监控项往往不能满足特定的监控需求，可以在agent配置文件中使用UserParameter进行扩展，从而得到用户自定义参数。
 
 ### 1.自定义参数
 
@@ -159,7 +159,7 @@ fi
 UserParameter=get_softirq[*], sh /usr/local/etc/zabbix_scripts/get_softirq.sh $1 $2
 ```
 
-	当然，自定义监控的脚本相对简单时，可以在上述格式中直接添加命令，不必另外添加自定义脚本。
+当然，自定义监控的脚本相对简单时，可以在上述格式中直接添加命令，不必另外添加自定义脚本。
 
 添加完成后，重启zabbix_agent即可生效。
 
@@ -199,7 +199,7 @@ UserParameter=get_softirq[*], sh /usr/local/etc/zabbix_scripts/get_softirq.sh $1
 
 一般有两种方式：一是界面中配置，二是通过API创建该脚本命令（script.create）。
 
-![1535859510283](C:\Users\lxia\Documents\script.png)
+![1535859510283](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/script.png)
 
 ### 2.lepv调用相应的API
 
