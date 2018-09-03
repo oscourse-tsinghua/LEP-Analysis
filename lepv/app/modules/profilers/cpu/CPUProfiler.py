@@ -236,8 +236,6 @@ class CPUProfiler:
     def get_cpu_stat(self, tableinfo):
         hostid = get_hostid(self.host)
         print("hostid"+ str(hostid))
-        # itemid1 = get_itemid(hostid, "system.cpu.util[,user]")
-        # print("itemid1" + str(itemid1))
         db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         #(23306,23302,23305,23299,23301,23300,23303,23304)
@@ -1361,16 +1359,21 @@ class CPUProfiler:
 
 
     def get_avg_load(self,tableinfo):
+        hostid = get_hostid(self.host)
+        print("hostid" + str(hostid))
         db = MySQLdb.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
-            sql = "SELECT clock,value FROM history where itemid=23296 order by itemid,clock DESC limit 1"
-            sql1 = "SELECT clock,value FROM history where itemid=23297 order by itemid,clock DESC limit 1"
-            sql2 = "SELECT clock,value FROM history where itemid=23295 order by itemid,clock DESC limit 1"
+            sql = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg1]")) + " order by itemid,clock DESC limit 1"
+            sql1 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg5]")) + " order by itemid,clock DESC limit 1"
+            sql2 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg15]")) + " order by itemid,clock DESC limit 1"
 
             try:
-                sleep(60)
+                sleep(30)
                 cursor.execute(sql)
                 # need to modify
                 ones = [{'time': i[0], 'last1': i[1], 'last5': 0, 'last15': 0} for i in cursor.fetchall()]
@@ -1386,15 +1389,17 @@ class CPUProfiler:
             except:
                 db.rollback()
         elif ('list4' in tableinfo):
+            sql = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg1]")) + " AND clock < " + tableinfo[
+                      'list4'] + " order by itemid,clock DESC limit 10"
+            sql1 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg5]")) + " AND clock < " + tableinfo[
+                       'list4'] + " order by itemid,clock DESC limit 10"
+            sql2 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg15]")) + " AND clock < " + tableinfo[
+                       'list4'] + " order by itemid,clock DESC limit 10"
 
-            sql = "SELECT clock,value FROM history where itemid=23296 AND clock < " + tableinfo[
-                'list4'] + "  order by itemid,clock DESC limit 10"
-            sql1 = "SELECT clock,value FROM history where itemid=23297 AND clock < " + tableinfo[
-                'list4'] + "  order by itemid,clock DESC limit 10"
-            sql2 = "SELECT clock,value FROM history where itemid=23295 AND clock < " + tableinfo[
-                'list4'] + "  order by itemid,clock DESC limit 10"
             try:
-
                 cursor.execute(sql)
                 # need to modify
                 ones = [{'time': i[0], 'last1': i[1], 'last5': 0, 'last15': 0} for i in cursor.fetchall()]
@@ -1409,10 +1414,13 @@ class CPUProfiler:
             except:
                 db.rollback()
         else:
+            sql = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg1]")) + " order by itemid,clock DESC limit 100"
+            sql1 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg5]")) + " order by itemid,clock DESC limit 100"
+            sql2 = "SELECT clock,value FROM history where itemid=" + str(
+                get_itemid(hostid, "system.cpu.load[percpu,avg15]")) + " order by itemid,clock DESC limit 100"
 
-            sql = "SELECT clock,value FROM history where itemid=23296 order by itemid,clock DESC limit 100"
-            sql1 = "SELECT clock,value FROM history where itemid=23297 order by itemid,clock DESC limit 100"
-            sql2 = "SELECT clock,value FROM history where itemid=23295 order by itemid,clock DESC limit 100"
             try:
 
                 cursor.execute(sql)
