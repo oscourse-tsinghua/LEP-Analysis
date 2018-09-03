@@ -119,7 +119,7 @@ def get_itemid_discovery(key):
 
 ## 6. CPU stat:SoftIRQ-NET_TX
 
-当LEP所需检索的数据不是Zabbix预定义时，需要用户自定义参数。
+Zabbix中提供的标准监控项往往不能满足特定的监控需求，可以在agent配置文件中使用UserParameter进行扩展，从而得到用户自定义参数。
 
 ### 1.自定义参数
 
