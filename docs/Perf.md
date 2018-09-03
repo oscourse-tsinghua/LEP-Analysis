@@ -35,7 +35,7 @@ pref record记录信息到perf.data；
 
 ## 2. perf table
 
-	界面中创建script与lepv调用API的方式与CPU TOP相同,只是脚本有所区别。
+界面中创建script与lepv调用API的方式与CPU TOP相同,只是脚本有所区别。
 
 ```shell
 sudo perf record -a -e cpu-clock sleep 1|perf report
