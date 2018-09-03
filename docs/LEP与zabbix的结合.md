@@ -12,17 +12,17 @@ LEP与Zabbix的结合,实际上就是LEP通过Zabbix获取数据。
 - 通过在前端界面中添加监控项等对所需监控的信息进行收集存入数据库；
 - 通过在前端界面中添加脚本等，使用API直接读取数据，不再存入数据库。
 
-        由此可见，对于Zabbix已有的监控项，采用以上两种方法均可；对于Zabbix不存在的监控项即用户自定义监控项需根据所获取的数据进行具体分析。因此，LEP与Zabbix的结合，会将以上两种方式进行有机结合。
+  由此可见，对于Zabbix已有的监控项，采用以上两种方法均可；对于Zabbix不存在的监控项即用户自定义监控项需根据所获取的数据进行具体分析。因此，LEP与Zabbix的结合，会将以上两种方式进行有机结合。
 
 ## 具体而言
 
-### cpu
+### [cpu](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/CPU.md)
 
-### memory
+### [memory](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/Memory.md)
 
-### io
+### [io](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/IO.md)
 
-### perf
+### [perf](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/Perf.md)
 
 ## 总结
 
