@@ -1,6 +1,9 @@
 ## LEP的整体分析
 - [LEP分析文档](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/LEP%E5%88%86%E6%9E%90%E6%96%87%E6%A1%A3.md)
 ## LEP的数据采集
+- 数据源
+  - [LEP信息源及展现形式](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/LEP%E4%BF%A1%E6%81%AF%E6%BA%90%E5%8F%8A%E5%B1%95%E7%8E%B0%E5%BD%A2%E5%BC%8F.md)
+  - [Zabbix的监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/Zabbix%E7%9A%84%E7%9B%91%E6%8E%A7%E8%8C%83%E5%9B%B4.md)
 - [LEP与Zabbix的结合](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/LEP%E4%B8%8Ezabbix%E7%9A%84%E7%BB%93%E5%90%88.md)
   - [CPU](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/CPU.md)
   - [Memory](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/docs/Memory.md)
