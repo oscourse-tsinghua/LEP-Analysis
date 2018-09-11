@@ -52,9 +52,158 @@ sudo perf record -F 99 -ag sleep 1
 ```
 sudo perf script
 ```
+## 4. 火焰图生成过程中的数据格式转换
 
-
-
+- 第一种情况：
+  - 原始数据
+  ```
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])
+  ```  
+  - 第一步：以@为分隔符输出函数关系列表
+  ```
+    perf@native_write_msr@x86_pmu_enable
+  ```
+  - 第二步：遍历原始数据中，含有这种函数关系列表的个数
+  ```
+    {'perf@native_write_msr@x86_pmu_enable': 1}
+  ```
+  - 第三步：对函数关系的顺序进行微调
+   ```
+    ['perf', 'x86_pmu_enable', 'native_write_msr']
+  ```
+  - 第四步： 依据每条函数关系生成json
+  ```python
+   {'value': 1, 'name': 'root','children':
+       [{'value': 1, 'name': 'perf', 'children':
+          [{'value': 1, 'name': 'x86_pmu_enable','children': 
+             [{'value': 1, 'name': 'native_write_msr','children': [] }]
+          }] 
+       }]
+   }
+  ```
+  - 展现
+  ![监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/flame_1%20%5B2%5D.png)
+  
+- 第二种情况：
+  - 原始数据
+  ```
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])      
+  ```  
+  - 第一步：以@为分隔符输出函数关系列表
+  ```
+    perf@native_write_msr@x86_pmu_enable
+    perf@native_write_msr@x86_pmu_enable
+  ```
+  - 第二步：遍历原始数据中，含有这种函数关系列表的个数
+  ```
+    {'perf@native_write_msr@x86_pmu_enable': 2}
+  ```
+  - 第三步：对函数关系的顺序进行微调
+   ```
+    ['perf', 'x86_pmu_enable', 'native_write_msr']
+  ```
+  - 第四步： 依据每条函数关系生成json
+  ```python
+   {'value': 2, 'name': 'root','children':
+       [{'value': 2, 'name': 'perf', 'children':
+          [{'value': 2, 'name': 'x86_pmu_enable','children': 
+             [{'value': 2, 'name': 'native_write_msr','children': [] }]
+          }] 
+       }]
+   }
+  ```
+- 第三种情况：
+  - 原始数据
+  ```
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms]) 
+    sleep 115636 [002] 20323.708429:    2239164 cycles: 
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c57e3f native_smp_send_reschedule ([kernel.kallsyms])      
+  ```  
+  - 第一步：以@为分隔符输出函数关系列表
+  ```
+    sleep@native_write_msr@native_smp_send_reschedule
+    perf@native_write_msr@x86_pmu_enable
+    perf@native_write_msr@x86_pmu_enable
+  ```
+  - 第二步：遍历原始数据中，含有这种函数关系列表的个数
+  ```
+    {'sleep@native_write_msr@native_smp_send_reschedule': 1, 'perf@native_write_msr@x86_pmu_enable': 2}
+  ```
+  - 第三步：对函数关系的顺序进行微调
+   ```
+    ['perf', 'x86_pmu_enable', 'native_write_msr']
+    ['sleep', 'native_smp_send_reschedule', 'native_write_msr']
+  ```
+  - 第四步： 依据每条函数关系生成json
+  ```python
+   {'name': 'root', 'value': 3,'children':
+      [
+        { 'name': 'sleep', 'value': 1,'children': 
+          [{'name': 'native_smp_send_reschedule', 'value': 1,'children':
+            [{'name': 'native_write_msr', 'value': 1,'children': []}] }]},
+        {'name': 'perf', 'value': 2,'children':
+            [{'name': 'x86_pmu_enable', 'value': 2,'children': 
+              [{''name': 'native_write_msr', 'value': 2,children': []}] }] }
+      ] 
+   }
+  ```
+  - 展现
+  ![监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/flame_2.png)
+  
+- 第四种情况：
+  - 原始数据
+  ```
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms]) 
+          ffffffffb6db84ed perf_pmu_enable.part.92 ([kernel.kallsyms])
+  ```  
+  - 第一步：以@为分隔符输出函数关系列表
+  ```
+    perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92
+    perf@native_write_msr@x86_pmu_enable
+  ```
+  - 第二步：遍历原始数据中，含有这种函数关系列表的个数
+  ```
+    {'perf@native_write_msr@x86_pmu_enable': 1, 'perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92': 1}
+  ```
+  - 第三步：对函数关系的顺序进行微调
+   ```
+    ['perf', 'x86_pmu_enable', 'native_write_msr']
+    ['perf', 'perf_pmu_enable.part.92', 'x86_pmu_enable', 'native_write_msr']
+  ```
+  - 第四步： 依据每条函数关系生成json
+  ```python
+   {'name': 'root', 'value': 2, 'children':
+      [{'name': 'perf', 'value': 2, 'children':
+        [
+        {'name': 'perf_pmu_enable.part.92', 'value': 1, 'children':
+            [{'name': 'x86_pmu_enable', 'value': 1, 'children':
+                [{'name': 'native_write_msr', 'value': 1, 'children': []}]}]}, 
+        {'name': 'x86_pmu_enable', 'value': 1, 'children':
+            [{'name': 'native_write_msr', 'value': 1, 'children': []}]}
+        ]
+      }]
+   }
+  ```
+  - 展现
+  ![监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/flame_3%20%5B2%5D.png)
 
 
 参考文档：
