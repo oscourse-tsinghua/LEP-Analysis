@@ -40,7 +40,7 @@ pref record记录信息到perf.data；
 ```shell
 sudo perf record -a -e cpu-clock sleep 1|perf report
 ```
-
+该脚本捕捉1s样本，样本中记录所有CPU中的PMU事件。
 ## 3. perf flame
 
 界面中创建script与lepv调用API的方式与CPU TOP相同,只是脚本有所区别。
@@ -52,7 +52,10 @@ sudo perf record -F 99 -ag sleep 1
 ```
 sudo perf script
 ```
+该脚本捕捉1s采样频率为99的样本，样本中记录了所有CPU的事件，并且可以使能函数调用图。
 ## 4. 火焰图生成过程中的数据格式转换
+
+火焰图用于形象的呈现函数调用关系。一个函数调用关系就是火焰图的一个最基本的单位，如第一种情况。火焰图就是这样一个个相同或不同的基本单位的叠加。当相同的基本单位叠加时，如第二种情况；当不同的基本单位叠加时，如第三种情况；当既有相同的函数调用关系又有不同的函数调用关系时出现第四种情况，这也就是火焰图的缩影。
 
 - 第一种情况：
   - 原始数据
@@ -128,6 +131,49 @@ sudo perf script
     perf 115631 [000] 20322.705860:          1 cycles:
           ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
           ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms]) 
+          ffffffffb6db84ed perf_pmu_enable.part.92 ([kernel.kallsyms])
+  ```  
+  - 第一步：以@为分隔符输出函数关系列表
+  ```
+    perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92
+    perf@native_write_msr@x86_pmu_enable
+  ```
+  - 第二步：遍历原始数据中，含有这种函数关系列表的个数
+  ```
+    {'perf@native_write_msr@x86_pmu_enable': 1, 'perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92': 1}
+  ```
+  - 第三步：对函数关系的顺序进行微调
+   ```
+    ['perf', 'x86_pmu_enable', 'native_write_msr']
+    ['perf', 'perf_pmu_enable.part.92', 'x86_pmu_enable', 'native_write_msr']
+  ```
+  - 第四步： 依据每条函数关系生成json
+  ```python
+   {'name': 'root', 'value': 2, 'children':
+      [{'name': 'perf', 'value': 2, 'children':
+        [
+        {'name': 'perf_pmu_enable.part.92', 'value': 1, 'children':
+            [{'name': 'x86_pmu_enable', 'value': 1, 'children':
+                [{'name': 'native_write_msr', 'value': 1, 'children': []}]}]}, 
+        {'name': 'x86_pmu_enable', 'value': 1, 'children':
+            [{'name': 'native_write_msr', 'value': 1, 'children': []}]}
+        ]
+      }]
+   }
+  ```
+  - 展现
+  ![监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/flame_3%20%5B2%5D.png)
+
+  
+- 第四种情况：
+  - 原始数据
+  ```
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])
+    perf 115631 [000] 20322.705860:          1 cycles:
+          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
+          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms]) 
     sleep 115636 [002] 20323.708429:    2239164 cycles: 
           ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
           ffffffffb6c57e3f native_smp_send_reschedule ([kernel.kallsyms])      
@@ -163,48 +209,6 @@ sudo perf script
   - 展现
   ![监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/flame_2.png)
   
-- 第四种情况：
-  - 原始数据
-  ```
-    perf 115631 [000] 20322.705860:          1 cycles:
-          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
-          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])
-    perf 115631 [000] 20322.705860:          1 cycles:
-          ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
-          ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms]) 
-          ffffffffb6db84ed perf_pmu_enable.part.92 ([kernel.kallsyms])
-  ```  
-  - 第一步：以@为分隔符输出函数关系列表
-  ```
-    perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92
-    perf@native_write_msr@x86_pmu_enable
-  ```
-  - 第二步：遍历原始数据中，含有这种函数关系列表的个数
-  ```
-    {'perf@native_write_msr@x86_pmu_enable': 1, 'perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92': 1}
-  ```
-  - 第三步：对函数关系的顺序进行微调
-   ```
-    ['perf', 'x86_pmu_enable', 'native_write_msr']
-    ['perf', 'perf_pmu_enable.part.92', 'x86_pmu_enable', 'native_write_msr']
-  ```
-  - 第四步： 依据每条函数关系生成json
-  ```python
-   {'name': 'root', 'value': 2, 'children':
-      [{'name': 'perf', 'value': 2, 'children':
-        [
-        {'name': 'perf_pmu_enable.part.92', 'value': 1, 'children':
-            [{'name': 'x86_pmu_enable', 'value': 1, 'children':
-                [{'name': 'native_write_msr', 'value': 1, 'children': []}]}]}, 
-        {'name': 'x86_pmu_enable', 'value': 1, 'children':
-            [{'name': 'native_write_msr', 'value': 1, 'children': []}]}
-        ]
-      }]
-   }
-  ```
-  - 展现
-  ![监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/flame_3%20%5B2%5D.png)
-
 
 参考文档：
 
