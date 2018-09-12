@@ -216,3 +216,4 @@ sudo perf script
 
 1. https://www.cnblogs.com/arnoldlu/p/6241297.html
 2. https://stackoverflow.com/questions/38723397/what-is-the-meaning-of-perf-script-output
+3. https://github.com/brendangregg/FlameGraph
