@@ -64,6 +64,8 @@ sudo perf script
           ffffffffb6c6d086 native_write_msr ([kernel.kallsyms])
           ffffffffb6c0719f x86_pmu_enable ([kernel.kallsyms])
   ```  
+  对于第一行  ```115631 [000] 20322.705860: ``` 的理解：
+  通过对同一perf.data 执行``` sudo perf script ``` 与 ``` sudo perf script -F pid,cpu,time ``` 结果一一对应。
   - 第一步：以@为分隔符输出函数关系列表
   ```
     perf@native_write_msr@x86_pmu_enable
@@ -213,3 +215,4 @@ sudo perf script
 参考文档：
 
 1. https://www.cnblogs.com/arnoldlu/p/6241297.html
+2. https://stackoverflow.com/questions/38723397/what-is-the-meaning-of-perf-script-output
