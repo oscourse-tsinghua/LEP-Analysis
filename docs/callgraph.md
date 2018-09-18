@@ -50,11 +50,6 @@ dot -Tsvg xxxx.graph -o xxxx-name.svg
 
 
 
-### pic.rb
-
-对生成SVG图结果的修改
-
-
 
 ### script
 
