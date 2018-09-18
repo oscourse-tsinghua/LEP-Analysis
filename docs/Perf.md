@@ -74,7 +74,7 @@ sudo perf script
   ```
     {'perf@native_write_msr@x86_pmu_enable': 1}
   ```
-  - 第三步：对函数关系的顺序进行微调
+  - 第三步：由于栈先进后出的特性，对函数顺序进行反转
    ```
     ['perf', 'x86_pmu_enable', 'native_write_msr']
   ```
@@ -110,7 +110,7 @@ sudo perf script
   ```
     {'perf@native_write_msr@x86_pmu_enable': 2}
   ```
-  - 第三步：对函数关系的顺序进行微调
+  - 第三步：由于栈先进后出的特性，对函数顺序进行反转
    ```
     ['perf', 'x86_pmu_enable', 'native_write_msr']
   ```
@@ -144,7 +144,7 @@ sudo perf script
   ```
     {'perf@native_write_msr@x86_pmu_enable': 1, 'perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92': 1}
   ```
-  - 第三步：对函数关系的顺序进行微调
+  - 第三步：由于栈先进后出的特性，对函数顺序进行反转
    ```
     ['perf', 'x86_pmu_enable', 'native_write_msr']
     ['perf', 'perf_pmu_enable.part.92', 'x86_pmu_enable', 'native_write_msr']
@@ -190,7 +190,7 @@ sudo perf script
   ```
     {'sleep@native_write_msr@native_smp_send_reschedule': 1, 'perf@native_write_msr@x86_pmu_enable': 2}
   ```
-  - 第三步：对函数关系的顺序进行微调
+  - 第三步：由于栈先进后出的特性，对函数顺序进行反转
    ```
     ['perf', 'x86_pmu_enable', 'native_write_msr']
     ['sleep', 'native_smp_send_reschedule', 'native_write_msr']
