@@ -10,14 +10,14 @@ import copy
 from decimal import Decimal
 from time import gmtime, strftime, sleep
 
-from app.modules.lepd.LepDClient import LepDClient
+# from app.modules.lepd.LepDClient import LepDClient
 from app.modules.utils.zabbixAPI import script_execute,get_hostid,get_itemid,get_itemid_discovery
 
 class CPUProfiler:
 
     def __init__(self, server, config='release'):
         self.server = server
-        self.client = LepDClient(self.server)
+        # self.client = LepDClient(self.server)
         self.config = config
 
         # this maxDataCount should match the one defined for UI.
@@ -103,135 +103,135 @@ class CPUProfiler:
 
         return results
 
-    def get_proc_cpu_info(self, response_lines=[]):
+    # def get_proc_cpu_info(self, response_lines=[]):
+    #
+    #     lepd_command = 'GetProcCpuinfo'
+    #     if not response_lines:
+    #         response_lines = self.client.getResponse(lepd_command)
+    #     elif isinstance(response_lines, str):
+    #         response_lines = self.client.split_to_lines(response_lines)
+    #
+    #     response_data = {}
+    #     if self.config == 'debug':
+    #         response_data['rawResult'] = response_lines
+    #
+    #     firstLine = response_lines[0]
+    #     if "ARM" in firstLine:
+    #         response_data['data'] = self.getCpuInfoForArm(response_lines)
+    #     elif 'AArch64' in firstLine:
+    #         response_data['data'] = self.getCpuInfoForArmArch64(response_lines)
+    #     else:
+    #         secondLine = response_lines[1]
+    #         response_data['data'] = self.getCpuInfoForX86(response_lines)
+    #         if 'GenuineIntel' not in secondLine:
+    #             response_data['data']['architecture'] = 'ARM'
+    #
+    #     response_data['data']['processorCount'] = 0
+    #     for line in response_lines:
+    #         if re.match(r'\W*processor\W*:\W*\d+', line, re.M|re.I):
+    #             response_data['data']['processorCount'] += 1
+    #
+    #     return response_data
 
-        lepd_command = 'GetProcCpuinfo'
-        if not response_lines:
-            response_lines = self.client.getResponse(lepd_command)
-        elif isinstance(response_lines, str):
-            response_lines = self.client.split_to_lines(response_lines)
+    # def get_processor_count(self, response_lines=[]):
+    #
+    #     lepd_command = 'GetCpuInfo'
+    #     if not response_lines:
+    #         response_lines = self.client.getResponse(lepd_command)
+    #     elif isinstance(response_lines, str):
+    #         response_lines = self.client.split_to_lines(response_lines)
+    #
+    #     response_data = {}
+    #     for line in response_lines:
+    #         if line.startswith('cpunr'):
+    #             response_data['count'] = int(line.split(":")[1].strip())
+    #             break
+    #
+    #     if 'count' not in response_data:
+    #         print('failed in getting processor count by GetCpuInfo')
+    #         print(response_lines)
+    #
+    #     return response_data
 
-        response_data = {}
-        if self.config == 'debug':
-            response_data['rawResult'] = response_lines
+    # def get_capacity(self):
+    #
+    #     cpuInfoData = self.get_proc_cpu_info()
+    #
+    #     if (not cpuInfoData):
+    #         return {}
+    #
+    #     responseData = {}
+    #     if (self.config == 'debug'):
+    #         responseData['rawResult'] = cpuInfoData['rawResult']
+    #         responseData['lepd_command'] = 'GetProcCpuinfo'
+    #
+    #     capacity = {}
+    #     capacity['processors'] = cpuInfoData['data']['processors']
+    #
+    #     coresString = 'Core'
+    #     coreCount = len(cpuInfoData['data']['processors'])
+    #     capacity['coresCount'] = coreCount
+    #
+    #     if (coreCount > 1):
+    #         coresString = "Cores"
+    #
+    #     for processorId, processorData in cpuInfoData['data']['processors'].items():
+    #
+    #         if (cpuInfoData['data']['architecture'] == "ARM"):
+    #             if ('model name' in cpuInfoData['data']):
+    #                 processorData['model'] = cpuInfoData['data']['model name']
+    #             else:
+    #                 processorData['model'] = ''
+    #
+    #             # Summary is a string to briefly describe the CPU, like "2GHZ x 2", meaning it's a 2-core cpu with 2GHZ speed.
+    #             if ('bogomips' not in processorData):
+    #                 capacity['bogomips'] = ''
+    #                 capacity['summary'] = ''
+    #             else:
+    #                 capacity['bogomips'] = processorData['bogomips']
+    #                 capacity['summary'] = processorData['bogomips'] + " MHz x " + str(coreCount) + coresString
+    #
+    #             capacity['model'] = processorData['model']
+    #             capacity['architecture'] = 'ARM'
+    #
+    #         else:
+    #             modelName = processorData['model name'].replace("(R)", "").replace(" CPU", "")
+    #             if (" @" in modelName):
+    #                 modelName = modelName[0:modelName.find(" @")]
+    #             processorData['model'] = modelName
+    #
+    #             processorSpeed = Decimal(processorData['cpu MHz']).quantize(Decimal('0'))
+    #
+    #             # Summary is a string to briefly describe the CPU, like "2GHZ x 2", meaning it's a 2-core cpu with 2GHZ speed.
+    #             capacity['summary'] = str(processorSpeed) + " MHz x " + str(coreCount) + coresString
+    #             capacity['model'] = modelName
+    #             capacity['bogomips'] = processorData['bogomips']
+    #             capacity['architecture'] = 'X86'
+    #
+    #         break
+    #
+    #     responseData['data'] = capacity
+    #     return responseData
 
-        firstLine = response_lines[0]
-        if "ARM" in firstLine:
-            response_data['data'] = self.getCpuInfoForArm(response_lines)
-        elif 'AArch64' in firstLine:
-            response_data['data'] = self.getCpuInfoForArmArch64(response_lines)
-        else:
-            secondLine = response_lines[1]
-            response_data['data'] = self.getCpuInfoForX86(response_lines)
-            if 'GenuineIntel' not in secondLine:
-                response_data['data']['architecture'] = 'ARM'
-
-        response_data['data']['processorCount'] = 0
-        for line in response_lines:
-            if re.match(r'\W*processor\W*:\W*\d+', line, re.M|re.I):
-                response_data['data']['processorCount'] += 1
-
-        return response_data
-
-    def get_processor_count(self, response_lines=[]):
-
-        lepd_command = 'GetCpuInfo'
-        if not response_lines:
-            response_lines = self.client.getResponse(lepd_command)
-        elif isinstance(response_lines, str):
-            response_lines = self.client.split_to_lines(response_lines)
-
-        response_data = {}
-        for line in response_lines:
-            if line.startswith('cpunr'):
-                response_data['count'] = int(line.split(":")[1].strip())
-                break
-
-        if 'count' not in response_data:
-            print('failed in getting processor count by GetCpuInfo')
-            print(response_lines)
-
-        return response_data
-
-    def get_capacity(self):
-
-        cpuInfoData = self.get_proc_cpu_info()
-
-        if (not cpuInfoData):
-            return {}
-
-        responseData = {}
-        if (self.config == 'debug'):
-            responseData['rawResult'] = cpuInfoData['rawResult']
-            responseData['lepd_command'] = 'GetProcCpuinfo'
-
-        capacity = {}
-        capacity['processors'] = cpuInfoData['data']['processors']
-
-        coresString = 'Core'
-        coreCount = len(cpuInfoData['data']['processors'])
-        capacity['coresCount'] = coreCount
-
-        if (coreCount > 1):
-            coresString = "Cores"
-
-        for processorId, processorData in cpuInfoData['data']['processors'].items():
-
-            if (cpuInfoData['data']['architecture'] == "ARM"):
-                if ('model name' in cpuInfoData['data']):
-                    processorData['model'] = cpuInfoData['data']['model name']
-                else:
-                    processorData['model'] = ''
-
-                # Summary is a string to briefly describe the CPU, like "2GHZ x 2", meaning it's a 2-core cpu with 2GHZ speed.
-                if ('bogomips' not in processorData):
-                    capacity['bogomips'] = ''
-                    capacity['summary'] = ''
-                else:
-                    capacity['bogomips'] = processorData['bogomips']
-                    capacity['summary'] = processorData['bogomips'] + " MHz x " + str(coreCount) + coresString
-
-                capacity['model'] = processorData['model']
-                capacity['architecture'] = 'ARM'
-
-            else:
-                modelName = processorData['model name'].replace("(R)", "").replace(" CPU", "")
-                if (" @" in modelName):
-                    modelName = modelName[0:modelName.find(" @")]
-                processorData['model'] = modelName
-
-                processorSpeed = Decimal(processorData['cpu MHz']).quantize(Decimal('0'))
-
-                # Summary is a string to briefly describe the CPU, like "2GHZ x 2", meaning it's a 2-core cpu with 2GHZ speed.
-                capacity['summary'] = str(processorSpeed) + " MHz x " + str(coreCount) + coresString
-                capacity['model'] = modelName
-                capacity['bogomips'] = processorData['bogomips']
-                capacity['architecture'] = 'X86'
-
-            break
-
-        responseData['data'] = capacity
-        return responseData
-
-    def get_status(self):
-        print("CPUProfiler-3-")
-        statData = self.get_irq()
-        allIdleRatio = self.client.toDecimal(statData['data']['all']['idle'])
-
-        responseData = {}
-        responseData["data"] = {}
-
-        componentInfo = {}
-        componentInfo["name"] = "cpu"
-        componentInfo["ratio"] = 100 - allIdleRatio
-        componentInfo['server'] = self.server
-
-        if (self.config == 'debug'):
-            componentInfo['rawResult'] = statData['rawResult']
-
-        responseData["data"] = componentInfo
-
-        return responseData
+    # def get_status(self):
+    #     print("CPUProfiler-3-")
+    #     statData = self.get_irq()
+    #     allIdleRatio = self.client.toDecimal(statData['data']['all']['idle'])
+    #
+    #     responseData = {}
+    #     responseData["data"] = {}
+    #
+    #     componentInfo = {}
+    #     componentInfo["name"] = "cpu"
+    #     componentInfo["ratio"] = 100 - allIdleRatio
+    #     componentInfo['server'] = self.server
+    #
+    #     if (self.config == 'debug'):
+    #         componentInfo['rawResult'] = statData['rawResult']
+    #
+    #     responseData["data"] = componentInfo
+    #
+    #     return responseData
 
     def get_cpu_stat(self, tableinfo):
         hostid = get_hostid(self.host)
@@ -952,60 +952,60 @@ class CPUProfiler:
         print("mysql-data_cpu_irq" + str(ones))
         return response_data
 
-    def get_irq(self, response_lines=[]):
-        print("CPUProfiler-1-")
-        lepd_command = 'GetCmdMpstat'
-        if not response_lines:
-            response_lines = self.client.getResponse(lepd_command)
-        elif isinstance(response_lines, str):
-            response_lines = self.client.split_to_lines(response_lines)
-
-        if len(response_lines) < 3:
-            return {}
-        print("get_irq_1"+str(response_lines))
-        try:
-            # discard the first three lines
-            response_lines.pop(0)
-            response_lines.pop(0)
-            response_lines.pop(0)
-        except Exception as e:
-            print(response_lines, "-------  GetCmdMpstat")
-            return {}
-
-        print("get_irq_2" + str(response_lines))
-        irq_data = {}
-        irq_data['data'] = {}
-
-        for line in response_lines:
-
-            if (line.strip() == ''):
-                break
-
-            line_values = line.split()
-
-            irq_stat = {}
-            try:
-                irq_stat['idle'] = float(line_values[-1])
-                irq_stat['gnice'] = float(line_values[-2])
-                irq_stat['guest'] = float(line_values[-3])
-                irq_stat['steal'] = float(line_values[-4])
-                irq_stat['soft'] = float(line_values[-5])
-                irq_stat['irq'] = float(line_values[-6])
-                irq_stat['iowait'] = float(line_values[-7])
-                irq_stat['system'] = float(line_values[-8])
-                irq_stat['nice'] = float(line_values[-9])
-                irq_stat['user'] = float(line_values[-10])
-
-                cpu_name = line_values[-11]
-                print("cpu_name"+str(cpu_name))
-                print("irq_stat"+str(irq_stat))
-            except Exception as err:
-                print(err, "-------  GetCmdMpstat")
-                continue
-
-            irq_data['data'][cpu_name] = irq_stat
-        print("overall"+str(irq_data))
-        return irq_data
+    # def get_irq(self, response_lines=[]):
+    #     print("CPUProfiler-1-")
+    #     lepd_command = 'GetCmdMpstat'
+    #     if not response_lines:
+    #         response_lines = self.client.getResponse(lepd_command)
+    #     elif isinstance(response_lines, str):
+    #         response_lines = self.client.split_to_lines(response_lines)
+    #
+    #     if len(response_lines) < 3:
+    #         return {}
+    #     print("get_irq_1"+str(response_lines))
+    #     try:
+    #         # discard the first three lines
+    #         response_lines.pop(0)
+    #         response_lines.pop(0)
+    #         response_lines.pop(0)
+    #     except Exception as e:
+    #         print(response_lines, "-------  GetCmdMpstat")
+    #         return {}
+    #
+    #     print("get_irq_2" + str(response_lines))
+    #     irq_data = {}
+    #     irq_data['data'] = {}
+    #
+    #     for line in response_lines:
+    #
+    #         if (line.strip() == ''):
+    #             break
+    #
+    #         line_values = line.split()
+    #
+    #         irq_stat = {}
+    #         try:
+    #             irq_stat['idle'] = float(line_values[-1])
+    #             irq_stat['gnice'] = float(line_values[-2])
+    #             irq_stat['guest'] = float(line_values[-3])
+    #             irq_stat['steal'] = float(line_values[-4])
+    #             irq_stat['soft'] = float(line_values[-5])
+    #             irq_stat['irq'] = float(line_values[-6])
+    #             irq_stat['iowait'] = float(line_values[-7])
+    #             irq_stat['system'] = float(line_values[-8])
+    #             irq_stat['nice'] = float(line_values[-9])
+    #             irq_stat['user'] = float(line_values[-10])
+    #
+    #             cpu_name = line_values[-11]
+    #             print("cpu_name"+str(cpu_name))
+    #             print("irq_stat"+str(irq_stat))
+    #         except Exception as err:
+    #             print(err, "-------  GetCmdMpstat")
+    #             continue
+    #
+    #         irq_data['data'][cpu_name] = irq_stat
+    #     print("overall"+str(irq_data))
+    #     return irq_data
 
     def get_softirq(self, tableinfo):
         itemId_discovery1 = get_itemid_discovery("get_softirq[{#CPU.NUMBER},NET_TX]")
@@ -1173,64 +1173,64 @@ class CPUProfiler:
         print("mysql-data_softirq" + str(ones))
         return response_data
 
-    def get_softirq_1(self, response_lines=[]):
-        print("CPUProfiler-2-")
-        lepd_command = 'GetCmdMpstat-I'
-        if not response_lines:
-            response_lines = self.client.getResponse(lepd_command)
-        elif isinstance(response_lines, str):
-            response_lines = self.client.split_to_lines(response_lines)
-
-        if len(response_lines) < 2:
-            return {}
-        try:
-            # discard the first two lines
-            response_lines.pop(0)
-            response_lines.pop(0)
-        except Exception as e:
-            print(response_lines, "-------  GetCmdMpstat-I")
-            return {}
-
-        softirq_resp = []
-        softirq_data = {}
-        softirq_data['data'] = {}
-
-        # print(response_lines)
-        startIndex = 0
-        for line in response_lines:
-            if (line.strip() == ''):
-                startIndex = startIndex + 1
-
-            if startIndex < 2:
-                continue
-            elif startIndex > 2:
-                break
-
-            softirq_resp.append(line)
-
-        if len(softirq_resp) <= 1:
-            return softirq_data
-
-        softirq_resp.pop(0)
-        softirq_resp.pop(0)
-        for line in softirq_resp:
-            line_values = line.split()
-
-            softirq_stat = {}
-            try:
-                softirq_stat['HRTIMER'] = self.client.toDecimal(line_values[-2])
-                softirq_stat['TASKLET'] = self.client.toDecimal(line_values[-4])
-                softirq_stat['NET_RX'] = self.client.toDecimal(line_values[-7])
-                softirq_stat['NET_TX'] = self.client.toDecimal(line_values[-8])
-
-                cpu_name = line_values[1]
-            except Exception as err:
-                print(err, "-------  GetCmdMpstat-I")
-                continue
-
-            softirq_data['data'][cpu_name] = softirq_stat
-        print("softirq"+str(softirq_data))
-        return softirq_data
+    # def get_softirq_1(self, response_lines=[]):
+    #     print("CPUProfiler-2-")
+    #     lepd_command = 'GetCmdMpstat-I'
+    #     if not response_lines:
+    #         response_lines = self.client.getResponse(lepd_command)
+    #     elif isinstance(response_lines, str):
+    #         response_lines = self.client.split_to_lines(response_lines)
+    #
+    #     if len(response_lines) < 2:
+    #         return {}
+    #     try:
+    #         # discard the first two lines
+    #         response_lines.pop(0)
+    #         response_lines.pop(0)
+    #     except Exception as e:
+    #         print(response_lines, "-------  GetCmdMpstat-I")
+    #         return {}
+    #
+    #     softirq_resp = []
+    #     softirq_data = {}
+    #     softirq_data['data'] = {}
+    #
+    #     # print(response_lines)
+    #     startIndex = 0
+    #     for line in response_lines:
+    #         if (line.strip() == ''):
+    #             startIndex = startIndex + 1
+    #
+    #         if startIndex < 2:
+    #             continue
+    #         elif startIndex > 2:
+    #             break
+    #
+    #         softirq_resp.append(line)
+    #
+    #     if len(softirq_resp) <= 1:
+    #         return softirq_data
+    #
+    #     softirq_resp.pop(0)
+    #     softirq_resp.pop(0)
+    #     for line in softirq_resp:
+    #         line_values = line.split()
+    #
+    #         softirq_stat = {}
+    #         try:
+    #             softirq_stat['HRTIMER'] = self.client.toDecimal(line_values[-2])
+    #             softirq_stat['TASKLET'] = self.client.toDecimal(line_values[-4])
+    #             softirq_stat['NET_RX'] = self.client.toDecimal(line_values[-7])
+    #             softirq_stat['NET_TX'] = self.client.toDecimal(line_values[-8])
+    #
+    #             cpu_name = line_values[1]
+    #         except Exception as err:
+    #             print(err, "-------  GetCmdMpstat-I")
+    #             continue
+    #
+    #         softirq_data['data'][cpu_name] = softirq_stat
+    #     print("softirq"+str(softirq_data))
+    #     return softirq_data
 
     # def get_stat(self, response_lines=[]):
 
@@ -1443,37 +1443,37 @@ class CPUProfiler:
         return response_data
 
 
-    def get_average_load(self, response_lines = None):
-
-        print("CPUProfiler-----4-----")
-        lepd_command = 'GetProcLoadavg'
-        if not response_lines:
-            response_lines = self.client.getResponse(lepd_command)
-        elif isinstance(response_lines, str):
-            response_lines = self.client.split_to_lines(response_lines)
-
-        response_data = {}
-        # if options['debug']:
-        #     response_data['rawResult'] = response_lines[:]
-        #     response_data['lepd_command'] = 'GetProcLoadavg'
-
-        response = response_lines[0].split(" ")
-
-        # '0.00 0.01 0.05 1/103 24750
-        # 'avg system load of 1 minute ago, 5 minutes ago, 15 minutes ago,
-        # the fourth is A/B, A is the number of running processes
-        # B is the total process count.
-        # last number, like 24750 is the ID of the most recently running process.
-        result_data = {
-            # 'server': self.server,
-            'last1': self.client.toDecimal(response[0]),
-            'last5': self.client.toDecimal(response[1]),
-            'last15': self.client.toDecimal(response[2])
-        }
-
-        response_data['data'] = result_data
-        print("CPUProfile-1-"+str(response_data))
-        return response_data
+    # def get_average_load(self, response_lines = None):
+    #
+    #     print("CPUProfiler-----4-----")
+    #     lepd_command = 'GetProcLoadavg'
+    #     if not response_lines:
+    #         response_lines = self.client.getResponse(lepd_command)
+    #     elif isinstance(response_lines, str):
+    #         response_lines = self.client.split_to_lines(response_lines)
+    #
+    #     response_data = {}
+    #     # if options['debug']:
+    #     #     response_data['rawResult'] = response_lines[:]
+    #     #     response_data['lepd_command'] = 'GetProcLoadavg'
+    #
+    #     response = response_lines[0].split(" ")
+    #
+    #     # '0.00 0.01 0.05 1/103 24750
+    #     # 'avg system load of 1 minute ago, 5 minutes ago, 15 minutes ago,
+    #     # the fourth is A/B, A is the number of running processes
+    #     # B is the total process count.
+    #     # last number, like 24750 is the ID of the most recently running process.
+    #     result_data = {
+    #         # 'server': self.server,
+    #         'last1': self.client.toDecimal(response[0]),
+    #         'last5': self.client.toDecimal(response[1]),
+    #         'last15': self.client.toDecimal(response[2])
+    #     }
+    #
+    #     response_data['data'] = result_data
+    #     print("CPUProfile-1-"+str(response_data))
+    #     return response_data
 
 
     def get_mysql_data(self, tableinfo, response_lines=None):
@@ -1605,8 +1605,8 @@ class CPUProfiler:
         result = {}
 
         for lineIndex, responseLine in enumerate(responseLines):
-            if (self.client.LEPDENDINGSTRING in responseLine):
-                break
+            # if (self.client.LEPDENDINGSTRING in responseLine):
+            #     break
 
             if (lineIndex > self.maxDataCount):
                 break
@@ -1640,68 +1640,68 @@ class CPUProfiler:
         print("top"+str(responseData))
         return responseData
 
-    def getTopOutput(self, responseLines = None):
-        print("CPUProfiler-6-")
-        lepd_command = 'GetCmdTop'
-
-        if not responseLines:
-            responseLines = self.client.getResponse(lepd_command)
-            print("responseLines1"+str(responseLines))
-        elif isinstance(responseLines, str):
-            responseLines = self.client.split_to_lines(responseLines)
-            print("responseLines2" + str(responseLines))
-
-
-        if len(responseLines) == 0:
-            return {}
-
-        responseData = {}
-        if (self.config == 'debug'):
-            responseData['rawResult'] = responseLines[:]
-
-        headerLine = responseLines.pop(0)
-        while ( not re.match(r'\W*PID\W+USER\W+.*', headerLine, re.M|re.I) ):
-            headerLine = responseLines.pop(0)
-
-        headerColumns = headerLine.split()
-
-        result = {}
-
-        for lineIndex, responseLine in enumerate(responseLines):
-            if (self.client.LEPDENDINGSTRING in responseLine):
-                break
-
-            if (lineIndex > self.maxDataCount):
-                break
-
-            lineValues = responseLine.split()
-
-            result[lineIndex] = {}
-
-            # print(headerLine)
-            for columnIndex, columnName in enumerate(headerColumns):
-                if (columnName == 'Name' or columnName == 'CMD'):
-                    result[lineIndex][columnName] = ' '.join([str(x) for x in lineValues[columnIndex:]])
-                else:
-                    result[lineIndex][columnName] = lineValues[columnIndex]
-
-        responseData['data'] = {}
-        responseData['data']['top'] = result
-        responseData['data']['headerline'] = headerLine
-
-
-        if (re.match(r'\W*PID\W+USER\W+PR\W+.*', headerLine, re.M|re.I)):
-            # android :
-            #   PID USER     PR  NI CPU% S  #THR     VSS     RSS PCY Name
-            responseData['data']['os'] = 'android'
-        elif (re.match(r'\W*PID\W+USER\W+PRI\W+NI\W+VSZ\W+RSS\W+.*', headerLine, re.M|re.I)):
-            # for Linux:
-            # PID USER     PRI  NI    VSZ   RSS S %CPU %MEM     TIME CMD
-            responseData['data']['os'] = 'linux'
-        else:
-            print("GetCmdTop command returned data from unrecognized system")
-        print("top"+str(responseData))
-        return responseData
+    # def getTopOutput(self, responseLines = None):
+    #     print("CPUProfiler-6-")
+    #     lepd_command = 'GetCmdTop'
+    #
+    #     if not responseLines:
+    #         responseLines = self.client.getResponse(lepd_command)
+    #         print("responseLines1"+str(responseLines))
+    #     elif isinstance(responseLines, str):
+    #         responseLines = self.client.split_to_lines(responseLines)
+    #         print("responseLines2" + str(responseLines))
+    #
+    #
+    #     if len(responseLines) == 0:
+    #         return {}
+    #
+    #     responseData = {}
+    #     if (self.config == 'debug'):
+    #         responseData['rawResult'] = responseLines[:]
+    #
+    #     headerLine = responseLines.pop(0)
+    #     while ( not re.match(r'\W*PID\W+USER\W+.*', headerLine, re.M|re.I) ):
+    #         headerLine = responseLines.pop(0)
+    #
+    #     headerColumns = headerLine.split()
+    #
+    #     result = {}
+    #
+    #     for lineIndex, responseLine in enumerate(responseLines):
+    #         if (self.client.LEPDENDINGSTRING in responseLine):
+    #             break
+    #
+    #         if (lineIndex > self.maxDataCount):
+    #             break
+    #
+    #         lineValues = responseLine.split()
+    #
+    #         result[lineIndex] = {}
+    #
+    #         # print(headerLine)
+    #         for columnIndex, columnName in enumerate(headerColumns):
+    #             if (columnName == 'Name' or columnName == 'CMD'):
+    #                 result[lineIndex][columnName] = ' '.join([str(x) for x in lineValues[columnIndex:]])
+    #             else:
+    #                 result[lineIndex][columnName] = lineValues[columnIndex]
+    #
+    #     responseData['data'] = {}
+    #     responseData['data']['top'] = result
+    #     responseData['data']['headerline'] = headerLine
+    #
+    #
+    #     if (re.match(r'\W*PID\W+USER\W+PR\W+.*', headerLine, re.M|re.I)):
+    #         # android :
+    #         #   PID USER     PR  NI CPU% S  #THR     VSS     RSS PCY Name
+    #         responseData['data']['os'] = 'android'
+    #     elif (re.match(r'\W*PID\W+USER\W+PRI\W+NI\W+VSZ\W+RSS\W+.*', headerLine, re.M|re.I)):
+    #         # for Linux:
+    #         # PID USER     PRI  NI    VSZ   RSS S %CPU %MEM     TIME CMD
+    #         responseData['data']['os'] = 'linux'
+    #     else:
+    #         print("GetCmdTop command returned data from unrecognized system")
+    #     print("top"+str(responseData))
+    #     return responseData
 
 if( __name__ =='__main__' ):
     

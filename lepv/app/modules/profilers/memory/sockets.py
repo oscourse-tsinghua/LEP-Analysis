@@ -7,21 +7,21 @@ from flask_socketio import emit
 
 memory_blueprint = SocketIOBlueprint('')
 
-memory_status_timer = None
-@memory_blueprint.on('memory.status.req')
-def get_memory_status(request):
-    server = request['server']
-    interval = request['interval']
-    socketio = memory_blueprint.get_io()
-    global memory_status_timer,memory_status_count
-    memory_status_count = request["flag"]
-    set_value("memorystatus",str(memory_status_count))
-    # if memory_status_timer is None:
-    memory_status_timer = Timer(interval, background_timer_stuff_memorystatus, [
-        socketio, interval, "memory.status.res", MemoryProfiler(server).getStatus])
-    memory_status_timer.start()
-    # emit("memory.status.res", MemoryProfiler(server).getStatus())
-    # process_socket_request(request, 'memory.status.req', MemoryProfiler(server).getStatus)
+# memory_status_timer = None
+# @memory_blueprint.on('memory.status.req')
+# def get_memory_status(request):
+#     server = request['server']
+#     interval = request['interval']
+#     socketio = memory_blueprint.get_io()
+#     global memory_status_timer,memory_status_count
+#     memory_status_count = request["flag"]
+#     set_value("memorystatus",str(memory_status_count))
+#     # if memory_status_timer is None:
+#     memory_status_timer = Timer(interval, background_timer_stuff_memorystatus, [
+#         socketio, interval, "memory.status.res", MemoryProfiler(server).getStatus])
+#     memory_status_timer.start()
+#     # emit("memory.status.res", MemoryProfiler(server).getStatus())
+#     # process_socket_request(request, 'memory.status.req', MemoryProfiler(server).getStatus)
 
 memory_procrank_timer = None
 @memory_blueprint.on('memory.procrank.req')

@@ -2,7 +2,7 @@ import json
 import MySQLdb
 from urllib import request, parse
 
-url = 'http://192.168.253.128/zabbix/api_jsonrpc.php'
+url = 'http://192.168.253.134/zabbix/api_jsonrpc.php'
 headers = {'Content-Type': 'application/json'}
 host = "192.168.253.134"
 user = "root"

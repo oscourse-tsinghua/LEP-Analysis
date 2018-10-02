@@ -92,4 +92,3 @@ class FlameBurner():
             dict = {"name": line[0], "value": value, "children": []}
             children_list.append(dict)
             self.__create_json(line[1:], value, children_list[-1]["children"])
-

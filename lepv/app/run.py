@@ -1,6 +1,7 @@
+import MySQLdb
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
-from app.modules.lepd.LepDClient import LepDClient
+# from app.modules.lepd.LepDClient import LepDClient
 
 from app.modules.utils.localization import Languages
 from app.modules.utils.simpleJson import MyJSONEncoder
@@ -18,9 +19,17 @@ def ping_lepd_server(request):
     server = request['server']
     print('received ping: ' + server)
 
-    client = LepDClient(server=server)
+    # client = LepDClient(server=server)
+    db = MySQLdb.connect("192.168.253.134", "root", "135246", "zabbix")
+    cursor = db.cursor()
+    sql = "SELECT count(*) FROM interface where ip='" + str(server) + "';"
+    cursor.execute(sql)
+    data = cursor.fetchone()
 
-    ping_result = client.ping()
+    db.close()
+    ping_result = data[0]
+    print(ping_result)
+    # ping_result = ping(server)
     if ping_result:
         emit('lepd.ping.succeeded', {"server": server})
     else:
@@ -58,8 +67,8 @@ perf_blueprint.init_io(socketio)
 
 
 #  Utils  ------------
-from app.modules.utils.views import utilAPI
-app.register_blueprint(utilAPI)
+# from app.modules.utils.views import utilAPI
+# app.register_blueprint(utilAPI)
 
 # from app.modules.utils.sockets import util_blueprint
 # util_blueprint.init_io(socketio)
