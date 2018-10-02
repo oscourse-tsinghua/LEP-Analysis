@@ -1,5 +1,7 @@
-Zabbix的监控范围
+## Zabbix的监控范围
+![监控范围](https://github.com/oscourse-tsinghua/LEP-Analysis/blob/master/image/%E7%9B%91%E6%8E%A7%E8%8C%83%E5%9B%B4.jpg)
 
+## Zabbix采集的方法
 在Zabbix系统中有多达十五种数据采集方法，每种方法所使用的原理和场景也不一样。下表列出了这十三种数据采集方法的原理及适合的场景。
 
 | 序号 |                方法名称                 | 描述                                                         |
@@ -20,10 +22,18 @@ Zabbix的监控范围
 | 14   |              捕捉器监控项               | 捕捉器监控项接收**传入的数据**，而不是查询它。适用于任何想要推送到Zabbix的数据。 |
 | 15   |              日志文件监控               | 用于集中监控和分析具有/不具有日志转动能力的**日志文件**。    |
 
-
+## Zabbix的监控命令
+| 类型 | 命令 |
+  | --------   | :-----   |
+| 硬件 | ipmi |
+| CPU | lscpu、uptime、top、htop vmstat mpstat |
+| 内存 | free |
+| 磁盘 | df、dd、iotop |
+| 网络 | iftop nethogs |
 
 参考文档：
 
 1. http://blog.51cto.com/yenokia/1959378
 2. http://www.ttlsa.com/zabbix/how-to-chose-zabbix-item-type/
 3. https://www.zabbix.com/documentation/3.4/zh/manual/config/items/itemtypes
+4. https://www.cnblogs.com/clsn/p/7885990.html
