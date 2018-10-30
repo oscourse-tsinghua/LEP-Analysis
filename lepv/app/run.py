@@ -1,4 +1,4 @@
-import MySQLdb
+import PyMySQL
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 # from app.modules.lepd.LepDClient import LepDClient
@@ -20,7 +20,7 @@ def ping_lepd_server(request):
     print('received ping: ' + server)
 
     # client = LepDClient(server=server)
-    db = MySQLdb.connect("192.168.253.134", "root", "135246", "zabbix")
+    db = PyMySQL.connect("127.0.0.1", "root", "wh596100", "zabbix")
     cursor = db.cursor()
     sql = "SELECT count(*) FROM interface where ip='" + str(server) + "';"
     cursor.execute(sql)
