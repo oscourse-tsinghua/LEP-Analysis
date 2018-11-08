@@ -3,7 +3,7 @@
 __author__    = "Copyright (c) 2016, Mac Xu <shinyxxn@hotmail.com>"
 __copyright__ = "Licensed under GPLv2 or later."
 
-import PyMySQL
+import pymysql
 import pprint
 import re
 import copy
@@ -236,7 +236,7 @@ class CPUProfiler:
     def get_cpu_stat(self, tableinfo):
         hostid = get_hostid(self.host)
         print("hostid"+ str(hostid))
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         #(23306,23302,23305,23299,23301,23300,23303,23304)
 
@@ -395,7 +395,7 @@ class CPUProfiler:
         print("itemid"+ str(itemId_discovery))
         print("core"+ str(core))
 
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         sql = []
         if ('list5' in tableinfo):
@@ -509,7 +509,7 @@ class CPUProfiler:
         print("itemid" + str(itemId_discovery1) + "--"+ str(itemId_discovery2) + "--" + str(itemId_discovery3))
         print("core" + str(core))
 
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         sql1 = []
         sql2 = []
@@ -698,7 +698,7 @@ class CPUProfiler:
 
         print("itemid" + str(itemId_discovery1) + "--" + str(itemId_discovery2))
         print("core" + str(core))
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         sql1 = []
         sql2 = []
@@ -847,7 +847,7 @@ class CPUProfiler:
         print("itemid" + str(itemId_discovery))
         print("core" + str(core))
 
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         sql = []
         if ('list5' in tableinfo):
@@ -1016,7 +1016,7 @@ class CPUProfiler:
         print("itemid" + str(itemId_discovery1) + " " + str(itemId_discovery2) + " " + str(itemId_discovery3) + " " + str(itemId_discovery4))
         print("core" + str(core))
 
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
         sql = []
         if ('list5' in tableinfo):
@@ -1361,7 +1361,7 @@ class CPUProfiler:
     def get_avg_load(self,tableinfo):
         hostid = get_hostid(self.host)
         print("hostid" + str(hostid))
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         cursor = db.cursor()
 
         if ('list5' in tableinfo):
@@ -1479,7 +1479,7 @@ class CPUProfiler:
     def get_mysql_data(self, tableinfo, response_lines=None):
         print("CPUProfiler-5-")
         # 打开数据库连接
-        db = PyMySQL.connect(self.host, self.user, self.passwd, self.db)
+        db = pymysql.connect(self.host, self.user, self.passwd, self.db)
         # db = MySQLdb.connect("192.168.2.9", "root", "596100", "zabbix")
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()

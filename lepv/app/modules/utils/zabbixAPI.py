@@ -1,12 +1,12 @@
 import json
-import MySQLdb
+import pymysql
 from urllib import request, parse
 
-url = 'http://192.168.253.134/zabbix/api_jsonrpc.php'
+url = 'http://127.0.0.1/zabbix/api_jsonrpc.php'
 headers = {'Content-Type': 'application/json'}
-host = "192.168.253.134"
+host = "127.0.0.1"
 user = "root"
-passwd = "135246"
+passwd = "wh596100"
 dbase = "zabbix"
 
 def script_execute(scriptid):
@@ -146,7 +146,7 @@ def login():
         return authid
 
 def get_hostid(hostName):
-    db = MySQLdb.connect(host, user, passwd, dbase)
+    db = pymysql.connect(host, user, passwd, dbase)
     print("host"+ str(hostName))
     cursor = db.cursor()
     sql = "SELECT hostid FROM interface where ip = \'"  + hostName + "\'"
@@ -162,7 +162,7 @@ def get_hostid(hostName):
 
 
 def get_itemid(hostId, key):
-    db = MySQLdb.connect(host, user, passwd, dbase)
+    db = pymysql.connect(host, user, passwd, dbase)
 
     cursor = db.cursor()
     sql = "SELECT itemid FROM items where hostid = "  + str(hostId) + " AND key_ = \'" + key + "\'"
@@ -178,7 +178,7 @@ def get_itemid(hostId, key):
 
 
 def get_itemid_discovery(key):
-    db = MySQLdb.connect(host, user, passwd, dbase)
+    db = pymysql.connect(host, user, passwd, dbase)
     cursor = db.cursor()
     itemId_dis = []
     sql = "SELECT itemid FROM item_discovery where key_ = \'" + key + "\'"
