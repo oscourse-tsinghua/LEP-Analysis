@@ -266,3 +266,15 @@ def background_timer_stuff_perfflame(socketio, interval, socket_res_message_key,
             socketio, interval, socket_res_message_key, profiler_method]).start()
     elif (perf_flame_count == "False"):
         print("cancel()")
+
+def background_timer_stuff_callgraph(socketio, interval, socket_res_message_key, profiler_method):
+    data = profiler_method()
+    socketio.emit(socket_res_message_key, data)
+
+    callgraph_count = get_value("callgraph")
+    print("background_timer_stuff-" + "callgraph"+str(callgraph_count))
+    if (callgraph_count == "True"):
+        Timer(interval, background_timer_stuff_callgraph, [
+            socketio, interval, socket_res_message_key, profiler_method]).start()
+    elif (callgraph_count == "False"):
+        print("cancel()")

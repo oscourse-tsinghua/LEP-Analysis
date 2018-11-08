@@ -65,6 +65,12 @@ app.register_blueprint(perfAPI)
 from app.modules.profilers.perf.sockets import perf_blueprint
 perf_blueprint.init_io(socketio)
 
+#  Callgraph  -------------
+from app.modules.profilers.callgraph.views import callgraphAPI
+app.register_blueprint(callgraphAPI)
+
+from app.modules.profilers.callgraph.sockets import callgraph_blueprint
+callgraph_blueprint.init_io(socketio)
 
 #  Utils  ------------
 # from app.modules.utils.views import utilAPI

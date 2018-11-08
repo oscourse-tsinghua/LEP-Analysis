@@ -35,7 +35,7 @@
           <form class="form-inline my-2 my-lg-0 mr-lg-2">
             <div class="input-group">
               <!--<input id='txt_server_to_watch' class="form-control" type="text" placeholder="www.rmlink.cn" value="www.rmlink.cn">-->
-              <input id='txt_server_to_watch' class="form-control" type="text" placeholder="127.0.0.1" value="127.0.0.1" onchange="toWatch()">
+              <input id='txt_server_to_watch' class="form-control" type="text" placeholder="192.168.253.134" value="192.168.253.134" onchange="toWatch()">
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#first" data-parent="#sideBarAccordion"></a>
               <select id="first" onChange=" change() ">
                   <option selected="selected">　</option>
@@ -43,6 +43,7 @@
                   <option>Memory</option>
                   <option>IO</option>
                   <option>Perf</option>
+                  <option>Callgraph</option>
               </select>
 
               <select id="second" onchange="changetype()">
@@ -114,6 +115,9 @@
           <div class="card-footer small text-muted" hidden><i class="fa fa-bell" aria-hidden="true"> </i></div>
         </div>
       </div>
+
+      <!--<object id="test"  type="image/svg+xml"></object>-->
+      <div id ="testsvg"></div>
 
     </div>
 
@@ -193,6 +197,7 @@
     <script src="/static/js/charts/perf/perfCpuTable.js"></script>
 
     <script src="/static/js/charts/perf/perfFlameGraph.js"></script>
+    <script src="/static/js/charts/callgraph/callgraph.js"></script>
     <script src="/static/js/charts/initial.js"></script>
 
     <!--<script src="/static/ts/charts/tsLepvChart.js"></script>-->
@@ -296,6 +301,10 @@
             break;
         }
         break;
+        case "Callgraph":
+            var socket_message_key = 'callgraph';
+        break;
+
         }
         return (socket_message_key);
     }
@@ -568,6 +577,12 @@
             }
             y.options.add(new Option(" Perf Flame ", "1"));
        }
+
+       if(x.selectedIndex == 5)
+       {
+            url = changeURLPar(url, "first", "Callgraph");
+            window.history.pushState({},0,url);
+       }
     }
     </script>
 
@@ -818,12 +833,13 @@
         <!--}-->
 
         serverToWatch = specifiedServer;
+        <!--if (socket != null && InfoToWatch != "Callgraph")-->
         if (socket != null)
         {
-            console.log("con");
             socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);
-
+            console.log("infotowatch"+InfoToWatch+"InfoDetailToWacth"+InfoDetailToWacth);
             console.log("1"+socket_message_key);
+
             socket.emit(socket_message_key + ".req",
                             {
                                 'server': $("#txt_server_to_watch").val(),
@@ -866,6 +882,7 @@
           serverToWatch = specifiedServer;
 
           initializeCharts();
+
           count++;
           }
         });
@@ -884,13 +901,13 @@
 
     <script>
         function initializeCharts() {
+          var div2 = document.getElementById("testinit");
           var div = document.getElementById("testdiv");
           var div1 = document.getElementById("container-div-cpu-top-table");
-          <!--var type = document.getElementById("type").selectedIndex;-->
-          <!--var type = document.getElementById("type").value;-->
-
+          var divsvg = document.getElementById("testsvg");
           switch(document.getElementById("first").selectedIndex){
           case 1:
+            divsvg.style.display = "none";
             switch(document.getElementById("second").selectedIndex){
             case 0:
                 <!--&lt;!&ndash;var div = document.getElementById("test");&ndash;&gt;-->
@@ -903,6 +920,7 @@
                 <!--var cpuStatDonutChart = new CpuStatDonutChart("test", socket, serverToWatch);-->
                 <!--var div = document.getElementById("testtable");-->
                 div1.style.display = "none";
+
                 if (div.style.display == "none")
                     div.style.display = "block";
                 var cpuStatDonutChart = new CpuStatDonutChart("testdiv", socket, serverToWatch);
@@ -998,7 +1016,7 @@
                 <!--var parent = document.getElementById("table-parent");-->
                 <!--console.log("11111111")-->
                 <!--if(parent.children[0].tagName != "table")-->
-                <!--{-->
+                <!--{-->l
                     <!--console.log("111")-->
                     <!--var table1 = document.createElement("table");-->
                     <!--table1.setAttribute("class", "display compact chart-panel");-->
@@ -1015,6 +1033,7 @@
           }
           break;
           case 2:
+            divsvg.style.display = "none";
             switch(document.getElementById("second").selectedIndex){
             case 0:
                 div.style.display = "none";
@@ -1037,6 +1056,7 @@
             }
           break;
           case 3:
+            divsvg.style.display = "none"
             switch(document.getElementById("second").selectedIndex){
             case 0:
                 div1.style.display = "none";
@@ -1070,6 +1090,16 @@
                 var perfFlameGraph = new PerfFlameGraph('testdiv',socket, serverToWatch);
                 break;
           }
+          break;
+          case 5:
+            div.style.display = "none";
+            div1.style.display = "none";
+            div2.style.display = "none";
+            if(divsvg.style.display == "none")
+              divsvg.style.display = "block"
+            new Callgraph("divsvg",socket,serverToWatch);
+
+
           break;
           }
           <!--&lt;!&ndash;var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, "pie");&ndash;&gt;-->
@@ -1118,6 +1148,7 @@
             );
     }
     </script>
+
   </div>
 </body>
 
