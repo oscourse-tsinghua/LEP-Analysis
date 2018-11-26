@@ -5,6 +5,7 @@ from app.modules.utils.soketProcessor import process_socket_request, background_
     background_timer_stuff_cpumysql,background_timer_stuff_cpumysql2,background_timer_stuff_cputop
 from app.modules.utils.gol import set_value
 from threading import Timer
+from flask_socketio import emit
 
 
 cpu_blueprint = SocketIOBlueprint('')
@@ -22,7 +23,7 @@ def get_cpu_stat(request):
     # if cpu_statoverall_timer is None:
     # cpu_statoverall_timer = Timer(interval, background_timer_stuff_cpustatoverall, [socketio, interval, "cpu.statoverall.res", CPUProfiler(server).get_cpu_stat])
     # cpu_statoverall_timer.start()
-    # emit("cpu.statoverall.res", CPUProfiler(server).get_irq())
+    # emit("cpu.statoverall.res", {'data':[{'softirq': 0.0502, 'idle': 99.1556, 'time': 1542252266, 'iowait': 0.1589, 'irq': 0.0, 'steal': 0.0, 'user': 0.1421, 'nice': 0.0, 'system': 0.5142}]})
 
     if (tag == 0):
         print("tag" + str(tag))
@@ -32,6 +33,7 @@ def get_cpu_stat(request):
         tableinfo = {}
         # get_mysql_data = CPUProfiler(server).get_mysql_data(tableinfo)
         socketio.emit("cpu.statoverall.res", CPUProfiler(server).get_cpu_stat(tableinfo))
+        # socketio.emit("cpu.statoverall.res", "222")
         socketio.sleep(0)
         tableinfo = { 'list5': '1'}
         # cpu_mysql_count = request["flag"]

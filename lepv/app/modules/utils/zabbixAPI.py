@@ -2,11 +2,11 @@ import json
 import pymysql
 from urllib import request, parse
 
-url = 'http://127.0.0.1/zabbix/api_jsonrpc.php'
+url = 'http://192.168.253.134/zabbix/api_jsonrpc.php'
 headers = {'Content-Type': 'application/json'}
-host = "127.0.0.1"
+host = "192.168.253.134"
 user = "root"
-passwd = "wh596100"
+passwd = "135246"
 dbase = "zabbix"
 
 def script_execute(scriptid):
@@ -138,6 +138,7 @@ def login():
     else:
         response = result.read()
         page = response.decode('utf-8')
+        print("page"+str(page))
         page = json.loads(page)
         result.close()
         print("Auth Successful. The Auth ID Is: {}".format(page.get('result')))
@@ -165,7 +166,7 @@ def get_itemid(hostId, key):
     db = pymysql.connect(host, user, passwd, dbase)
 
     cursor = db.cursor()
-    sql = "SELECT itemid FROM items where hostid = "  + str(hostId) + " AND key_ = \'" + key + "\'"
+    sql = "SELECT itemid FROM items where hostid = " + str(hostId) + " AND key_ = \'" + key + "\'"
     try:
         cursor.execute(sql)
         ones = cursor.fetchone()
@@ -176,6 +177,20 @@ def get_itemid(hostId, key):
     itemId = ones[0]
     return itemId
 
+def get_scriptid(name):
+    db = pymysql.connect(host, user, passwd, dbase)
+
+    cursor = db.cursor()
+    sql = "SELECT scriptid FROM scripts where name = \'" + name + "\'"
+    try:
+        cursor.execute(sql)
+        ones = cursor.fetchone()
+        db.commit()
+    except:
+        db.rollback()
+    db.close()
+    scriptId = ones[0]
+    return scriptId
 
 def get_itemid_discovery(key):
     db = pymysql.connect(host, user, passwd, dbase)

@@ -9,7 +9,7 @@ from decimal import Decimal
 # import json
 # from urllib import request, parse
 # from app.modules.lepd.LepDClient import LepDClient
-from app.modules.utils.zabbixAPI import script_execute
+from app.modules.utils.zabbixAPI import script_execute,get_scriptid
 
 
 class IOProfiler:
@@ -21,7 +21,10 @@ class IOProfiler:
 
 
     def get_status(self):
-        test = script_execute(11)
+        scriptid = get_scriptid("io")
+        print("scriptid=" + str(scriptid))
+        test = script_execute(scriptid)
+        # test = script_execute(11)
         resultLines = test.split('\n')
         # 'Device:         rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util'
         # 'vda               9.31     0.44    0.24    0.42    38.76     4.04   129.68     0.00 6331.59 14163.45 1931.28   1.58   0.10'
@@ -168,8 +171,10 @@ class IOProfiler:
     #     return responseData
 
     def get_io_top(self, ioTopLines=None):
-        print("IO-top-")
-        test = script_execute(12)
+        scriptid = get_scriptid("iotop")
+        print("scriptid=" + str(scriptid))
+        test = script_execute(scriptid)
+        # test = script_execute(12)
         ioTopLines = test.split('\n')
         # if (ioTopLines == None):
         #     ioTopLines = self.client.getResponse('GetCmdIotop')

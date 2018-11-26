@@ -11,7 +11,7 @@ from decimal import Decimal
 from time import gmtime, strftime, sleep
 
 # from app.modules.lepd.LepDClient import LepDClient
-from app.modules.utils.zabbixAPI import script_execute,get_hostid,get_itemid,get_itemid_discovery
+from app.modules.utils.zabbixAPI import script_execute,get_hostid,get_itemid,get_itemid_discovery,get_scriptid
 
 class CPUProfiler:
 
@@ -24,9 +24,9 @@ class CPUProfiler:
         self.maxDataCount = 25
 
         self.loadBalanceBenchMark = Decimal(40)
-        self.host = "127.0.0.1"
+        self.host = "192.168.253.134"
         self.user = "root"
-        self.passwd = "wh596100"
+        self.passwd = "135246"
         self.db = "zabbix"
 
     def getCpuInfoForArm(self, lines):
@@ -1584,8 +1584,10 @@ class CPUProfiler:
     #     return response_data
 
     def get_cpu_top(self, responseLines = None):
-
-        test = script_execute(9)
+        scriptid=get_scriptid("cpu top")
+        print("scriptid="+str(scriptid))
+        # test = script_execute(9)
+        test = script_execute(scriptid)
         responseLines = test.split('\n')
         responseLines.pop()
 

@@ -90,7 +90,7 @@ LepvChart.prototype.setupSocketIO = function() {
             console.log("  <- " + thisChart.socket_message_key + ".res(" + response['response_id'] + ") in " + requestDuration + " milliseconds");
 
         }
-//        console.log("lepvChart.js" + response);
+        console.log("lepvChart.js" + response);
         thisChart.updateChartData(response);
     });
 

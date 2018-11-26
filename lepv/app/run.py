@@ -20,7 +20,7 @@ def ping_lepd_server(request):
     print('received ping: ' + server)
 
     # client = LepDClient(server=server)
-    db = pymysql.connect("127.0.0.1", "root", "wh596100", "zabbix")
+    db = pymysql.connect("192.168.253.134", "root", "135246", "zabbix")
     cursor = db.cursor()
     sql = "SELECT count(*) FROM interface where ip='" + str(server) + "';"
     cursor.execute(sql)

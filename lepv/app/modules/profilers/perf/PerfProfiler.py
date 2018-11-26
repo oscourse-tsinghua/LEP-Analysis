@@ -1,7 +1,7 @@
 import pprint
 # from app.modules.lepd.LepDClient import LepDClient
 from app.modules.profilers.perf.flameBurner import FlameBurner
-from app.modules.utils.zabbixAPI import script_execute,script_execute_1
+from app.modules.utils.zabbixAPI import script_execute,script_execute_1,get_scriptid
 
 __author__ = 'Mac Xu <mac.xxn@outlook.com>'
 __author__ = 'Ran Meng <1329597253@qq.com>'
@@ -162,7 +162,12 @@ class PerfProfiler:
         #     print("perf-4-" + str(response_lines))
         # elif isinstance(response_lines, str):
         #     response_lines = self.client.split_to_lines(response_lines)
-        test = script_execute(13)
+        scriptid = get_scriptid("perf")
+        print("scriptid=" + str(scriptid))
+        # test = script_execute(9)
+        test = script_execute(scriptid)
+        # test = script_execute(13)
+
         response_lines = test.split('\n')
         print("perf-4-" + str(response_lines))
 

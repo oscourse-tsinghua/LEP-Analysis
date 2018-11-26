@@ -7,7 +7,7 @@ import re
 from decimal import Decimal
 
 # from app.modules.lepd.LepDClient import LepDClient
-from app.modules.utils.zabbixAPI import script_execute
+from app.modules.utils.zabbixAPI import script_execute,get_scriptid
 
 __author__ = 'xmac'
 
@@ -154,7 +154,10 @@ class MemoryProfiler:
     def get_procrank(self):
 
         procrankData = {}
-        test = script_execute(10)
+        scriptid = get_scriptid("memory")
+        print("scriptid=" + str(scriptid))
+        test = script_execute(scriptid)
+        # test = script_execute(10)
 
         resultLines = test.split('\n')
         # resultLines.pop()
