@@ -861,14 +861,15 @@
             <!--socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);-->
             socket_message_key = getSocketMessageKey(InfoToWatch);
             console.log("infotowatch"+InfoToWatch+"InfoDetailToWacth"+InfoDetailToWacth);
-            console.log("startwatching"+socket_message_key);
+            console.log("startwatching_to false"+socket_message_key);
 
             socket.emit(socket_message_key + ".req",
                             {
                                 'server': $("#txt_server_to_watch").val(),
                                 'interval': 3,
-                                'flag': False,
+                                'flag': false,
                                 'tag': 0,
+                                <!--'dir1':none,-->
                             }
             );
             <!--socket.close();-->
