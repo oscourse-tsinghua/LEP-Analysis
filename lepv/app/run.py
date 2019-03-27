@@ -72,6 +72,13 @@ app.register_blueprint(callgraphAPI)
 from app.modules.profilers.callgraph.sockets import callgraph_blueprint
 callgraph_blueprint.init_io(socketio)
 
+# Gprof -------------
+from app.modules.profilers.gprof.views import gprofAPI
+app.register_blueprint(gprofAPI)
+
+from app.modules.profilers.gprof.sockets import gprof_blueprint
+gprof_blueprint.init_io(socketio)
+
 #  Utils  ------------
 # from app.modules.utils.views import utilAPI
 # app.register_blueprint(utilAPI)

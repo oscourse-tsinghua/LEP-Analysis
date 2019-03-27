@@ -1,5 +1,5 @@
 import pprint
-from app.modules.utils.zabbixAPI import script_execute
+from app.modules.utils.zabbixAPI import script_execute,get_scriptid,script_execute_2,script_update
 
 class CallgraphProfiler:
 
@@ -10,13 +10,51 @@ class CallgraphProfiler:
         
         self.dataCount = 25
 
+    def get_callgraph(self, dir1, dir2,response_lines=None):
+        # scriptid = get_scriptid("callgraph")
+        # print("scriptid=" + str(scriptid))
+        # test = script_execute(scriptid)
+        scriptid = get_scriptid("callgraph_1")
+        # command = "sudo ruby /home/lxia/lxr/callgraph-sql.rb -2 /usr/local/share/cg-rtl/lxr/source1/linux-3.5.4/x86_32/ -d ipc mm -o /home/lxia/lxr/real-ipc-mm-1.graph http://124.16.141.130/lxr/watchlist linux-3.5.4 x86_32 http://124.16.141.130/lxr/call/ real"
+        command = "ruby /home/lxia/lxr/callgraph-sql.rb -2 /usr/local/share/cg-rtl/lxr/source1/linux-3.5.4/x86_32/ " \
+                  "-d " + str(dir1) + " " + str(dir2) + " -o /home/lxia/lxr/real-"+str(dir1)+"-"+str(dir2)+".graph " \
+                  "http://124.16.141.130/lxr/watchlist linux-3.5.4 x86_32 http://124.16.141.130/lxr/call/ real"
+        # print("commad"+str(command))
+        script_update(scriptid, command)
+        script_execute(scriptid)
 
+        scriptid= get_scriptid("callgraph_2")
+        command ="cd /home/lxia/lxr;" \
+                 "sudo dot -Tsvg real-"+str(dir1)+"-"+str(dir2)+".graph -o real-"+str(dir1)+"-"+str(dir2)+".svg"
+        script_update(scriptid, command)
+        script_execute(scriptid)
 
-    def get_callgraph(self, response_lines=None):
+        scriptid = get_scriptid("callgraph_3")
+        command = "cd /home/lxia/lxr;" \
+                  "sudo sh callgraph_3.sh "+"real-"+str(dir1)+"-"+str(dir2)+""
+        script_update(scriptid, command)
+        response_lines=script_execute(scriptid)
+        print("response_line"+str(response_lines))
+        # script_execute_2()
+        # script_execute(scriptid)
 
-        test = script_execute(16)
-        response_lines = test
-        print("callgraph-4-" + str(response_lines))
+        # response_lines = 'http://192.168.253.134/lxr/6.svg'
+        # cannot
+        # scriptid = get_scriptid("callgraph_4")
+        # print("scriptid=" + str(scriptid))
+        # script_execute(scriptid)
+        # response_lines = test
+        # print("callgraph-4-" + str(response_lines))
+
+        # python get the svg data from the file named ftp
+        # file_object = open('/home/lxia/git/lepv/app/ftp/6.svg')
+        # try:
+        #     all_the_text = file_object.read()
+        #     print("success open 6.svg")
+        # finally:
+        #     file_object.close()
+        # response_lines = all_the_text
+
 
         # if len(response_lines) == 0:
         #     return {}

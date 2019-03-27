@@ -37,16 +37,17 @@
               <!--<input id='txt_server_to_watch' class="form-control" type="text" placeholder="www.rmlink.cn" value="www.rmlink.cn">-->
               <input id='txt_server_to_watch' class="form-control" type="text" placeholder="192.168.253.134" value="192.168.253.134" onchange="toWatch()">
               <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#first" data-parent="#sideBarAccordion"></a>
-              <select id="first" onChange=" change() ">
+              <select id="first"  onChange=" change() " >
                   <option selected="selected">　</option>
                   <option><span><a href="#cpu ">CPU</a></span></option>
                   <option>Memory</option>
                   <option>IO</option>
                   <option>Perf</option>
                   <option>Callgraph</option>
+                  <option>Gprof</option>
               </select>
 
-              <select id="second" onchange="changetype()">
+              <select id="second" style=" height: 40px;width: 140px; z-index:88;  left:100px; top:0px;" onchange="changetype()" >
                   <option value="testinfo" selected="selected">  </option>
                   <option value="container-div-cpu-stat-donut"> CPU Stat: Overall </option>
                   <option value="container-div-cpu-stat-idle"> CPU Stat: Idle </option>
@@ -62,7 +63,9 @@
                   <option value="container-div-cpu-mysql2"> MySql2 </option>
                   <option value="container-div-cpu-top-table"> CPU TOP </option>
               </select>
-              <select id="type" onchange="selecttype()">
+              <!--<input type="text" id="txt1" value="" style="position:absolute; width:120px; height:38px; left:325px;top:1px;z-index:99; border:1px #FFF solid" />-->
+              <input type="text" id="txt1" value="" />
+              <select id="type" style=" height: 40px;width: 140px; z-index:88;  left:100px; top:0px;" onchange="selecttype()">
               <option value ="testtype">  </option>
               <option value ="donut"> donut </option>
               <option value ="pie"> pie </option>
@@ -74,6 +77,8 @@
               <option value="area-spline"> area-spline </option>
               <option value="scatter"> scatter </option>
               </select>
+              <!--<input type="text" id="txt2" value="" style="position:absolute; width:125px; height:38px; left:460px;top:1px;z-index:99; border:1px #FFF solid" />-->
+              <input type="text" id="txt2" value=""  />
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button" onclick="startWatching()">
                   <i class="fa fa-play"></i>
@@ -116,7 +121,6 @@
         </div>
       </div>
 
-      <!--<object id="test"  type="image/svg+xml"></object>-->
       <div id ="testsvg"></div>
 
     </div>
@@ -198,6 +202,7 @@
 
     <script src="/static/js/charts/perf/perfFlameGraph.js"></script>
     <script src="/static/js/charts/callgraph/callgraph.js"></script>
+    <script src="/static/js/charts/gprof/gprof.js"></script>
     <script src="/static/js/charts/initial.js"></script>
 
     <!--<script src="/static/ts/charts/tsLepvChart.js"></script>-->
@@ -222,10 +227,10 @@
     </script>
 
     <script>
-    function getSocketMessageKey(first,second){
+    function getSocketMessageKey(first){
     switch(first){
         case "CPU":
-        switch(second){
+        switch(document.getElementById("second").selectedIndex){
         case 0:
             var socket_message_key = 'cpu.statoverall';
             break;
@@ -269,7 +274,7 @@
         }
         break;
         case "Memory":
-        switch(second){
+        switch(document.getElementById("second").selectedIndex){
         case 0:
             var socket_message_key = 'memory.procrank';
             break;
@@ -282,7 +287,7 @@
         }
         break;
         case "IO":
-        switch(second){
+        switch(document.getElementById("second").selectedIndex){
         case 0:
             var socket_message_key = 'io.status';
             break;
@@ -292,7 +297,7 @@
         }
         break;
         case "Perf":
-        switch(second){
+        switch(document.getElementById("second").selectedIndex){
         case 0:
             var socket_message_key = 'perf.cpuclock';
             break;
@@ -304,7 +309,9 @@
         case "Callgraph":
             var socket_message_key = 'callgraph';
         break;
-
+        case "Gprof":
+            var socket_message_key = 'gprof';
+        break;
         }
         return (socket_message_key);
     }
@@ -351,7 +358,8 @@
             });
 
             $(window).on("beforeunload",function(){
-            socket_message_key = getSocketMessageKey(document.getElementById("first").value,document.getElementById("second").selectedIndex);
+            <!--socket_message_key = getSocketMessageKey(document.getElementById("first").value,document.getElementById("second").selectedIndex);-->
+            socket_message_key = getSocketMessageKey(document.getElementById("first").value);
 
             console.log("unload"+socket_message_key);
             socket.emit(socket_message_key + ".req",
@@ -431,6 +439,13 @@
         }
     }
     </script>
+
+    <!--<script>-->
+      <!--function changes(args)-->
+      <!--{-->
+        <!--document.getElementById('txt1').value = document.getElementById('second');-->
+      <!--}-->
+    <!--</script>-->
     <script>
     function change(args)
     {
@@ -460,7 +475,8 @@
             }
             if (socket != null)
             {
-            socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);
+            <!--socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);-->
+            socket_message_key = getSocketMessageKey(InfoToWatch);
             console.log("1"+socket_message_key);
             socket.emit(socket_message_key + ".req",
                             {
@@ -583,6 +599,12 @@
             url = changeURLPar(url, "first", "Callgraph");
             window.history.pushState({},0,url);
        }
+       if(x.selectedIndex == 6)
+       {
+            url = changeURLPar(url, "first", "Gprof");
+            window.history.pushState({},0,url);
+       }
+
     }
     </script>
 
@@ -836,15 +858,16 @@
         <!--if (socket != null && InfoToWatch != "Callgraph")-->
         if (socket != null)
         {
-            socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);
+            <!--socket_message_key = getSocketMessageKey(InfoToWatch,InfoDetailToWacth);-->
+            socket_message_key = getSocketMessageKey(InfoToWatch);
             console.log("infotowatch"+InfoToWatch+"InfoDetailToWacth"+InfoDetailToWacth);
-            console.log("1"+socket_message_key);
+            console.log("startwatching"+socket_message_key);
 
             socket.emit(socket_message_key + ".req",
                             {
                                 'server': $("#txt_server_to_watch").val(),
                                 'interval': 3,
-                                'flag': false,
+                                'flag': False,
                                 'tag': 0,
                             }
             );
@@ -1097,9 +1120,18 @@
             div2.style.display = "none";
             if(divsvg.style.display == "none")
               divsvg.style.display = "block"
+
+            console.log(document.getElementById('txt1').value);
             new Callgraph("divsvg",socket,serverToWatch);
+          break;
+          case 6:
+            div.style.display = "none";
+            div1.style.display = "none";
+            div2.style.display = "none";
+            if(divsvg.style.display == "none")
+              divsvg.style.display = "block"
 
-
+            new Gprof("divsvg",socket,serverToWatch);
           break;
           }
           <!--&lt;!&ndash;var cpuStatDonutChart = new CpuStatDonutChart("container-div-cpu-stat-donut", socket, serverToWatch, "pie");&ndash;&gt;-->
@@ -1137,7 +1169,7 @@
     <script>
     btnleft.onclick=function(){
         console.log("button-left");
-        socket_message_key = getSocketMessageKey(document.getElementById("first").value,document.getElementById("second").selectedIndex);
+        socket_message_key = getSocketMessageKey(document.getElementById("first").value);
         socket.emit(socket_message_key + ".req",
                             {
                                 'server': $("#txt_server_to_watch").val(),

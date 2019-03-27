@@ -15,10 +15,12 @@ def get_call_graph(request):
     socketio = callgraph_blueprint.get_io()
     global callgraph_timer,callgraph_count
     # if perf_cpuclock_timer is None:
+    dir1=request['dir1']
+    dir2=request['dir2']
     callgraph_count = request["flag"]
     set_value("callgraph", str(callgraph_count))
     callgraph_timer = Timer(interval, background_timer_stuff_callgraph, [
-        socketio, interval, "callgraph.res", CallgraphProfiler(server).get_callgraph])
+        socketio, interval, "callgraph.res", CallgraphProfiler(server).get_callgraph,dir1,dir2])
     callgraph_timer.start()
 
     # emit("callgraph.res", CallgraphProfiler(server).get_callgraph())

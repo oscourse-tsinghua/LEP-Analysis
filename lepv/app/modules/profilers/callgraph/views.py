@@ -1,5 +1,5 @@
 
-"""Module for Perf profiling"""
+"""Module for Callgraph profiling"""
 
 
 from flask import Blueprint, jsonify, request

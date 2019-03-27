@@ -267,14 +267,26 @@ def background_timer_stuff_perfflame(socketio, interval, socket_res_message_key,
     elif (perf_flame_count == "False"):
         print("cancel()")
 
-def background_timer_stuff_callgraph(socketio, interval, socket_res_message_key, profiler_method):
-    data = profiler_method()
+def background_timer_stuff_callgraph(socketio, interval, socket_res_message_key, profiler_method, args1, args2):
+    data = profiler_method(args1, args2)
     socketio.emit(socket_res_message_key, data)
 
     callgraph_count = get_value("callgraph")
     print("background_timer_stuff-" + "callgraph"+str(callgraph_count))
     if (callgraph_count == "True"):
         Timer(interval, background_timer_stuff_callgraph, [
-            socketio, interval, socket_res_message_key, profiler_method]).start()
+            socketio, interval, socket_res_message_key, profiler_method,args1, args2]).start()
     elif (callgraph_count == "False"):
+        print("cancel()")
+
+def background_timer_stuff_gprof_callgraph(socketio, interval, socket_res_message_key, profiler_method, args1):
+    data = profiler_method(args1)
+    socketio.emit(socket_res_message_key, data)
+
+    gprof_count = get_value("gprof")
+    print("background_timer_stuff-" + "gprof "+str(gprof_count))
+    if (gprof_count == "True"):
+        Timer(interval, background_timer_stuff_gprof_callgraph, [
+            socketio, interval, socket_res_message_key, profiler_method,args1]).start()
+    elif (gprof_count == "False"):
         print("cancel()")
