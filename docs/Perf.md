@@ -188,7 +188,8 @@ sudo perf script
   ```
   - 第二步：遍历原始数据中，含有这种函数关系列表的个数
   ```
-    {'sleep@native_write_msr@native_smp_send_reschedule': 1, 'perf@native_write_msr@x86_pmu_enable': 2}
+    {'sleep@native_write_msr@native_smp_send_reschedule': 1, 
+    'perf@native_write_msr@x86_pmu_enable': 2}
   ```
   - 第三步：由于栈先进后出的特性，对函数顺序进行反转
    ```
