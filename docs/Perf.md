@@ -142,7 +142,8 @@ sudo perf script
   ```
   - 第二步：遍历原始数据中，含有这种函数关系列表的个数
   ```
-    {'perf@native_write_msr@x86_pmu_enable': 1, 'perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92': 1}
+    {'perf@native_write_msr@x86_pmu_enable': 1, 
+    'perf@native_write_msr@x86_pmu_enable@perf_pmu_enable.part.92': 1}
   ```
   - 第三步：由于栈先进后出的特性，对函数顺序进行反转
    ```
